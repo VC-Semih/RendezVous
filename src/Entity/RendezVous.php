@@ -18,9 +18,10 @@ class RendezVous
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity=Horaire::class)
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $heure;
+    private $horaire;
 
     /**
      * @ORM\Column(type="date")
@@ -37,17 +38,25 @@ class RendezVous
         return $this->id;
     }
 
-    public function getHeure(): ?string
+    /**
+     * @return mixed
+     */
+    public function getHoraire()
     {
-        return $this->heure;
+        return $this->horaire;
     }
 
-    public function setHeure(string $heure): self
+    /**
+     * @param mixed $horaire
+     * @return RendezVous
+     */
+    public function setHoraire($horaire)
     {
-        $this->heure = $heure;
-
+        $this->horaire = $horaire;
         return $this;
     }
+
+
 
     public function getDate(): ?\DateTimeInterface
     {

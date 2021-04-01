@@ -9,7 +9,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.de.min.js"></script>
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <div id="datepicker"></div>
     <input type="hidden"  id="my_hidden_input">
@@ -23,7 +22,10 @@
     <h1 id="showDate"></h1>
     </div>
 
-    <div id = "myDiv"></div>
+    <div id="myDiv"></div>
+
+
+
 
 
     <script>
@@ -31,7 +33,7 @@
         $("#getRendez-vous").hide();
 
         $('#datepicker').datepicker({
-            format: "dd.mm.yyyy",
+            format: "yyyy-mm-dd",
             todayBtn: "linked",
             language: "fr",
             todayHighlight: true,
@@ -42,15 +44,17 @@
             $("#showDate").text(value);
             $("#getRendez-vous").show();
 
-
+                       var myDiv = document.getElementById("myDiv");
+            $(myDiv).html("");
             $.ajax({
                 url: '/heure',
                 type: "GET",
                 dataType: "json",
+                data : 'date='+ value,
                 async: true,
                 success: function (data) {
 
-                    var myDiv = document.getElementById("myDiv");
+
 
                     for (let i =0; i< data.length; i++) {
 
@@ -58,7 +62,7 @@
 
                         checkbox.type = "checkbox";
                         checkbox.name =  data[i]['heure'];
-                        checkbox.value = data[i]['heure'];
+                        checkbox.className ="heureCheckBox"
                         checkbox.id = "id";
 
                         var label = document.createElement('label');
@@ -73,12 +77,11 @@
                     }
 
 
-
-
-
                 }
 
             });
+
+
 
 
 

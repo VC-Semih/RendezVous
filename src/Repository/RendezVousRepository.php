@@ -18,17 +18,7 @@ class RendezVousRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, RendezVous::class);
     }
-    public function getInfoArticle($heure,$date)
-    {
-        $rawSql = "SELECT rendez_vous.date,rendez_vous.heure FROM rendez_vous WHERE rendez_vous.heure = '$heure' And rendez_vous.date ='$date'";
-        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
-        try {
-            $stmt->execute();
-        } catch (Exception $e) {
-        }
 
-        return $stmt->fetchAll();
-    }
 
     // /**
     //  * @return RendezVous[] Returns an array of RendezVous objects
@@ -47,15 +37,15 @@ class RendezVousRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?RendezVous
+
+    public function findByDate($date)
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('r.date = :val')
+               ->setParameter('val',$date)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
-    */
+
 }

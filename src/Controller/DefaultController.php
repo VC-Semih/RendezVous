@@ -4,13 +4,17 @@
 namespace App\Controller;
 
 
+use App\Entity\Horaire;
+use App\Entity\RendezVous;
 use App\Repository\HoraireRepository;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class DefaultController extends AbstractController
 {
@@ -24,22 +28,37 @@ class DefaultController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function getHoraire(Request  $request, HoraireRepository $repository) :Response
+    public function getHoraire(Request  $request,  SerializerInterface $serializer)
     {
+       $date = $request->get('date');
+//        $date= str_replace('.','-',$date);
+//       $date = DateTime::createFromFormat('d-m-y H:i',$date);
+        $em = $this->getDoctrine()->getManager();
 
-        $horaire = $repository->findAll();
+        $horaires = $em->getRepository(Horaire::class)->findAll();
+//        $listeRdv= $em->getRepository(RendezVous::class)->findBy(array('date'=>$date));
+        $listeRdv= $em->getRepository(RendezVous::class)->findByDate($date);
 
-        $jsonData = array();
-        $idx = 0;
-        foreach($horaire as $heure) {
-            $temp = array(
-                'heure' => $heure->getHeure(),
-            );
-            $jsonData[$idx++] = $temp;
+        $freeHoraire= [];
 
+        if ($listeRdv !== null && !empty($listeRdv)){
+
+        foreach ($listeRdv as $rdv) {
+            foreach ($horaires as $horaire) {
+                if ($horaire->getId() !== $rdv->getHoraire()->getId()) {
+                    $freeHoraire[] = $horaire;
+                }
+            }
+
+        }}else{
+
+                $freeHoraire=$horaires;
         }
-            $response = new  JsonResponse($jsonData);
-            return $response;
+        $data = $serializer->serialize($freeHoraire,'json');
+
+        $response = new Response($data);
+        $response->headers->set('Content-Type','application/json');
+        return $response;
 
     }
 }
