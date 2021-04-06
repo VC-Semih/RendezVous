@@ -25,61 +25,105 @@
     <div id="myDiv"></div>
 
 
+    <form action="" method="Post" id="form">
+        <select id="myselect">
+            <option value="1">Procuration</option>
+            <option value="2">Mrs</option>
+            <option value="3">Ms</option>
+            <option value="4">Dr</option>
+            <option value="5">Prof</option>
+        </select>
+        <button type="button" name="button" onclick="Geeks()">
+            Submit
+        </button>
+    </form>
+
+
 
 
 
     <script>
 
-        $("#getRendez-vous").hide();
+        function Geeks() {
 
-        $('#datepicker').datepicker({
-            format: "yyyy-mm-dd",
-            todayBtn: "linked",
-            language: "fr",
-            todayHighlight: true,
-        }).on('changeDate', getTodayDate);
+            $("#form").hide();
+           var valuesss = $( "#myselect option:selected" ).text();
 
-        function getTodayDate(){
-            var value = $('#datepicker').datepicker('getFormattedDate');
-            $("#showDate").text(value);
-            $("#getRendez-vous").show();
+                if (valuesss === "Procuration")
+                {
+                    $thursday = 2;
+                    $thuesday = 4;
 
-                       var myDiv = document.getElementById("myDiv");
-            $(myDiv).html("");
-            $.ajax({
-                url: '/heure',
-                type: "GET",
-                dataType: "json",
-                data : 'date='+ value,
-                async: true,
-                success: function (data) {
-
-
-
-                    for (let i =0; i< data.length; i++) {
-
-                        var checkbox = document.createElement('input');
-
-                        checkbox.type = "checkbox";
-                        checkbox.name =  data[i]['heure'];
-                        checkbox.className ="heureCheckBox"
-                        checkbox.id = "id";
-
-                        var label = document.createElement('label');
-
-                        label.htmlFor = "id";
-
-                        label.appendChild(document.createTextNode(data[i]['heure']));
-
-                        myDiv.appendChild(checkbox);
-                        myDiv.appendChild(label);
-
-                    }
-
+                }
+                else {
+                    $thursday = "";
+                    $thuesday = "";
+                    $monday =1;
+                    $wedensday=3;
 
                 }
 
-            });
+                $("#getRendez-vous").hide();
+
+                $('#datepicker').datepicker({
+                    format: "yyyy-mm-dd",
+                    todayBtn: "linked",
+                    language: "fr",
+                    todayHighlight: true,
+                    daysOfWeekDisabled: [$thursday,$thuesday,$monday,$wedensday]
+                }).on('changeDate', getTodayDate);
+
+                function getTodayDate(){
+                    var value = $('#datepicker').datepicker('getFormattedDate');
+                    $("#showDate").text(value);
+                    $("#getRendez-vous").show();
+
+                    var myDiv = document.getElementById("myDiv");
+                    $(myDiv).html("");
+                    $.ajax({
+                        url: '/heure',
+                        type: "GET",
+                        dataType: "json",
+                        data : 'date='+ value,
+                        async: true,
+                        success: function (data) {
+
+
+
+                            for (let i =0; i< data.length; i++) {
+
+                                var checkbox = document.createElement('input');
+
+                                checkbox.type = "checkbox";
+                                checkbox.name =  data[i]['heure'];
+                                checkbox.className ="heureCheckBox"
+                                checkbox.id = "id";
+
+                                var label = document.createElement('label');
+
+                                label.htmlFor = "id";
+
+                                label.appendChild(document.createTextNode(data[i]['heure']));
+
+                                myDiv.appendChild(checkbox);
+                                myDiv.appendChild(label);
+
+                            }
+
+
+                        }
+
+                    });
+
+
+
+
+
+
+
+
+
+                }
 
 
 
@@ -90,6 +134,9 @@
 
 
         }
+
+
+
 
 
     </script>
