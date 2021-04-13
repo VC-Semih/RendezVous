@@ -1,142 +1,134 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.css" rel="stylesheet"/>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-5">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-body">
+            <form action="" method="Post" id="form" class="form p-4">
+                <div class="form-group">
+                    <select class="form-control" id="myselect">
+                        <option value="1">Procuration</option>
+                        <option value="2">Visa Passeport</option>
+                    </select>
+                </div>
+                <div class="text-center mt-2">
+                    <button class="btn btn-primary mb-2" type="button" name="button" onclick="Geeks()">
+                        Submit
+                    </button>
+                </div>
+            </form>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.de.min.js"></script>
 
 
-    <div id="datepicker"></div>
-    <input type="hidden"  id="my_hidden_input">
 
-    <div id="pickyDate"></div>
-    <div>
+                    <div id="datepicker"></div>
+                    <input type="hidden" id="my_hidden_input">
+
+                    <div id="pickyDate"></div>
+                    <div>
+
+                    </div>
+
+                    <div id="getRendez-vous">
+                        <h1 id="showDate"></h1>
+                    </div>
+
+                    <div id="myDiv"></div>
+
+
+
+
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+
+
 
     </div>
-
-    <div id="getRendez-vous">
-    <h1 id="showDate"></h1>
-    </div>
-
-    <div id="myDiv"></div>
-
-
-    <form action="" method="Post" id="form">
-        <select id="myselect">
-            <option value="1">Procuration</option>
-            <option value="2">Mrs</option>
-            <option value="3">Ms</option>
-            <option value="4">Dr</option>
-            <option value="5">Prof</option>
-        </select>
-        <button type="button" name="button" onclick="Geeks()">
-            Submit
-        </button>
-    </form>
-
-
-
-
 
     <script>
 
         function Geeks() {
 
             $("#form").hide();
-           var valuesss = $( "#myselect option:selected" ).text();
+            var $monday;
+            var $wedensday;
+            var $thursday;
+            var $thuesday;
 
-                if (valuesss === "Procuration")
-                {
-                    $thursday = 2;
-                    $thuesday = 4;
+            var valuesss = $("#myselect option:selected").text();
 
-                }
-                else {
-                    $thursday = "";
-                    $thuesday = "";
-                    $monday =1;
-                    $wedensday=3;
+            if (valuesss === "Procuration") {
+                $thursday = 2;
+                $thuesday = 4;
 
-                }
+            } else {
+                $thursday = "";
+                $thuesday = "";
+                $monday = 1;
+                $wedensday = 3;
 
-                $("#getRendez-vous").hide();
+            }
 
-                $('#datepicker').datepicker({
-                    format: "yyyy-mm-dd",
-                    todayBtn: "linked",
-                    language: "fr",
-                    todayHighlight: true,
-                    daysOfWeekDisabled: [$thursday,$thuesday,$monday,$wedensday]
-                }).on('changeDate', getTodayDate);
+            $("#getRendez-vous").hide();
 
-                function getTodayDate(){
-                    var value = $('#datepicker').datepicker('getFormattedDate');
-                    $("#showDate").text(value);
-                    $("#getRendez-vous").show();
+            $('#datepicker').datepicker({
+                format: "yyyy-mm-dd",
+                language: "FR",
+                todayHighlight: true,
+                daysOfWeekDisabled: [$thursday, $thuesday, $monday, $wedensday, 5]
+            }).on('changeDate', getTodayDate);
 
-                    var myDiv = document.getElementById("myDiv");
-                    $(myDiv).html("");
-                    $.ajax({
-                        url: '/heure',
-                        type: "GET",
-                        dataType: "json",
-                        data : 'date='+ value,
-                        async: true,
-                        success: function (data) {
+            function getTodayDate() {
+                var value = $('#datepicker').datepicker('getFormattedDate');
+                $("#showDate").text(value);
+                $("#getRendez-vous").show();
 
+                var myDiv = document.getElementById("myDiv");
+                $(myDiv).html("");
+                $.ajax({
+                    url: '/heure',
+                    type: "GET",
+                    dataType: "json",
+                    data: 'date=' + value,
+                    async: true,
+                    success: function (data) {
 
 
-                            for (let i =0; i< data.length; i++) {
+                        for (let i = 0; i < data.length; i++) {
 
-                                var checkbox = document.createElement('input');
+                            var checkbox = document.createElement('input');
 
-                                checkbox.type = "checkbox";
-                                checkbox.name =  data[i]['heure'];
-                                checkbox.className ="heureCheckBox"
-                                checkbox.id = "id";
+                            checkbox.type = "checkbox";
+                            checkbox.name = data[i]['heure'];
+                            checkbox.className = "heureCheckBox"
+                            checkbox.id = "id";
 
-                                var label = document.createElement('label');
+                            var label = document.createElement('label');
 
-                                label.htmlFor = "id";
+                            label.htmlFor = "id";
 
-                                label.appendChild(document.createTextNode(data[i]['heure']));
+                            label.appendChild(document.createTextNode(data[i]['heure']));
 
-                                myDiv.appendChild(checkbox);
-                                myDiv.appendChild(label);
-
-                            }
-
+                            myDiv.appendChild(checkbox);
+                            myDiv.appendChild(label);
 
                         }
 
-                    });
+
+                    }
+
+                });
 
 
-
-
-
-
-
-
-
-                }
-
-
-
-
-
-
-
-
+            }
 
         }
-
-
-
 
 
     </script>
