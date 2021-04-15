@@ -63,12 +63,26 @@ class DefaultController extends AbstractController
         return $response;
 
     }
-
-    public function hellp()
+    /**
+     * @Route("/rdv" ,name="/rdv")
+     * @param Request $request
+     * @return Response
+     */
+    public function getinfo(Request  $request,  SerializerInterface $serializer)
     {
-        $yourController = $this->get('test');
+        $service = $request->get('service');
+        $date = $request->get('date');
+        $heure = $request->get('heure');
 
-        dump($yourController);
+        dump($service);
+        dump($date);
+        dump($heure);
+
+
+
+        $response = new Response($service);
+        $response->headers->set('Content-Type','application/json');
+        return $response;
 
 
     }

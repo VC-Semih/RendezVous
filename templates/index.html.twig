@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    {% include 'page/navbar.html.twig' %}
 
     <div class="container">
         <div class="row justify-content-center mt-5">
@@ -22,20 +23,27 @@
 
 
 
-
+                    <div id="datepicker-container">
+                        <div id="datepicker-center">
                     <div id="datepicker"></div>
+                        </div>
+                    </div>
+                    </div>
+
                     <input type="hidden" id="my_hidden_input">
 
-                    <div id="pickyDate"></div>
+                    <div id="pickyDate" class="text-center"></div>
                     <div>
 
                     </div>
 
                     <div id="getRendez-vous">
-                        <h1 id="showDate"></h1>
+                        <h1 id="showDate" class="text-center"></h1>
                     </div>
 
-                    <div id="myDiv"></div>
+                    <div id="myDiv" class="text-center custom-control custom-checkbox"></div>
+
+
 
 
 
@@ -50,86 +58,4 @@
 
 
     </div>
-
-    <script>
-
-        function Geeks() {
-
-            $("#form").hide();
-            var $monday;
-            var $wedensday;
-            var $thursday;
-            var $thuesday;
-
-            var valuesss = $("#myselect option:selected").text();
-
-            if (valuesss === "Procuration") {
-                $thursday = 2;
-                $thuesday = 4;
-
-            } else {
-                $thursday = "";
-                $thuesday = "";
-                $monday = 1;
-                $wedensday = 3;
-
-            }
-
-            $("#getRendez-vous").hide();
-
-            $('#datepicker').datepicker({
-                format: "yyyy-mm-dd",
-                language: "FR",
-                todayHighlight: true,
-                daysOfWeekDisabled: [$thursday, $thuesday, $monday, $wedensday, 5]
-            }).on('changeDate', getTodayDate);
-
-            function getTodayDate() {
-                var value = $('#datepicker').datepicker('getFormattedDate');
-                $("#showDate").text(value);
-                $("#getRendez-vous").show();
-
-                var myDiv = document.getElementById("myDiv");
-                $(myDiv).html("");
-                $.ajax({
-                    url: '/heure',
-                    type: "GET",
-                    dataType: "json",
-                    data: 'date=' + value,
-                    async: true,
-                    success: function (data) {
-
-
-                        for (let i = 0; i < data.length; i++) {
-
-                            var checkbox = document.createElement('input');
-
-                            checkbox.type = "checkbox";
-                            checkbox.name = data[i]['heure'];
-                            checkbox.className = "heureCheckBox"
-                            checkbox.id = "id";
-
-                            var label = document.createElement('label');
-
-                            label.htmlFor = "id";
-
-                            label.appendChild(document.createTextNode(data[i]['heure']));
-
-                            myDiv.appendChild(checkbox);
-                            myDiv.appendChild(label);
-
-                        }
-
-
-                    }
-
-                });
-
-
-            }
-
-        }
-
-
-    </script>
 {% endblock %}

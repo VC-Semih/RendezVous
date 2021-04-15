@@ -2,3 +2,10 @@ body
 {
     background: #60a3bc;
 }
+#datepicker-container{
+    text-align:center;
+}
+#datepicker-center{
+    display:inline-block;
+    margin:0 auto;
+}
