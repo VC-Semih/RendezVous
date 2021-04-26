@@ -3,33 +3,45 @@ function Geeks() {
 
 
     $("#form").hide();
-    var $monday;
-    var $wedensday;
-    var $thursday;
-    var $thuesday;
+    var $lundi;
+    var $mardi;
+    var $mercredi;
+    var $jeudi;
 
     var valuesss = $("#myselect option:selected").text();
 
+    console.log(valuesss);
 
-
-    if (valuesss === "Procuration") {
-        $thursday = 2;
-        $thuesday = 4;
-
-    } else {
-        $thursday = "";
-        $thuesday = "";
-        $monday = 1;
-        $wedensday = 3;
-
+    if(valuesss === "Procuration")
+    {
+        $lundi = 2;
+        $mercredi = 4;
+    }if(valuesss === "Passeport")
+    {
+       $mardi= 1;
+       $jeudi= 3;
+    }if (valuesss === "Certificat divers")
+    {
+        $lundi = 2;
+        $mercredi = 4;
+    }if(valuesss === "Heritage")
+    {
+        $lundi = 2;
+        $mercredi = 4;
+    }if(valuesss === "Visa")
+    {
+        $mardi= 1;
+        $mercredi = 4;
+        $jeudi=3;
     }
+
 
     $("#getRendez-vous").hide();
     $('#datepicker').datepicker({
         format: "yyyy-mm-dd",
         language: "fr",
         todayHighlight: true,
-        daysOfWeekDisabled: [$thursday, $thuesday, $monday, $wedensday, 5],
+        daysOfWeekDisabled: [0,$lundi,$mardi,$mercredi,$jeudi, 5,6],
         startDate: new Date()
 
     }).on('changeDate', getTodayDate);
