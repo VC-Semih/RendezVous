@@ -31,8 +31,6 @@ function Geeks() {
     }if(valuesss === "Visa")
     {
         $mardi= 1;
-        $mercredi = 4;
-        $jeudi=3;
     }
 
 
@@ -45,7 +43,7 @@ function Geeks() {
         startDate: new Date()
 
     }).on('changeDate', getTodayDate);
-
+    console.log([0,$lundi,$mardi,$mercredi,$jeudi, 5,6]);
     function getTodayDate() {
         var value = $('#datepicker').datepicker('getFormattedDate');
 
