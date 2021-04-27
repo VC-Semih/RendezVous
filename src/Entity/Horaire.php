@@ -38,4 +38,5 @@ class Horaire
 
         return $this;
     }
+
 }

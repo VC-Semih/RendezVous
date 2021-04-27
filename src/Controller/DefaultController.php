@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Horaire;
 use App\Entity\RendezVous;
 use App\Repository\HoraireRepository;
+use App\Repository\RendezVousRepository;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class DefaultController extends AbstractController
@@ -68,15 +70,40 @@ class DefaultController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function getinfo(Request  $request,  SerializerInterface $serializer)
+    public function getinfo(Request  $request,  SerializerInterface $serializer, UserInterface $user,HoraireRepository $horaireRepository)
     {
+        $entityManager = $this->getDoctrine()->getManager();
         $service = $request->get('service');
         $date = $request->get('date');
         $heure = $request->get('heure');
 
-        dump($service);
-        dump($date);
-        dump($heure);
+       $heures = $horaireRepository->getheureId($heure);
+
+        $changeHeureTostring = implode("','",$heures[0]);
+
+
+
+
+        if(!empty($service) or !empty($date) or !empty($heure))
+        {
+            $rdv = new RendezVous();
+            $rdv->setDate(\DateTime::createFromFormat('Y-m-d', $date));
+            $rdv->setUser($this->getUser());
+
+            $rdv->setHoraire($changeHeureTostring);
+
+
+
+
+            $entityManager->persist($rdv);
+
+            // actually executes the queries (i.e. the INSERT query)
+            $entityManager->flush();
+
+
+
+        }
+
 
 
 

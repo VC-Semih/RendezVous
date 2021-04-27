@@ -1,6 +1,10 @@
+$( document ).ready(function() {
+    $("#chosed-date").hide();
+    $("#verify").hide();
+
+});
+
 function Geeks() {
-
-
 
     $("#form").hide();
     var $lundi;
@@ -10,7 +14,6 @@ function Geeks() {
 
     var valuesss = $("#myselect option:selected").text();
 
-    console.log(valuesss);
 
     if(valuesss === "Procuration")
     {
@@ -35,6 +38,7 @@ function Geeks() {
 
 
     $("#getRendez-vous").hide();
+    $("#chosed-date").show();
     $('#datepicker').datepicker({
         format: "yyyy-mm-dd",
         language: "fr",
@@ -49,6 +53,8 @@ function Geeks() {
 
         $("#showDate").text(value);
         $("#getRendez-vous").show();
+
+        $("#title-date").show();
 
         var myDiv = document.getElementById("myDiv");
         $(myDiv).html("");
@@ -100,11 +106,18 @@ function Geeks() {
 
 }
 
-
-function send(valuesss){
+function send(valuesss) {
     var heure = $('input:radio[name="skills"]:checked').val();
     console.log(heure);
+    $("#verify").show();
+    $("#service-rendezvous").text(valuesss);
+    $("#date-rendezvous").text($('#datepicker').datepicker('getFormattedDate'));
+    $("#heure-rendezvous").text(heure);
 
+}
+function rdv()
+{
+    var valuesss = $("#myselect option:selected").text();
     $.ajax({
         url: '/rdv',
         type: "POST",
@@ -112,14 +125,14 @@ function send(valuesss){
         dataType: "json",
         data: {
             service: valuesss,
-            date:  $('#datepicker').datepicker('getFormattedDate'),
+            date: $('#datepicker').datepicker('getFormattedDate'),
             heure: $('input:radio[name="skills"]:checked').val(),
 
         },
         async: true,
         success: function (data) {
 
-            console.log($('input:radio[name="skills"]:checked').val())
+
 
         }
     });

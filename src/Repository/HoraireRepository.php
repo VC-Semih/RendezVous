@@ -34,7 +34,28 @@ class HoraireRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
     */
+
+    public function getheureId($heure)
+    {
+
+        $rawSQL ="SELECT id FROM horaire WHERE horaire.heure='$heure'";
+        $stmt = false;
+        try {
+            $stmt = $this->getEntityManager()->getConnection()->prepare($rawSQL);
+        } catch (Exception $e) {
+            return 'ERROR WHILE PREPARING REQUEST';
+        }
+        try {
+            $stmt->execute();
+        } catch (\Doctrine\DBAL\Driver\Exception $e) {
+            return 'ERROR WHILE EXECUTING REQUEST';
+        }
+
+        return $stmt->fetchAll();
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Horaire
