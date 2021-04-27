@@ -45,25 +45,39 @@ class DefaultController extends AbstractController
 
         $listeRdv= $em->getRepository(RendezVous::class)->findByDate($date);
 
-        $freeHoraire= [];
 
+        $idToRemove = [];
+        $idToKeep = [];
+        foreach ($horaires as $horaire) {
+            array_push($idToKeep, $horaire->getId());
+        }
         if ($listeRdv !== null && !empty($listeRdv)){
-
         foreach ($listeRdv as $rdv) {
             foreach ($horaires as $horaire) {
-                if ($horaire->getId() !== $rdv->getHoraire()->getId()) {
-                    $freeHoraire[] = $horaire;
+                if ($horaire->getId() === $rdv->getHoraire()->getId()) {
+                    array_push($idToRemove,$horaire->getId());
                 }
             }
-        }}else{
-                $freeHoraire=$horaires;
-        }
+        }}
+        $idToKeep = array_diff($idToKeep, $idToRemove);
+        $freeHoraire = $em->getRepository(Horaire::class)->findBy(array('id' => $idToKeep));
+
+        dump($freeHoraire);
         $data = $serializer->serialize($freeHoraire,'json');
 
         $response = new Response($data);
         $response->headers->set('Content-Type','application/json');
         return $response;
 
+    }
+
+    function removeElementWithValue($array, $key, $value){
+        foreach($array as $subKey => $subArray){
+            if($subArray[$key] == $value){
+                unset($array[$subKey]);
+            }
+        }
+        return $array;
     }
     /**
      * @Route("/rdv" ,name="/rdv")

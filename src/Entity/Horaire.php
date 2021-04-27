@@ -22,6 +22,11 @@ class Horaire
      */
     private $heure;
 
+    public function __toString()
+    {
+        return "ID: " . $this->getId() . " Hours:" . $this->getHeure();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -38,5 +43,6 @@ class Horaire
 
         return $this;
     }
+
 
 }
