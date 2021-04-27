@@ -70,27 +70,23 @@ class DefaultController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function getinfo(Request  $request,  SerializerInterface $serializer, UserInterface $user,HoraireRepository $horaireRepository)
+    public function getinfo(Request  $request,  SerializerInterface $serializer, UserInterface $user,HoraireRepository $horaireRepository): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $service = $request->get('service');
         $date = $request->get('date');
         $heure = $request->get('heure');
 
-       $heures = $horaireRepository->getheureId($heure);
-
-        $changeHeureTostring = implode("','",$heures[0]);
+        $heureObject = $horaireRepository->findOneBy(array('heure' => $heure)); //Gets the heureObject by value
 
 
-
-
-        if(!empty($service) or !empty($date) or !empty($heure))
+        if(!empty($service) or !empty($date) or !empty($heureObject))
         {
             $rdv = new RendezVous();
             $rdv->setDate(\DateTime::createFromFormat('Y-m-d', $date));
             $rdv->setUser($this->getUser());
 
-            $rdv->setHoraire($changeHeureTostring);
+            $rdv->setHoraire($heureObject);
 
 
 
