@@ -131,9 +131,7 @@ function rdv()
         },
         async: true,
         success: function (data) {
-
             window.document.location = Routing.generate('your_test_route_name');
-
         }
     });
 }

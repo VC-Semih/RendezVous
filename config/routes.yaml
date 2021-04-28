@@ -2,5 +2,10 @@ index:
     path: /
     controller: App\Controller\DefaultController::index
 mesrdv:
-    path: /mes_rendez_vous
+    path: /rendez_vous
     controller: App\Controller\DefaultController::mesrdv
+
+rdv_admin_mailer:
+    path: /admin/rdv/mailer/{id}
+    controller: App\Controller\RendezVousController::admin_mailer
+    methods:    GET

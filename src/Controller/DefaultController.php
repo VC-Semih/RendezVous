@@ -135,4 +135,11 @@ class DefaultController extends AbstractController
 
 
     }
+    public function mesrdv(RendezVousRepository $rendezVousRepository)
+    {
+        $user_id = $this->getUser()->getId();
+        return $this->render("page/mesRdv.html.twig",array(
+            'rdvs' => $rendezVousRepository->mesrdv($user_id)
+        ));
+    }
 }
