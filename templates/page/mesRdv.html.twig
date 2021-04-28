@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'page/navbar.html.twig' %}
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-5">
+                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                    <div class="card-body">
+
+                        <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th scope="col">Service</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Heure</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for rdv in rdvs %}
+                                <tr>
+                                    <td>{{ rdv.service }}</td>
+                                    <td>{{ rdv.date|date("d/m/Y") }}</td>
+                                    <td>{{ rdv.heure }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

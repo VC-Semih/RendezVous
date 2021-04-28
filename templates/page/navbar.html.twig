@@ -2,7 +2,14 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
         <li class="nav-item dropdown d-flex">
+            {% if app.request.attributes.get('_route') != 'index' %}
+                <a class="nav-link" href="{{ path('index') }}">
+                    <div class="nav-link-icon"><i class="fas fa-home"></i></div>
+                    {% trans %}Rendez-vous{% endtrans %}
+                </a>
+            {% endif %}
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ app.user.username }}
             </a>
