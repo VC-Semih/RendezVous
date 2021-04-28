@@ -139,6 +139,9 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "swiftmailer/swiftmailer": {
+        "version": "v6.2.7"
+    },
     "symfony/asset": {
         "version": "v4.4.20"
     },
@@ -424,6 +427,20 @@
     "symfony/stopwatch": {
         "version": "v4.4.20"
     },
+    "symfony/swiftmailer-bundle": {
+        "version": "2.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.5",
+            "ref": "ae4d22af30bbd484506bc1817c5a3ef72c855b93"
+        },
+        "files": [
+            "config/packages/dev/swiftmailer.yaml",
+            "config/packages/swiftmailer.yaml",
+            "config/packages/test/swiftmailer.yaml"
+        ]
+    },
     "symfony/test-pack": {
         "version": "v1.0.7"
     },
@@ -501,6 +518,9 @@
     },
     "symfony/yaml": {
         "version": "v4.4.21"
+    },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.4.0"
     },
     "twig/extra-bundle": {
         "version": "v3.3.0"

@@ -33,6 +33,11 @@ class RendezVous
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $service;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,6 +83,18 @@ class RendezVous
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getService(): ?string
+    {
+        return $this->service;
+    }
+
+    public function setService(string $service): self
+    {
+        $this->service = $service;
 
         return $this;
     }
