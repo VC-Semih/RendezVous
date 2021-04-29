@@ -136,3 +136,25 @@ function rdv()
     });
 }
 
+function rdvAdminAdd(){
+    var valuesss = $("#myselect option:selected").text();
+    let user; ///TODO: User getter
+    $.ajax({
+        url: '/rdv',
+        type: "POST",
+        cache: false,
+        dataType: "json",
+        data: {
+            service: valuesss,
+            user: user,
+            date: $('#datepicker').datepicker('getFormattedDate'),
+            heure: $('input:radio[name="skills"]:checked').val(),
+
+        },
+        async: true,
+        success: function (data) {
+            window.document.location = Routing.generate('your_test_route_name');
+        }
+    });
+}
+

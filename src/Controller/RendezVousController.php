@@ -3,13 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\RendezVous;
+use App\Entity\User;
+use App\Form\RegistrationFormType;
 use App\Form\RendezVousType;
 use App\Repository\RendezVousRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use App\Security\Authenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 /**
  * @Route("/admin/rdv")
@@ -24,6 +30,43 @@ class RendezVousController extends AbstractController
 
         return $this->render('rendez_vous/index.html.twig', [
             'rendez_vouses' => $rendezVousRepository->toutRdv()
+        ]);
+    }
+
+    /**
+     * @Route("/addUser", name="rendez_vous_useradd", methods={"GET", "POST"})
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param GuardAuthenticatorHandler $guardHandler
+     * @param Authenticator $authenticator
+     * @return Response
+     */
+    public function addUserForRdv(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, Authenticator $authenticator): Response
+    {
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $user->setIsVerified(true);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('rendez_vous_new');
+
+        }
+
+        return $this->render('admin/adduser.html.twig', [
+            'registrationForm' => $form->createView(),
         ]);
     }
 
@@ -68,7 +111,9 @@ class RendezVousController extends AbstractController
         $form = $this->createForm(RendezVousType::class, $rendezVous);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($rendezVous);
             $entityManager->flush();
