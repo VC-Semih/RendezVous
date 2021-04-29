@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\RendezVous;
 use App\Form\RendezVousType;
 use App\Repository\RendezVousRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class RendezVousController extends AbstractController
 {
     /**
-     * @Route("/", name="rendez_vous_index", methods={"GET"})
+     * @Route("/", name="rendez_vous_index", methods={"GET","POST"})
      */
     public function index(RendezVousRepository $rendezVousRepository): Response
     {

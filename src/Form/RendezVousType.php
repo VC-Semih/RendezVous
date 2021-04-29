@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\RendezVous;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,7 +14,16 @@ class RendezVousType extends AbstractType
     {
         $builder
             ->add('date')
-            ->add('service')
+            ->add('service',ChoiceType::class, [
+                'choices' => [
+                    'Services' => [
+                        'Procuration' => 'Procuration',
+                        'Visa' => 'Visa',
+                        'Passeport' => 'Passeport',
+                        'Heritage' => 'Heritage',
+                        'Certificat divers' => 'Certificat divers',
+                    ],
+                ],])
             ->add('horaire')
             ->add('user')
         ;
