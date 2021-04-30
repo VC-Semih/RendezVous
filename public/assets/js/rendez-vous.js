@@ -131,7 +131,7 @@ function rdv()
         },
         async: true,
         success: function (data) {
-            window.document.location = Routing.generate('your_test_route_name');
+
         }
     });
 }
@@ -148,7 +148,7 @@ function rdvAdminAdd(){
             service: valuesss,
             user: user,
             date: $('#datepicker').datepicker('getFormattedDate'),
-            heure: $('input:radio[name="skills"]:checked').val(),
+            heure: $('input:radio[name="userchosed"]:checked').val(),
 
         },
         async: true,
@@ -158,3 +158,21 @@ function rdvAdminAdd(){
     });
 }
 
+function myFunction() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}

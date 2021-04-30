@@ -25,7 +25,7 @@ class RendezVousType extends AbstractType
                     ],
                 ],])
             ->add('horaire')
-            ->add('user')
+            ->add('user',RegistrationFormType::class)
         ;
     }
 

@@ -9,3 +9,4 @@ rdv_admin_mailer:
     path: /admin/rdv/mailer/{id}
     controller: App\Controller\RendezVousController::admin_mailer
     methods:    GET
+

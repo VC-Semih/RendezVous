@@ -6,7 +6,9 @@ use App\Entity\RendezVous;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\RendezVousType;
+use App\Repository\HoraireRepository;
 use App\Repository\RendezVousRepository;
+use App\Repository\UserRepository;
 use App\Security\Authenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +17,9 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Message;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/admin/rdv")
@@ -103,6 +107,56 @@ class RendezVousController extends AbstractController
     }
 
     /**
+     * @Route("/admin/addRdv" ,name="/adminAddRdv")
+     * @param Request $request
+     * @return Response
+     */
+    public function rdvadminPage(Request $request,UserRepository $repository)
+    {
+        return $this->render("admin/addrdv.html.twig",array(
+            'users' => $repository->findAll()
+        ));
+    }
+
+
+    /**
+     * @Route("/rdvadmin" ,name="/rdvadmin")
+     * @param Request $request
+     * @return Response
+     */
+    public function adminrdv(Request  $request,  SerializerInterface $serializer, UserInterface $user,HoraireRepository $horaireRepository,\Swift_Mailer $mailer): Response
+    {
+
+//        $service = $request->get('service');
+//        $date = $request->get('date');
+//        $heure = $request->get('heure');
+
+//        $heureObject = $horaireRepository->findOneBy(array('heure' => $heure)); //Gets the heureObject by value
+
+
+
+
+
+        $response = new Response("hello");
+        $response->headers->set('Content-Type','application/json');
+        return $response;
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
      * @Route("/new", name="rendez_vous_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -170,4 +224,5 @@ class RendezVousController extends AbstractController
 
         return $this->redirectToRoute('rendez_vous_index');
     }
+
 }
