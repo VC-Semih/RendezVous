@@ -54,5 +54,6 @@
     <orderEntry type="library" name="jquery-3.5.1" level="application" />
     <orderEntry type="library" name="twitter-bootstrap" level="application" />
     <orderEntry type="library" name="bootstrap-datepicker" level="application" />
+    <orderEntry type="library" name="769ae79050" level="application" />
   </component>
 </module>

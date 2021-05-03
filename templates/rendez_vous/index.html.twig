@@ -17,7 +17,7 @@
                                     <thead>
                                     <tr>
                                         <th scope="col">Email</th>
-                                        <th scope="col">Nom d'utilisateur</th>
+                                        <th scope="col">Nom</th>
                                         <th scope="col">Service</th>
                                         <th scope="col">Date</th>
                                         <th scope="col">Heure</th>
@@ -34,13 +34,30 @@
                                             <td>{{ rendez_vous.date|date("d/m/Y") }}</td>
                                             <td>{{ rendez_vous.heure }}</td>
                                             <td>
-                                                <a href="{{ path('delete_rdv', {'id': rendez_vous.rdv_id}) }}">delete</a>
-{#                                                <a href="{{ path('', {'id': rendez_vous.id}) }}">edit</a>#}
+                                                <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="far fa-trash-alt"></i></a>
                                             </td>
                                             <td>
-                                                <a href="{{ path('rdv_admin_mailer', {'id': rendez_vous.rdv_id}) }}">Mail rappel</a>
+                                                <a class="nav-link" href="{{ path('rdv_admin_mailer', {'id': rendez_vous.rdv_id}) }}"><i class="fas fa-paper-plane"></i></a>
                                             </td>
                                         </tr>
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Information du Rendez-vous</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        êtes vous sur de vouloir supprimer ?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Non</button>
+                                                        <a class="btn btn-sm btn-primary" href="{{ path('delete_rdv', {'id': rendez_vous.rdv_id}) }}">Oui</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     {% else %}
                                         <tr>
                                             <td colspan="4">no records found</td>
