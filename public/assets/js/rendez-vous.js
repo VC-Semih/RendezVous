@@ -1,7 +1,6 @@
 $( document ).ready(function() {
     $("#chosed-date").hide();
     $("#verify").hide();
-
 });
 
 function Geeks() {
@@ -47,7 +46,7 @@ function Geeks() {
         startDate: new Date()
 
     }).on('changeDate', getTodayDate);
-    console.log([0,$lundi,$mardi,$mercredi,$jeudi, 5,6]);
+
     function getTodayDate() {
         var value = $('#datepicker').datepicker('getFormattedDate');
 
@@ -108,7 +107,6 @@ function Geeks() {
 
 function send(valuesss) {
     var heure = $('input:radio[name="skills"]:checked').val();
-    console.log(heure);
     $("#verify").show();
     $("#service-rendezvous").text(valuesss);
     $("#date-rendezvous").text($('#datepicker').datepicker('getFormattedDate'));
@@ -117,6 +115,7 @@ function send(valuesss) {
 }
 function rdv()
 {
+    var homepage = $('#homepage').val();
     var valuesss = $("#myselect option:selected").text();
     $.ajax({
         url: '/rdv',
@@ -127,36 +126,46 @@ function rdv()
             service: valuesss,
             date: $('#datepicker').datepicker('getFormattedDate'),
             heure: $('input:radio[name="skills"]:checked').val(),
-
         },
         async: true,
         success: function (data) {
-
+          console.log(data);
+          console.log(homepage);
         }
     });
 }
 
-function rdvAdminAdd(){
-    var valuesss = $("#myselect option:selected").text();
-    let user; ///TODO: User getter
+function getuser(){
+
+    var urlrdv = $('#urlrendezvous').val();
+    var urlredirect = $('#urlredirect').val();
+
+    console.log(urlredirect);
+    var user = $('input:radio[name="userchosed"]:checked').val();
+    var service = $("#myselect option:selected").text();
+    var date = $('#datepicker').datepicker('getFormattedDate');
+    var heure =$('input:radio[name="skills"]:checked').val();
+
     $.ajax({
-        url: '/rdv',
-        type: "POST",
+        url: urlrdv,
+        type: 'POST',
         cache: false,
-        dataType: "json",
+        dataType: 'json',
         data: {
-            service: valuesss,
-            user: user,
-            date: $('#datepicker').datepicker('getFormattedDate'),
-            heure: $('input:radio[name="userchosed"]:checked').val(),
-
+            getUser: user,
+            getService: service,
+            getDate: date,
+            getHeure:heure,
         },
         async: true,
         success: function (data) {
-            window.document.location = Routing.generate('your_test_route_name');
+            if(data != null && data != '') {
+                location.href = urlredirect;
+            }
         }
     });
 }
+
 
 function myFunction() {
     var input, filter, table, tr, td, i, txtValue;

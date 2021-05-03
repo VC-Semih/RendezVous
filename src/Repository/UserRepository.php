@@ -35,6 +35,24 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->persist($user);
         $this->_em->flush();
     }
+    public function userInfo($user_id)
+    {
+
+        $rawSQL ="SELECT USER.email,user.username FROM user WHERE user.id = '$user_id'";
+        $stmt = false;
+        try {
+            $stmt = $this->getEntityManager()->getConnection()->prepare($rawSQL);
+        } catch (Exception $e) {
+            return 'ERROR WHILE PREPARING REQUEST';
+        }
+        try {
+            $stmt->execute();
+        } catch (\Doctrine\DBAL\Driver\Exception $e) {
+            return 'ERROR WHILE EXECUTING REQUEST';
+        }
+
+        return $stmt->fetchAll();
+    }
 
     // /**
     //  * @return User[] Returns an array of User objects

@@ -34,8 +34,8 @@
                                             <td>{{ rendez_vous.date|date("d/m/Y") }}</td>
                                             <td>{{ rendez_vous.heure }}</td>
                                             <td>
-                                                <a href="{{ path('rendez_vous_show', {'id': rendez_vous.id}) }}">show</a>
-                                                <a href="{{ path('rendez_vous_edit', {'id': rendez_vous.id}) }}">edit</a>
+                                                <a href="{{ path('delete_rdv', {'id': rendez_vous.rdv_id}) }}">delete</a>
+{#                                                <a href="{{ path('', {'id': rendez_vous.id}) }}">edit</a>#}
                                             </td>
                                             <td>
                                                 <a href="{{ path('rdv_admin_mailer', {'id': rendez_vous.rdv_id}) }}">Mail rappel</a>
@@ -59,7 +59,7 @@
                     <div class="col-auto">
                         <div class="card shadow-lg border-0 rounded-lg">
                             <div class="card-body">
-                                <a href="{{ path('rendez_vous_new') }}">Create new</a>
+                                <a href="{{ path('adminAddRdv') }}">Create new</a>
                             </div>
                         </div>
                     </div>

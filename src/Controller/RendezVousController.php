@@ -5,19 +5,16 @@ namespace App\Controller;
 use App\Entity\RendezVous;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
-use App\Form\RendezVousType;
 use App\Repository\HoraireRepository;
 use App\Repository\RendezVousRepository;
 use App\Repository\UserRepository;
 use App\Security\Authenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Message;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -31,7 +28,6 @@ class RendezVousController extends AbstractController
      */
     public function index(RendezVousRepository $rendezVousRepository): Response
     {
-
         return $this->render('rendez_vous/index.html.twig', [
             'rendez_vouses' => $rendezVousRepository->toutRdv()
         ]);
@@ -107,7 +103,7 @@ class RendezVousController extends AbstractController
     }
 
     /**
-     * @Route("/admin/addRdv" ,name="/adminAddRdv")
+     * @Route("/addRdv" , name="adminAddRdv",methods={"GET", "POST"})
      * @param Request $request
      * @return Response
      */
@@ -120,109 +116,96 @@ class RendezVousController extends AbstractController
 
 
     /**
-     * @Route("/rdvadmin" ,name="/rdvadmin")
+     * @Route("/rdvadmin" ,name="rdvadmin",methods={"GET", "POST"})
      * @param Request $request
      * @return Response
      */
-    public function adminrdv(Request  $request,  SerializerInterface $serializer, UserInterface $user,HoraireRepository $horaireRepository,\Swift_Mailer $mailer): Response
+    public function adminrdv(Request  $request,  SerializerInterface $serializer,HoraireRepository $horaireRepository,UserRepository $userRepository,\Swift_Mailer $mailer): Response
     {
-
-//        $service = $request->get('service');
-//        $date = $request->get('date');
-//        $heure = $request->get('heure');
-
-//        $heureObject = $horaireRepository->findOneBy(array('heure' => $heure)); //Gets the heureObject by value
+        $userid =$request->get('getUser');
+        $service = $request->get('getService');
+        $date = $request->get('getDate');
+        $heure = $request->get('getHeure');
 
 
+        $data = ["userid" => $userid ];
+        $heureObject = $horaireRepository->findOneBy(array('heure' => $heure));
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em -> getRepository('App:User')->find($userid);
+
+        $userinfo = $userRepository->userInfo($userid);
+
+        $username = $userinfo[0]['username'];
+        $userEmail = $userinfo[0]['email'];
 
 
+        if(!empty($service) or !empty($date) or !empty($heureObject))
+        {
+            $rdv = new RendezVous();
+            $rdv->setDate(\DateTime::createFromFormat('Y-m-d', $date));
+            $rdv->setUser($user);
+            $rdv->setService($service);
+            $rdv->setHoraire($heureObject);
 
-        $response = new Response("hello");
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($rdv);
+            $entityManager->flush();
+
+            $message = (new \Swift_Message('Serivce Rendez-vous '))
+                ->setFrom('rendez-vous@amb-afg.fr')
+                ->setTo($userEmail)
+                ->setBody(
+                    $this->renderView(
+                        'rendez_vous/mail.html.twig',
+                        [
+                            'username'=> $username ,
+                            'service' => $service,
+                            'date'=> $date,
+                            '$heure'=> $heure
+                        ]
+                    ),
+                    'text/html'
+                );
+
+            $mailer->send($message);
+
+        }
+
+        $response = new JsonResponse($data);
+
         $response->headers->set('Content-Type','application/json');
         return $response;
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
-     * @Route("/new", name="rendez_vous_new", methods={"GET","POST"})
+     * @Route("/delete/{id}",name="delete_rdv")
      */
-    public function new(Request $request): Response
+    public function delete_rdv(Request $request,RendezVousRepository $repository):Response
     {
-        $rendezVous = new RendezVous();
-        $form = $this->createForm(RendezVousType::class, $rendezVous);
-        $form->handleRequest($request);
+        $id = $request->get('id');
 
+        $em = $this->getDoctrine()->getManager();
+        $rdv = $em -> getRepository('App:RendezVous')->find($id);
+        $em -> remove($rdv);
+        $em -> flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($rendezVous);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('rendez_vous_index');
-        }
-
-        return $this->render('rendez_vous/new.html.twig', [
-            'rendez_vou' => $rendezVous,
-            'form' => $form->createView(),
-        ]);
+        return $this->redirectToRoute("rendez_vous_index");
     }
 
-    /**
-     * @Route("/{id}", name="rendez_vous_show", methods={"GET"})
-     */
-    public function show(RendezVous $rendezVous): Response
-    {
-        return $this->render('rendez_vous/show.html.twig', [
-            'rendez_vou' => $rendezVous,
-        ]);
-    }
 
-    /**
-     * @Route("/{id}/edit", name="rendez_vous_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, RendezVous $rendezVous): Response
-    {
-        $form = $this->createForm(RendezVousType::class, $rendezVous);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('rendez_vous_index');
-        }
 
-        return $this->render('rendez_vous/edit.html.twig', [
-            'rendez_vou' => $rendezVous,
-            'form' => $form->createView(),
-        ]);
-    }
 
-    /**
-     * @Route("/{id}", name="rendez_vous_delete", methods={"POST"})
-     */
-    public function delete(Request $request, RendezVous $rendezVous): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$rendezVous->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($rendezVous);
-            $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('rendez_vous_index');
-    }
+
+
+
+
+
+
+
+
+
 
 }
