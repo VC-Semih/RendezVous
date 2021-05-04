@@ -30,6 +30,15 @@ class DefaultController extends AbstractController
 
         return $this->render('index.html.twig');
     }
+    /**
+     * @Route("/adduserRdv" ,name="adduserRdv")
+     * @param Request $request
+     * @return Response
+     */
+    public function addrdvuser()
+    {
+        return $this->render('page/rendez_vous.html.twig');
+    }
 
     /**
      * @Route("/heure" ,name="/heure")
@@ -72,14 +81,6 @@ class DefaultController extends AbstractController
 
     }
 
-    function removeElementWithValue($array, $key, $value){
-        foreach($array as $subKey => $subArray){
-            if($subArray[$key] == $value){
-                unset($array[$subKey]);
-            }
-        }
-        return $array;
-    }
     /**
      * @Route("/rdv" ,name="/rdv")
      * @param Request $request
@@ -91,7 +92,7 @@ class DefaultController extends AbstractController
         $service = $request->get('service');
         $date = $request->get('date');
         $heure = $request->get('heure');
-
+        $data = ["service" => $service ];
         $heureObject = $horaireRepository->findOneBy(array('heure' => $heure)); //Gets the heureObject by value
 
 
@@ -129,10 +130,20 @@ class DefaultController extends AbstractController
         }
 
 
-        $response = new Response($service);
+        $response = new JsonResponse($data);
+
         $response->headers->set('Content-Type','application/json');
         return $response;
 
 
     }
+    public function mesrdv(RendezVousRepository $rendezVousRepository)
+    {
+        $user_id = $this->getUser()->getId();
+        return $this->render("page/mesRdv.html.twig",array(
+            'rdvs' => $rendezVousRepository->mesrdv($user_id)
+        ));
+    }
+
+
 }

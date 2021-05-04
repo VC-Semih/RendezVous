@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RendezVous index{% endblock %}
+
+{% block body %}
+    {% include 'page/navbar.html.twig' %}
+
+    <div class="container-fluid">
+
+                <div class="row justify-content-center mt-5 mb-5">
+
+                        <div class="card shadow-lg border-0 rounded-lg mt-2">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col">
+                                        List de rendez-vous
+                                    </div>
+                                    <div class="col text-right">
+                                        <a href="{{ path('adminAddRdv') }}" class="nav-link"><i class="far fa-plus-square"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="datatable">
+                                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr>
+                                            <th>Email</th>
+                                            <th>Nom</th>
+                                            <th>Service</th>
+                                            <th>Date</th>
+                                            <th>Heure</th>
+                                            <th>Actions</th>
+                                            <th>Mail</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for rendez_vous in rendez_vouses %}
+                                            <tr>
+                                                <td>{{ rendez_vous.email }}</td>
+                                                <td>{{ rendez_vous.username }}</td>
+                                                <td>{{ rendez_vous.service }}</td>
+                                                <td>{{ rendez_vous.date|date("d/m/Y") }}</td>
+                                                <td>{{ rendez_vous.heure }}</td>
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col-auto">
+                                                            <a href="{{ path('rdv_show', {'id': rendez_vous.rdv_id}) }}" class="nav-link"><i class="fas fa-calendar-day"></i></a>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <a href="{{ path('edit_rdv', {'id': rendez_vous.rdv_id}) }}" class="nav-link"><i class="fas fa-edit"></i></a>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="far fa-trash-alt"></i></a>
+                                                        </div>
+
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a class="nav-link" href="{{ path('rdv_admin_mailer', {'id': rendez_vous.rdv_id}) }}"><i class="fas fa-paper-plane"></i></a>
+                                                </td>
+                                            </tr>
+                                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Information du Rendez-vous</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            êtes vous sur de vouloir supprimer ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Non</button>
+                                                            <a class="btn btn-sm btn-primary" href="{{ path('delete_rdv', {'id': rendez_vous.rdv_id}) }}">Oui</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <tr>
+                                                <td colspan="4">no records found</td>
+                                            </tr>
+                                        {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+
+    </div>
+
+{% endblock %}
