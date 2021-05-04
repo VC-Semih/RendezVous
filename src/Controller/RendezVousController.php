@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\RendezVous;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Form\RendezVousType;
 use App\Repository\HoraireRepository;
 use App\Repository\RendezVousRepository;
 use App\Repository\UserRepository;
@@ -183,13 +184,93 @@ class RendezVousController extends AbstractController
     public function delete_rdv(Request $request,RendezVousRepository $repository):Response
     {
         $id = $request->get('id');
-
         $em = $this->getDoctrine()->getManager();
         $rdv = $em -> getRepository('App:RendezVous')->find($id);
         $em -> remove($rdv);
         $em -> flush();
 
         return $this->redirectToRoute("rendez_vous_index");
+    }
+    /**
+     * @Route("/detail_rdv/{id}", name="rdv_show")
+     */
+    public function show(int $id, RendezVousRepository $rendezVousRepository): Response
+    {
+        $rdv = $rendezVousRepository->find($id);
+
+        return $this->render("rendez_vous/detailrdv.html.twig",array(
+           "rendezvous" => $rdv
+        ));
+    }
+    /**
+     * @Route("/edit/{id}",name="edit_rdv",requirements={"id" = "\d+"})
+     */
+    public function edit_rdv(int $id,Request $request,RendezVous $rendezVous,RendezVousRepository $rendezVousRepository):Response
+    {
+
+        $rdv = $rendezVousRepository->find($id);
+
+        return $this->render('rendez_vous/edit.html.twig', array(
+            "rendez_vous" => $rdv,
+        ));
+    }
+    /**
+     * @Route("/modifrdvadmin" ,name="modifrdvadmin",methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function modification_rdv(Request $request,HoraireRepository $horaireRepository,\Swift_Mailer $mailer)
+    {
+        $userid =$request->get('getUser');
+        $service = $request->get('getService');
+        $date = $request->get('getDate');
+        $heure = $request->get('getHeure');
+        $idRdv = $request->get('getRdvId');
+
+        $data = ["userid" => $userid ];
+        $heureObject = $horaireRepository->findOneBy(array('heure' => $heure));
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $user = $entityManager -> getRepository('App:User')->find($userid);
+
+        $rdv = $entityManager->getRepository(RendezVous::class)->find($idRdv);
+        if(!empty($service) or !empty($date) or !empty($heureObject)) {
+            if (!$rdv) {
+                throw $this->createNotFoundException(
+                    'No product found for id ' . $idRdv
+                );
+            }
+
+            $rdv->setUser($user);
+            $rdv->setService($service);
+            $rdv->setHoraire($heureObject);
+            $rdv->setDate(\DateTime::createFromFormat('Y-m-d', $date));
+            $entityManager->flush();
+
+            $message = (new \Swift_Message('Serivce Rendez-vous '))
+                ->setFrom('rendez-vous@amb-afg.fr')
+                ->setTo($rdv->getUser()->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'page/modification_mail.html.twig',
+                        [
+                            'username' => $rdv->getUser()->getUsername(),
+                            'service' => $service,
+                            'date' => $date,
+                            'heure' => $heure
+                        ]
+                    ),
+                    'text/html'
+                );
+
+            $mailer->send($message);
+        }
+
+        $response = new JsonResponse($data);
+
+        $response->headers->set('Content-Type','application/json');
+        return $response;
     }
 
 

@@ -3,11 +3,90 @@
 {% block title %}Edit RendezVous{% endblock %}
 
 {% block body %}
-    <h1>Edit RendezVous</h1>
 
-    {{ include('rendez_vous/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-5">
+                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                    <div class="card-body">
+                        <form action="" method="Post" id="form" class="form p-4">
+                            <div class="form-group">
+                                <label for="" class="form-label">Choisissez la service</label>
+                                <select class="form-control" id="myselect">
+                                    <option value="1" {% if rendez_vous.service == 'Procuration' %} selected="selected" {% endif %}>Procuration</option>
+                                    <option value="2" {% if rendez_vous.service == 'Visa' %} selected="selected" {% endif %} >Visa</option>
+                                    <option value="3" {% if rendez_vous.service == 'Passeport' %} selected="selected" {% endif %}>Passeport</option>
+                                    <option value="4" {% if rendez_vous.service == 'Heritage' %} selected="selected" {% endif %}>Heritage</option>
+                                    <option value="5" {% if rendez_vous.service == 'Certificat divers' %} selected="selected" {% endif %}>Certificat divers</option>
+                                </select>
+                            </div>
+                            <div class="text-center mt-2">
+                                <button class="btn btn-primary mb-2" type="button" name="button" onclick="Geeks()">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
 
-    <a href="{{ path('rendez_vous_index') }}">back to list</a>
 
-    {{ include('rendez_vous/_delete_form.html.twig') }}
+
+                        <div id="datepicker-container">
+                            <h6 id="chosed-date">
+                                Choisissez use nouvelle date
+                                <br><br>
+                                date et heure actuelle {{ rendez_vous.date|date("d/m/Y")}} | {{ rendez_vous.horaire}}
+
+                            </h6>
+                            <div id="datepicker-center">
+                                <div id="datepicker"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="my_hidden_input">
+
+                    <div id="pickyDate" class="text-center"></div>
+                    <div>
+
+                    </div>
+
+                    <div id="getRendez-vous">
+                        <h1 id="showDate" class="text-center"></h1>
+                    </div>
+
+                    <div id="myDiv" class="text-center custom-control custom-checkbox"></div>
+                    <div class="col text-center mb-3 mt-3" id="verify">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Modifier le rendez-vous
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modification du rendez-vous</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Vous avez choisi un rendez vous pour la service de <span class="font-weight-bolder" id="service-rendezvous"></span>,
+                    le <span class="font-weight-bolder" id="date-rendezvous"></span> à <span class="font-weight-bolder" id="heure-rendezvous"></span>h
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" onclick="modifRdv()">Modifier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <input type="hidden" id="urlrendezvous" value="{{ path('modifrdvadmin') }}">
+    <input type="hidden" id="urlredirect" value="{{ path('rendez_vous_index') }}">
+    <input type="hidden" id="iduser" value="{{ rendez_vous.user.id }}">
+    <input type="hidden" id="idrdv" value="{{ rendez_vous.id }}">
+
 {% endblock %}

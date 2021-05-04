@@ -1,6 +1,7 @@
 $( document ).ready(function() {
     $("#chosed-date").hide();
     $("#verify").hide();
+
 });
 
 function Geeks() {
@@ -162,6 +163,38 @@ function getuser(){
             if(data != null && data != '') {
                 location.href = urlredirect;
             }
+        }
+    });
+}
+
+function modifRdv(){
+
+    var urlrdv = $('#urlrendezvous').val();
+    var urlredirect = $('#urlredirect').val();
+    var user = $('#iduser').val();
+    var idrdv = $('#idrdv').val();
+    var service = $("#myselect option:selected").text();
+    var date = $('#datepicker').datepicker('getFormattedDate');
+    var heure =$('input:radio[name="skills"]:checked').val();
+
+    $.ajax({
+        url: urlrdv,
+        type: 'POST',
+        cache: false,
+        dataType: 'json',
+        data: {
+            getUser: user,
+            getService: service,
+            getDate: date,
+            getHeure:heure,
+            getRdvId: idrdv,
+        },
+        async: true,
+        success: function (data) {
+            if(data != null && data != '') {
+                location.href = urlredirect;
+            }
+
         }
     });
 }

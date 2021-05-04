@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\RendezVous;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,7 +14,14 @@ class RendezVousType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date')
+            ->add('date',DateTimeType::class,array(
+                'required' => true,
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'datepicker datepicker-inline',
+                    'data-provide' => 'datetimepicker',
+                ],
+            ))
             ->add('service',ChoiceType::class, [
                 'choices' => [
                     'Services' => [
@@ -25,7 +33,6 @@ class RendezVousType extends AbstractType
                     ],
                 ],])
             ->add('horaire')
-            ->add('user',RegistrationFormType::class)
         ;
     }
 

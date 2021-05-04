@@ -6,13 +6,11 @@
         <li class="nav-item dropdown d-flex">
             {% if app.request.attributes.get('_route') != 'index' %}
                 <a class="nav-link" href="{{ path('index') }}">
-                    <div class="nav-link-icon"><i class="fas fa-home"></i></div>
                      Rendez-vous
                 </a>
             {% endif %}
             <a class="nav-link" href="{{ path('adminAddRdv') }}">
-                <div class="nav-link-icon"><i class="fas fa-home"></i></div>
-               Ajouter un Rendez-vous
+               Ajouter un rendez-vous
             </a>
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ app.user.username }}

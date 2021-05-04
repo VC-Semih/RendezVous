@@ -71,8 +71,10 @@ class RendezVousRepository extends ServiceEntityRepository
     public function toutRdv()
     {
 
-        $rawSQL ="SELECT rendez_vous.id as rdv_id, rendez_vous.service, rendez_vous.date, user.*,horaire.* FROM rendez_vous INNER join user on rendez_vous.user_id = user.id INNER join horaire on rendez_vous.horaire_id = horaire.id 
-            ORDER BY rendez_vous.id DESC";
+        $rawSQL ="SELECT rendez_vous.id as rdv_id, rendez_vous.service, rendez_vous.date,
+       user.*,horaire.* FROM rendez_vous INNER join user on rendez_vous.user_id = user.id 
+           INNER join horaire on rendez_vous.horaire_id = horaire.id 
+    WHERE rendez_vous.date > now() - INTERVAL 30 day ORDER BY rendez_vous.id DESC";
         $stmt = false;
         try {
             $stmt = $this->getEntityManager()->getConnection()->prepare($rawSQL);
