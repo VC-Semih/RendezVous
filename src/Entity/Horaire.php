@@ -24,7 +24,7 @@ class Horaire
 
     public function __toString()
     {
-        return "ID: " . $this->getId() . " Hours:" . $this->getHeure();
+        return $this->heure;
     }
 
     public function getId(): ?int
@@ -43,6 +43,7 @@ class Horaire
 
         return $this;
     }
+
 
 
 }

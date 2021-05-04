@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'page/navbar.html.twig' %}
+
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-5">
+                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                    <div class="card-body">
+                        <form action="" method="Post" id="form" class="form p-4">
+                            <div class="form-group">
+                                <label for="" class="form-label">Choisissez la service</label>
+                                <select class="form-control" id="myselect">
+                                    <option value="1">Procuration</option>
+                                    <option value="2">Visa</option>
+                                    <option value="3">Passeport</option>
+                                    <option value="4">Heritage</option>
+                                    <option value="5">Certificat divers</option>
+                                </select>
+                            </div>
+                            <div class="text-center mt-2">
+                                <button class="btn btn-primary mb-2" type="button" name="button" onclick="Geeks()">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+
+
+
+                        <div id="datepicker-container">
+                            <h6 id="chosed-date">Choisissez la date</h6>
+                            <div id="datepicker-center">
+                                <div id="datepicker"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="my_hidden_input">
+
+                    <div id="pickyDate" class="text-center"></div>
+                    <div>
+
+                    </div>
+
+                    <div id="getRendez-vous">
+                        <h1 id="showDate" class="text-center"></h1>
+                    </div>
+
+                    <div id="myDiv" class="text-center custom-control custom-checkbox"></div>
+                    <div class="col text-center mb-3 mt-3" id="verify">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Ajouter une Personne
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal  fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Information du Rendez-vous</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                    <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+                    </div>
+                    <table class="table table-bordered table-hover table-responsive" id="myTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th scope="col">Email</th>
+                            <th scope="col">Nom d'utilisateur</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td class="text-center"><input id="userchosedbtn" type="radio" class="form-check-input" name="userchosed" value="{{ user.id }}"></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" onclick="getuser()" id="addUserrdv">Confirmer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <input type="hidden" id="urlrendezvous" value="{{ path('rdvadmin') }}">
+    <input type="hidden" id="urlredirect" value="{{ path('rendez_vous_index') }}">
+
+
+
+{% endblock %}

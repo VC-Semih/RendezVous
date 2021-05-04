@@ -50,7 +50,6 @@ class RendezVousRepository extends ServiceEntityRepository
     public function mesrdv($user_id)
     {
 
-
         $rawSQL ="SELECT * FROM rendez_vous INNER join horaire on rendez_vous.horaire_id = horaire.id 
             WHERE rendez_vous.user_id ='$user_id'ORDER BY rendez_vous.id DESC";
         $stmt = false;
@@ -68,5 +67,27 @@ class RendezVousRepository extends ServiceEntityRepository
         return $stmt->fetchAll();
     }
 
+
+    public function toutRdv()
+    {
+
+        $rawSQL ="SELECT rendez_vous.id as rdv_id, rendez_vous.service, rendez_vous.date,
+       user.*,horaire.* FROM rendez_vous INNER join user on rendez_vous.user_id = user.id 
+           INNER join horaire on rendez_vous.horaire_id = horaire.id 
+    WHERE rendez_vous.date > now() - INTERVAL 30 day ORDER BY rendez_vous.id DESC";
+        $stmt = false;
+        try {
+            $stmt = $this->getEntityManager()->getConnection()->prepare($rawSQL);
+        } catch (Exception $e) {
+            return 'ERROR WHILE PREPARING REQUEST';
+        }
+        try {
+            $stmt->execute();
+        } catch (\Doctrine\DBAL\Driver\Exception $e) {
+            return 'ERROR WHILE EXECUTING REQUEST';
+        }
+
+        return $stmt->fetchAll();
+    }
 
 }
