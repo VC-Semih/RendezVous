@@ -117,12 +117,13 @@ function send(valuesss) {
 function rdv()
 {
     var homepage = $('#homepage').val();
+    var url = $('#urlrdv').val();
     var valuesss = $("#myselect option:selected").text();
     $.ajax({
-        url: '/rdv',
-        type: "POST",
+        url: url,
+        type: 'POST',
         cache: false,
-        dataType: "json",
+        dataType: 'json',
         data: {
             service: valuesss,
             date: $('#datepicker').datepicker('getFormattedDate'),
@@ -130,8 +131,10 @@ function rdv()
         },
         async: true,
         success: function (data) {
-          console.log(data);
-          console.log(homepage);
+            if(data != null && data != '') {
+                console.log(data)
+                location.href = homepage;
+            }
         }
     });
 }
@@ -140,8 +143,6 @@ function getuser(){
 
     var urlrdv = $('#urlrendezvous').val();
     var urlredirect = $('#urlredirect').val();
-
-    console.log(urlredirect);
     var user = $('input:radio[name="userchosed"]:checked').val();
     var service = $("#myselect option:selected").text();
     var date = $('#datepicker').datepicker('getFormattedDate');
@@ -198,7 +199,6 @@ function modifRdv(){
         }
     });
 }
-
 
 function myFunction() {
     var input, filter, table, tr, td, i, txtValue;

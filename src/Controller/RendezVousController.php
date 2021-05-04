@@ -163,7 +163,7 @@ class RendezVousController extends AbstractController
                             'username'=> $username ,
                             'service' => $service,
                             'date'=> $date,
-                            '$heure'=> $heure
+                            'heure'=> $heure
                         ]
                     ),
                     'text/html'
@@ -266,7 +266,6 @@ class RendezVousController extends AbstractController
 
             $mailer->send($message);
         }
-
         $response = new JsonResponse($data);
 
         $response->headers->set('Content-Type','application/json');
