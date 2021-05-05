@@ -62,7 +62,7 @@ class RendezVousController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('rendez_vous_new');
+            return $this->redirectToRoute('adminAddRdv');
 
         }
 
