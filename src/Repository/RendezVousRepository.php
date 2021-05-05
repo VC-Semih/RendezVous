@@ -50,8 +50,9 @@ class RendezVousRepository extends ServiceEntityRepository
     public function mesrdv($user_id)
     {
 
-        $rawSQL ="SELECT * FROM rendez_vous INNER join horaire on rendez_vous.horaire_id = horaire.id 
-            WHERE rendez_vous.user_id ='$user_id'ORDER BY rendez_vous.id DESC";
+        $rawSQL ="SELECT rendez_vous.id as rdvid, rendez_vous.date, rendez_vous.service,horaire.* 
+FROM rendez_vous INNER join horaire on rendez_vous.horaire_id = horaire.id
+WHERE rendez_vous.user_id ='$user_id'ORDER BY rendez_vous.id DESC";
         $stmt = false;
         try {
             $stmt = $this->getEntityManager()->getConnection()->prepare($rawSQL);

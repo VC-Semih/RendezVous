@@ -119,7 +119,7 @@ class DefaultController extends AbstractController
                         [
                             'service' => $service,
                             'date'=> $date,
-                            '$heure'=> $heure
+                            'heure'=> $heure
                         ]
                     ),
                     'text/html'
@@ -143,6 +143,19 @@ class DefaultController extends AbstractController
         return $this->render("page/mesRdv.html.twig",array(
             'rdvs' => $rendezVousRepository->mesrdv($user_id)
         ));
+    }
+    /**
+     * @Route("/annuler_rdv/{id}",name="delete_rdv_user")
+     */
+    public function delete_rdv_user(Request $request,RendezVousRepository $repository):Response
+    {
+        $id = $request->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $rdv = $em -> getRepository('App:RendezVous')->find($id);
+        $em -> remove($rdv);
+        $em -> flush();
+
+        return $this->redirectToRoute("mesrdv");
     }
 
 
