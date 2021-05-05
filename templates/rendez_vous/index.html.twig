@@ -6,9 +6,19 @@
     {% include 'page/navbar.html.twig' %}
 
     <div class="container-fluid">
-
                 <div class="row justify-content-center mt-5 mb-5">
-
+                    {% for message in app.flashes('notice') %}
+                        <div class="alert alert-success-soft alert-dismissible fade show" role="alert" id="alert">
+                            {{ message }}
+                        </div>
+                        <script>
+                            window.setTimeout(function() {
+                                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                                    $(this).remove();
+                                });
+                            }, 5000);
+                        </script>
+                    {% endfor %}
                         <div class="card shadow-lg border-0 rounded-lg mt-2">
                             <div class="card-header">
                                 <div class="row">
