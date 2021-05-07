@@ -55,7 +55,7 @@
                                                 <td>
                                                     <div class="row">
                                                         <div class="col-auto">
-                                                            <a href="{{ path('rdv_show', {'id': rendez_vous.rdv_id}) }}" class="nav-link"><i class="fas fa-calendar-day"></i></a>
+                                                            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#rdv{{ rendez_vous.rdv_id }}"><i class="fas fa-calendar-day"></i></a>
                                                         </div>
                                                         <div class="col-auto">
                                                             <a href="{{ path('edit_rdv', {'id': rendez_vous.rdv_id}) }}" class="nav-link"><i class="fas fa-edit"></i></a>
@@ -70,6 +70,28 @@
                                                     <a class="nav-link" href="{{ path('rdv_admin_mailer', {'id': rendez_vous.rdv_id}) }}"><i class="fas fa-paper-plane"></i></a>
                                                 </td>
                                             </tr>
+                                            <div class="modal fade" id="rdv{{ rendez_vous.rdv_id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Rendez vous n°{{ rendez_vous.rdv_id }}</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h1>Détails du rendez vous:</h1>
+                                                            <p>Service: {{ rendez_vous.service }}</p>
+                                                            <p>Date: {{ rendez_vous.date }}</p>
+                                                            <p>Heure: {{ rendez_vous.heure }}</p>
+                                                            <h2>Détails sur la personne:</h2>
+                                                            <p>Nom d'utilisateur: {{ rendez_vous.username }}</p>
+                                                            <p>email: {{ rendez_vous.email }}</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
