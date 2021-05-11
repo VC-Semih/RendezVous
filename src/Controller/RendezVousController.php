@@ -66,20 +66,43 @@ class RendezVousController extends AbstractController
 
             $sheet = $spreadsheet->getActiveSheet();
 
-            $sheet->setTitle('User List');
+            $sheet->setTitle('Rendez-vous');
 
+            $styleArray = [
+                'font' => [
+                    'bold' => true,
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+                ],
+                'borders' => [
+                    'top' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    ],
+                ],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => 'DAF7A6',
+                    ],
+                ]
+            ];
+            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(30);
             $sheet->getCell('A1')->setValue('Date');
             $sheet->getCell('B1')->setValue('Service');
             $sheet->getCell('C1')->setValue('Nom d\'utilisateur');
             $sheet->getCell('D1')->setValue('Email');
             $sheet->getCell('E1')->setValue('Heure');
 
+
+            $spreadsheet->getActiveSheet()->getStyle('A1:E1')->applyFromArray($styleArray);
+
             // Increase row cursor after header write
             $sheet->fromArray($data,null, 'A2', true);
 
             $writer = new Xlsx($spreadsheet);
 
-            $fileName = 'test.xlsx';
+            $fileName = 'dump.xlsx';
             $temp_file = tempnam(sys_get_temp_dir(), $fileName);
 
             $writer->save($temp_file);

@@ -18,22 +18,5 @@ $( document ).ready(function() {
         }
     });
 });
-function getDates()
-{
-    var exporturl = $("#exporturl").val();
-    $.ajax({
-        url: exporturl,
-        type: 'POST',
-        cache: false,
-        dataType: 'json',
-        data: {
-            date_debut: $("#startDate").datepicker("getFormattedDate"),
-            date_fin: $("#endDate").datepicker("getFormattedDate"),
-        },
-        async: true,
-        success: function (data) {
-        }
-    });
-}
 
 
