@@ -53,33 +53,42 @@ class RendezVousController extends AbstractController
         $dateDebut = $request->get('date_debut');
         $dateFin = $request->get('date_fin');
 
-        /*$dateDebut = '2021-05-13'; for testing purpose
-        $dateFin = '2021-05-19';*/
-        $data = $rendezVousRepository->getRdvByRange($dateDebut, $dateFin);
 
-        $spreadsheet = new Spreadsheet();
+        dump($dateDebut);
+        dump($dateFin);
 
-        $sheet = $spreadsheet->getActiveSheet();
 
-        $sheet->setTitle('User List');
+        if(!empty($dateDebut) or !empty($dateFin)){
 
-        $sheet->getCell('A1')->setValue('Date');
-        $sheet->getCell('B1')->setValue('Service');
-        $sheet->getCell('C1')->setValue('Nom d\'utilisateur');
-        $sheet->getCell('D1')->setValue('Email');
-        $sheet->getCell('E1')->setValue('Heure');
+            $data = $rendezVousRepository->getRdvByRange($dateDebut, $dateFin);
 
-        // Increase row cursor after header write
-        $sheet->fromArray($data,null, 'A2', true);
+            $spreadsheet = new Spreadsheet();
 
-        $writer = new Xlsx($spreadsheet);
+            $sheet = $spreadsheet->getActiveSheet();
 
-        $fileName = 'test.xlsx';
-        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+            $sheet->setTitle('User List');
 
-        $writer->save($temp_file);
+            $sheet->getCell('A1')->setValue('Date');
+            $sheet->getCell('B1')->setValue('Service');
+            $sheet->getCell('C1')->setValue('Nom d\'utilisateur');
+            $sheet->getCell('D1')->setValue('Email');
+            $sheet->getCell('E1')->setValue('Heure');
 
-        return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+            // Increase row cursor after header write
+            $sheet->fromArray($data,null, 'A2', true);
+
+            $writer = new Xlsx($spreadsheet);
+
+            $fileName = 'test.xlsx';
+            $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+
+            $writer->save($temp_file);
+
+            return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+
+        }
+
+
     }
 
     /**
@@ -348,6 +357,8 @@ class RendezVousController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+
+
 
 
 }

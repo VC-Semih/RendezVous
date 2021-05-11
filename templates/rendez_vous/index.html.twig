@@ -6,6 +6,13 @@
     {% include 'page/navbar.html.twig' %}
 
     <div class="container-fluid">
+
+        <input id="exporturl" type="hidden" value="{{ path('rdv_generate_excel') }}">
+
+
+
+
+
                 <div class="row justify-content-center mt-5 mb-5">
                     {% for message in app.flashes('notice') %}
                         <div class="alert alert-success-soft alert-dismissible fade show" role="alert" id="alert">
@@ -26,7 +33,17 @@
                                         List de rendez-vous
                                     </div>
                                     <div class="col text-right">
-                                        <a href="{{ path('adminAddRdv') }}" class="nav-link"><i class="far fa-plus-square"></i></a>
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <input class="form-control form-control-sm" id="startDate" placeholder="Date de début"/>
+                                            </div>
+                                            <div class="col-5">
+                                              <input class="form-control form-control-sm" id="endDate" placeholder="Date de fin"  />
+                                            </div>
+                                            <div class="col">
+                                                <button class="btn btn-primary btn-sm" onclick="getDates()">Exporter</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
