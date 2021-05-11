@@ -25,6 +25,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 /**
  * @Route("/admin/rdv")
@@ -42,7 +44,19 @@ class RendezVousController extends AbstractController
     }
 
     /**
-     * @Route ("/generate/excel", name="rdv_generate_excel", methods={"GET","POST"})
+     * @Route ("/generate", name="rdv_generate", methods={"GET","POST"})
+     * @param Request $request
+     */
+    public function generateFile(Request $request, RendezVousRepository $rendezVousRepository){
+        $action = $request->get('action');
+        if($action === "Exporter PDF"){
+           return $this->generatePdf($request, $rendezVousRepository);
+        }else{
+            return $this->generateExcel($request,$rendezVousRepository);
+        }
+    }
+
+    /**
      * @param Request $request
      * @return BinaryFileResponse
      * @throws Exception
@@ -52,11 +66,6 @@ class RendezVousController extends AbstractController
     {
         $dateDebut = $request->get('date_debut');
         $dateFin = $request->get('date_fin');
-
-
-        dump($dateDebut);
-        dump($dateFin);
-
 
         if(!empty($dateDebut) or !empty($dateFin)){
 
@@ -110,8 +119,45 @@ class RendezVousController extends AbstractController
             return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
 
         }
+    }
 
+    /**
+     * @param Request $request
+     * @param RendezVousRepository $rendezVousRepository
+     */
+    public function generatePdf(Request $request, RendezVousRepository $rendezVousRepository){
+        $dateDebut = $request->get('date_debut');
+        $dateFin = $request->get('date_fin');
+        $data = $rendezVousRepository->getRdvByRange($dateDebut, $dateFin);
+        dump($data);
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
 
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('rendez_vous/pdf.html.twig', [
+            'rendez_vouses' => $data
+        ]);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("dump.pdf", [
+            "Attachment" => false
+        ]);
+
+        return new Response('', 200, [
+            'Content-Type' => 'application/pdf',
+        ]);
     }
 
     /**

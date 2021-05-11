@@ -6,10 +6,6 @@
     {% include 'page/navbar.html.twig' %}
 
     <div class="container-fluid">
-
-        <input id="exporturl" type="hidden" value="{{ path('rdv_generate_excel') }}">
-
-
         <div class="row justify-content-center mt-5 mb-5">
             {% for message in app.flashes('notice') %}
                 <div class="alert alert-success-soft alert-dismissible fade show" role="alert" id="alert">
@@ -30,7 +26,7 @@
                             List de rendez-vous
                         </div>
                         <div class="col text-right">
-                            <form action="{{ path('rdv_generate_excel') }}" method="POST">
+                            <form action="{{ path('rdv_generate') }}" method="POST" target="_blank">
                                 <div class="row">
                                     <div class="col-5">
                                         <input class="form-control form-control-sm" id="startDate" name="date_debut"
@@ -41,123 +37,128 @@
                                                placeholder="Date de fin"/>
                                     </div>
                                     <div class="col">
-                                        <button class="btn btn-primary btn-sm" type="submit">Exporter</button>
+                                        <input class="btn btn-primary btn-sm" name="action" value="Exporter excel"
+                                               type="submit"/>
+                                    </div>
+                                    <div class="col">
+                                        <input class="btn btn-primary btn-sm" name="action" value="Exporter PDF"
+                                               type="submit"/>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="datatable">
-                        <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                            <tr>
-                                <th>Email</th>
-                                <th>Nom</th>
-                                <th>Service</th>
-                                <th>Date</th>
-                                <th>Heure</th>
-                                <th>Actions</th>
-                                <th>Mail</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for rendez_vous in rendez_vouses %}
-                                <tr>
-                                    <td>{{ rendez_vous.email }}</td>
-                                    <td>{{ rendez_vous.username }}</td>
-                                    <td>{{ rendez_vous.service }}</td>
-                                    <td>{{ rendez_vous.date|date("d/m/Y") }}</td>
-                                    <td>{{ rendez_vous.heure }}</td>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-auto">
-                                                <a class="nav-link" data-bs-toggle="modal"
-                                                   data-bs-target="#rdv{{ rendez_vous.rdv_id }}"><i
-                                                            class="fas fa-calendar-day"></i></a>
-                                            </div>
-                                            <div class="col-auto">
-                                                <a href="{{ path('edit_rdv', {'id': rendez_vous.rdv_id}) }}"
-                                                   class="nav-link"><i class="fas fa-edit"></i></a>
-                                            </div>
-                                            <div class="col-auto">
-                                                <a href="#" class="nav-link" data-bs-toggle="modal"
-                                                   data-bs-target="#exampleModal"><i class="far fa-trash-alt"></i></a>
-                                            </div>
+                        <div class="card-body">
+                            <div class="datatable">
+                                <table class="table table-bordered table-hover" id="dataTable" width="100%"
+                                       cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>Email</th>
+                                        <th>Nom</th>
+                                        <th>Service</th>
+                                        <th>Date</th>
+                                        <th>Heure</th>
+                                        <th>Actions</th>
+                                        <th>Mail</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for rendez_vous in rendez_vouses %}
+                                        <tr>
+                                            <td>{{ rendez_vous.email }}</td>
+                                            <td>{{ rendez_vous.username }}</td>
+                                            <td>{{ rendez_vous.service }}</td>
+                                            <td>{{ rendez_vous.date|date("d/m/Y") }}</td>
+                                            <td>{{ rendez_vous.heure }}</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-auto">
+                                                        <a class="nav-link" data-bs-toggle="modal"
+                                                           data-bs-target="#rdv{{ rendez_vous.rdv_id }}"><i
+                                                                    class="fas fa-calendar-day"></i></a>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <a href="{{ path('edit_rdv', {'id': rendez_vous.rdv_id}) }}"
+                                                           class="nav-link"><i class="fas fa-edit"></i></a>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <a href="#" class="nav-link" data-bs-toggle="modal"
+                                                           data-bs-target="#exampleModal"><i
+                                                                    class="far fa-trash-alt"></i></a>
+                                                    </div>
 
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a class="nav-link"
-                                           href="{{ path('rdv_admin_mailer', {'id': rendez_vous.rdv_id}) }}"><i
-                                                    class="fas fa-paper-plane"></i></a>
-                                    </td>
-                                </tr>
-                                <div class="modal fade" id="rdv{{ rendez_vous.rdv_id }}" tabindex="-1"
-                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Rendez vous
-                                                    n°{{ rendez_vous.rdv_id }}</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h1>Détails du rendez vous:</h1>
-                                                <p>Service: {{ rendez_vous.service }}</p>
-                                                <p>Date: {{ rendez_vous.date }}</p>
-                                                <p>Heure: {{ rendez_vous.heure }}</p>
-                                                <h2>Détails sur la personne:</h2>
-                                                <p>Nom d'utilisateur: {{ rendez_vous.username }}</p>
-                                                <p>email: {{ rendez_vous.email }}</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Close
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal fade" id="exampleModal" tabindex="-1"
-                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Information du
-                                                    Rendez-vous</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                êtes vous sur de vouloir supprimer ?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-sm btn-secondary"
-                                                        data-bs-dismiss="modal">Non
-                                                </button>
-                                                <a class="btn btn-sm btn-primary"
-                                                   href="{{ path('delete_rdv', {'id': rendez_vous.rdv_id}) }}">Oui</a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a class="nav-link"
+                                                   href="{{ path('rdv_admin_mailer', {'id': rendez_vous.rdv_id}) }}"><i
+                                                            class="fas fa-paper-plane"></i></a>
+                                            </td>
+                                        </tr>
+                                        <div class="modal fade" id="rdv{{ rendez_vous.rdv_id }}" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Rendez vous
+                                                            n°{{ rendez_vous.rdv_id }}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <h1>Détails du rendez vous:</h1>
+                                                        <p>Service: {{ rendez_vous.service }}</p>
+                                                        <p>Date: {{ rendez_vous.date }}</p>
+                                                        <p>Heure: {{ rendez_vous.heure }}</p>
+                                                        <h2>Détails sur la personne:</h2>
+                                                        <p>Nom d'utilisateur: {{ rendez_vous.username }}</p>
+                                                        <p>email: {{ rendez_vous.email }}</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+                                                            Close
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <tr>
-                                    <td colspan="4">no records found</td>
-                                </tr>
-                            {% endfor %}
+                                        <div class="modal fade" id="exampleModal" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Information du
+                                                            Rendez-vous</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        êtes vous sur de vouloir supprimer ?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-sm btn-secondary"
+                                                                data-bs-dismiss="modal">Non
+                                                        </button>
+                                                        <a class="btn btn-sm btn-primary"
+                                                           href="{{ path('delete_rdv', {'id': rendez_vous.rdv_id}) }}">Oui</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="4">no records found</td>
+                                        </tr>
+                                    {% endfor %}
 
-                            </tbody>
-                        </table>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
-
 {% endblock %}
