@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\RendezVous;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
-use App\Form\RendezVousType;
 use App\Repository\HoraireRepository;
 use App\Repository\RendezVousRepository;
 use App\Repository\UserRepository;
@@ -14,13 +13,18 @@ use DateTime;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Serializer\SerializerInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Exception;
 
 /**
  * @Route("/admin/rdv")
@@ -35,6 +39,47 @@ class RendezVousController extends AbstractController
         return $this->render('rendez_vous/index.html.twig', [
             'rendez_vouses' => $rendezVousRepository->toutRdv()
         ]);
+    }
+
+    /**
+     * @Route ("/generate/excel", name="rdv_generate_excel", methods={"GET","POST"})
+     * @param Request $request
+     * @return BinaryFileResponse
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    public function generateExcel(Request $request, RendezVousRepository $rendezVousRepository): BinaryFileResponse
+    {
+        $dateDebut = $request->get('date_debut');
+        $dateFin = $request->get('date_fin');
+
+        /*$dateDebut = '2021-05-13'; for testing purpose
+        $dateFin = '2021-05-19';*/
+        $data = $rendezVousRepository->getRdvByRange($dateDebut, $dateFin);
+
+        $spreadsheet = new Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setTitle('User List');
+
+        $sheet->getCell('A1')->setValue('Date');
+        $sheet->getCell('B1')->setValue('Service');
+        $sheet->getCell('C1')->setValue('Nom d\'utilisateur');
+        $sheet->getCell('D1')->setValue('Email');
+        $sheet->getCell('E1')->setValue('Heure');
+
+        // Increase row cursor after header write
+        $sheet->fromArray($data,null, 'A2', true);
+
+        $writer = new Xlsx($spreadsheet);
+
+        $fileName = 'test.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+
+        $writer->save($temp_file);
+
+        return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
     }
 
     /**
