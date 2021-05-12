@@ -1,4 +1,7 @@
 $( document ).ready(function() {
+    $('#btnpdf').hide();
+    $('#btnexcel').hide();
+
     var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     $('#startDate').datepicker({
         format: "yyyy-mm-dd",
@@ -17,6 +20,16 @@ $( document ).ready(function() {
             return $('#startDate').val();
         }
     });
+
+    $("#startDate").click(function() {
+        $("#btnpdf").show();
+        $("#btnexcel").show();
+    });
+
+
+
+
+
 });
 
 
