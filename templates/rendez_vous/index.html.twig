@@ -22,26 +22,26 @@
             <div class="card shadow-lg border-0 rounded-lg mt-2">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col">
+                        <div class="col-3">
                             List de rendez-vous
                         </div>
-                        <div class="col text-right">
-                            <form action="{{ path('rdv_generate') }}" method="POST" target="_blank">
-                                <div class="row">
-                                    <div class="col-5">
+                        <div class="col">
+                            <form action="{{ path('rdv_generate') }}" method="POST" target="_blank"  class="w-100">
+                                <div class="row" style="width: 100%">
+                                    <div class="col-4">
                                         <input class="form-control form-control-sm" id="startDate" name="date_debut"
                                                placeholder="Date de début"/>
                                     </div>
-                                    <div class="col-5">
+                                    <div class="col-4">
                                         <input class="form-control form-control-sm" id="endDate" name="date_fin"
                                                placeholder="Date de fin"/>
                                     </div>
-                                    <div class="col">
-                                        <input class="btn btn-primary btn-sm" name="action" value="Exporter excel"
-                                               type="submit"/>
+                                    <div class="col-2">
+                                                <input id="btnexcel" class="btn btn-primary btn-sm" name="action" value="Exporter excel"
+                                                       type="submit"/>
                                     </div>
-                                    <div class="col">
-                                        <input class="btn btn-primary btn-sm" name="action" value="Exporter PDF"
+                                    <div class="col-2">
+                                        <input id="btnpdf" class="btn btn-primary btn-sm" name="action" value="Exporter PDF"
                                                type="submit"/>
                                     </div>
                                 </div>
