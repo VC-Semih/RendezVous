@@ -4,8 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 </head>
+<style>
+    #rdv {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #rdv td, #rdv th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #rdv tr:nth-child(even){background-color: #f2f2f2;}
+
+    #rdv tr:hover {background-color: #ddd;}
+
+    #rdv th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #DAF7A6;
+        color: black;
+    }
+</style>
 <body>
-<table width="100%" cellspacing="0">
+<table id="rdv">
     <thead>
     <tr>
         <th>Email</th>
