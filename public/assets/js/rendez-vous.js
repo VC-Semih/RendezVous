@@ -55,14 +55,14 @@ function Geeks() {
         $("#getRendez-vous").show();
 
         $("#title-date").show();
-
+        var valuesss = $("#myselect option:selected").text();
         var myDiv = document.getElementById("myDiv");
         $(myDiv).html("");
         $.ajax({
             url: '/heure',
             type: "GET",
             dataType: "json",
-            data: 'date=' + value,
+            data: 'date=' + encodeURIComponent(value) + '&service='+encodeURIComponent(valuesss),
             async: true,
             success: function (data) {
 

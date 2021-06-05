@@ -49,12 +49,13 @@ class DefaultController extends AbstractController
     {
 
         $date = $request->get('date');
+        $service = $request->get('service');
 
         $em = $this->getDoctrine()->getManager();
 
         $horaires = $em->getRepository(Horaire::class)->findAll();
 
-        $listeRdv= $em->getRepository(RendezVous::class)->findByDate($date);
+        $listeRdv= $em->getRepository(RendezVous::class)->findByServiceAndDate($service, $date);
 
 
         $idToRemove = [];

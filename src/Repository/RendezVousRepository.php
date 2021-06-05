@@ -48,6 +48,16 @@ class RendezVousRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByServiceAndDate($service, $date){
+        return $this->createQueryBuilder('rendez_vous')
+            ->andWhere('rendez_vous.date = :date')
+            ->andWhere('rendez_vous.service = :service')
+            ->setParameter('date',$date)
+            ->setParameter('service', $service)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function mesrdv($user_id)
     {
 
