@@ -1,6 +1,19 @@
 $( document ).ready(function() {
-    $('#btnpdf').hide();
-    $('#btnexcel').hide();
+
+    $('#btnpdf').attr('disabled',true);
+    $('#btnexcel').attr('disabled',true);
+    $('#startDate').change(function(){
+        if($('#startDate').val().length !=0)
+        {
+            $('#btnpdf,#btnexcel').attr('disabled', false);
+        }
+        else
+        {
+            $('#btnpdf,#btnexcel').attr('disabled',true);
+        }
+
+    })
+
 
     var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     $('#startDate').datepicker({
@@ -21,10 +34,11 @@ $( document ).ready(function() {
         }
     });
 
-    $("#startDate").click(function() {
-        $("#btnpdf").show();
-        $("#btnexcel").show();
-    });
+
+
+
+
+
 
 
 

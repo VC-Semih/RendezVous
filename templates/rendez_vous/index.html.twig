@@ -26,7 +26,7 @@
                             List de rendez-vous
                         </div>
                         <div class="col">
-                            <form action="{{ path('rdv_generate') }}" method="POST" target="_blank"  class="w-100">
+                            <form id="formexport" action="{{ path('rdv_generate') }}" method="POST" target="_blank"  class="w-100">
                                 <div class="row" style="width: 100%">
                                     <div class="col-4">
                                         <input class="form-control form-control-sm" id="startDate" name="date_debut"
