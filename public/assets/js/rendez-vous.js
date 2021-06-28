@@ -63,7 +63,7 @@ function Geeks() {
             type: "GET",
             dataType: "json",
             data: 'date=' + encodeURIComponent(value) + '&service='+encodeURIComponent(valuesss),
-            async: true,
+            async: false,
             success: function (data) {
 
                 for (let i = 0; i < data.length; i++) {
