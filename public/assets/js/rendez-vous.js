@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+$(document).ready(function () {
     $("#chosed-date").hide();
     $("#verify").hide();
 
@@ -15,25 +15,25 @@ function Geeks() {
     var valuesss = $("#myselect option:selected").text();
 
 
-    if(valuesss === "Procuration")
-    {
+    if (valuesss === "Procuration") {
         $lundi = 2;
         $mercredi = 4;
-    }if(valuesss === "Passeport")
-    {
-       $mardi= 1;
-       $jeudi= 3;
-    }if (valuesss === "Certificat divers")
-    {
+    }
+    if (valuesss === "Passeport") {
+        $mardi = 1;
+        $jeudi = 3;
+    }
+    if (valuesss === "Certificat divers") {
         $lundi = 2;
         $mercredi = 4;
-    }if(valuesss === "Heritage")
-    {
+    }
+    if (valuesss === "Heritage") {
         $lundi = 2;
         $mercredi = 4;
-    }if(valuesss === "Visa")
-    {
-        $mardi= 1;
+    }
+    if (valuesss === "Visa") {
+        $mardi = 1;
+        $jeudi = 3;
     }
 
 
@@ -43,7 +43,7 @@ function Geeks() {
         format: "yyyy-mm-dd",
         language: "fr",
         todayHighlight: true,
-        daysOfWeekDisabled: [0,$lundi,$mardi,$mercredi,$jeudi, 5,6],
+        daysOfWeekDisabled: [0, $lundi, $mardi, $mercredi, $jeudi, 5, 6],
         startDate: new Date()
 
     }).on('changeDate', getTodayDate);
@@ -62,7 +62,7 @@ function Geeks() {
             url: '/heure',
             type: "GET",
             dataType: "json",
-            data: 'date=' + encodeURIComponent(value) + '&service='+encodeURIComponent(valuesss),
+            data: 'date=' + encodeURIComponent(value) + '&service=' + encodeURIComponent(valuesss),
             async: false,
             success: function (data) {
 
@@ -85,11 +85,11 @@ function Geeks() {
                     myDiv.appendChild(checkbox);
                     myDiv.appendChild(label);
 
-                    $('.check input:checkbox').click(function() {
+                    $('.check input:checkbox').click(function () {
                         $('.check input:checkbox').not(this).prop('checked', false);
                     });
 
-                    $('input[type=radio][name=skills]').change(function() {
+                    $('input[type=radio][name=skills]').change(function () {
                         send(valuesss);
                     });
 
@@ -98,8 +98,6 @@ function Geeks() {
             }
 
         });
-
-
 
 
     }
@@ -114,8 +112,8 @@ function send(valuesss) {
     $("#heure-rendezvous").text(heure);
 
 }
-function rdv()
-{
+
+function rdv() {
     var homepage = $('#homepage').val();
     var url = $('#urlrdv').val();
     var valuesss = $("#myselect option:selected").text();
@@ -131,7 +129,7 @@ function rdv()
         },
         async: true,
         success: function (data) {
-            if(data != null && data != '') {
+            if (data != null && data != '') {
                 console.log(data)
                 location.href = homepage;
             }
@@ -139,14 +137,14 @@ function rdv()
     });
 }
 
-function getuser(){
+function getuser() {
 
     var urlrdv = $('#urlrendezvous').val();
     var urlredirect = $('#urlredirect').val();
     var user = $('input:radio[name="userchosed"]:checked').val();
     var service = $("#myselect option:selected").text();
     var date = $('#datepicker').datepicker('getFormattedDate');
-    var heure =$('input:radio[name="skills"]:checked').val();
+    var heure = $('input:radio[name="skills"]:checked').val();
 
     $.ajax({
         url: urlrdv,
@@ -157,18 +155,18 @@ function getuser(){
             getUser: user,
             getService: service,
             getDate: date,
-            getHeure:heure,
+            getHeure: heure,
         },
         async: true,
         success: function (data) {
-            if(data != null && data != '') {
+            if (data != null && data != '') {
                 location.href = urlredirect;
             }
         }
     });
 }
 
-function modifRdv(){
+function modifRdv() {
 
     var urlrdv = $('#urlrendezvous').val();
     var urlredirect = $('#urlredirect').val();
@@ -176,7 +174,7 @@ function modifRdv(){
     var idrdv = $('#idrdv').val();
     var service = $("#myselect option:selected").text();
     var date = $('#datepicker').datepicker('getFormattedDate');
-    var heure =$('input:radio[name="skills"]:checked').val();
+    var heure = $('input:radio[name="skills"]:checked').val();
 
     $.ajax({
         url: urlrdv,
@@ -187,12 +185,12 @@ function modifRdv(){
             getUser: user,
             getService: service,
             getDate: date,
-            getHeure:heure,
+            getHeure: heure,
             getRdvId: idrdv,
         },
         async: true,
         success: function (data) {
-            if(data != null && data != '') {
+            if (data != null && data != '') {
                 location.href = urlredirect;
             }
 
