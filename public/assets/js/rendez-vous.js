@@ -52,9 +52,9 @@ function Geeks() {
         var value = $('#datepicker').datepicker('getFormattedDate');
 
         $("#showDate").text(value);
-        $("#getRendez-vous").show();
-
+        $("#getRendez-vous").hide();
         $("#title-date").show();
+
         var valuesss = $("#myselect option:selected").text();
         var myDiv = document.getElementById("myDiv");
         $(myDiv).html("");
