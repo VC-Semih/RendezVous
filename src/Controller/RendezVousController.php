@@ -13,18 +13,13 @@ use DateTime;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Serializer\SerializerInterface;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Writer\Exception;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -44,92 +39,15 @@ class RendezVousController extends AbstractController
     }
 
     /**
-     * @Route ("/generate", name="rdv_generate", methods={"GET","POST"})
-     * @param Request $request
-     */
-    public function generateFile(Request $request, RendezVousRepository $rendezVousRepository){
-        $action = $request->get('action');
-        if($action === "Exporter PDF"){
-           return $this->generatePdf($request, $rendezVousRepository);
-        }else{
-            return $this->generateExcel($request,$rendezVousRepository);
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @return BinaryFileResponse
-     * @throws Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     */
-    public function generateExcel(Request $request, RendezVousRepository $rendezVousRepository): BinaryFileResponse
-    {
-        $dateDebut = $request->get('date_debut');
-        $dateFin = $request->get('date_fin');
-
-        if(!empty($dateDebut) or !empty($dateFin)){
-
-            $data = $rendezVousRepository->getRdvByRange($dateDebut, $dateFin);
-
-            $spreadsheet = new Spreadsheet();
-
-            $sheet = $spreadsheet->getActiveSheet();
-
-            $sheet->setTitle('Rendez-vous');
-
-            $styleArray = [
-                'font' => [
-                    'bold' => true,
-                ],
-                'alignment' => [
-                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
-                ],
-                'borders' => [
-                    'top' => [
-                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                    ],
-                ],
-                'fill' => [
-                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                    'startColor' => [
-                        'argb' => 'DAF7A6',
-                    ],
-                ]
-            ];
-            $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(30);
-            $sheet->getCell('A1')->setValue('Date');
-            $sheet->getCell('B1')->setValue('Service');
-            $sheet->getCell('C1')->setValue('Nom d\'utilisateur');
-            $sheet->getCell('D1')->setValue('Email');
-            $sheet->getCell('E1')->setValue('Heure');
-
-
-            $spreadsheet->getActiveSheet()->getStyle('A1:E1')->applyFromArray($styleArray);
-
-            // Increase row cursor after header write
-            $sheet->fromArray($data,null, 'A2', true);
-
-            $writer = new Xlsx($spreadsheet);
-
-            $fileName = 'dump.xlsx';
-            $temp_file = tempnam(sys_get_temp_dir(), $fileName);
-
-            $writer->save($temp_file);
-
-            return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
-
-        }
-    }
-
-    /**
+     * @Route ("/generate_pdf", name="rdv_generate", methods={"GET","POST"})
      * @param Request $request
      * @param RendezVousRepository $rendezVousRepository
+     * @return Response
      */
     public function generatePdf(Request $request, RendezVousRepository $rendezVousRepository){
         $dateDebut = $request->get('date_debut');
         $dateFin = $request->get('date_fin');
         $data = $rendezVousRepository->getRdvByRange($dateDebut, $dateFin);
-        dump($data);
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
 

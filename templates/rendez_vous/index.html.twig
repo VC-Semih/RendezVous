@@ -37,11 +37,22 @@
                                                placeholder="Date de fin"/>
                                     </div>
                                     <div class="col-2">
-                                                <input id="btnexcel" class="btn btn-primary btn-sm" name="action" value="Exporter excel"
-                                                       type="submit"/>
+                                        <input id="btnpdf" class="btn btn-primary btn-sm" name="action" value="Exporter PDF"
+                                               type="submit"/>
+                                    </div>
+                                </div>
+                            </form>
+                            <br>
+                            <form id="formexportnow" action="{{ path('rdv_generate') }}" method="POST" target="_blank"  class="w-100">
+                                <div class="row" style="width: 100%">
+                                    <div class="col-4">
+                                        <input hidden id="startDate" name="date_debut" value="{{ "now"|date("d/m/Y") }}"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <input hidden id="endDate" name="date_fin" value="{{ "now"|date("d/m/Y") }}"/>
                                     </div>
                                     <div class="col-2">
-                                        <input id="btnpdf" class="btn btn-primary btn-sm" name="action" value="Exporter PDF"
+                                        <input id="btnpdfnow" class="btn btn-primary btn-sm" name="action" value="Exporter les rendez-vous d'aujourd'hui en PDF"
                                                type="submit"/>
                                     </div>
                                 </div>

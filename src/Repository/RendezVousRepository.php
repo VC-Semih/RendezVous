@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\RendezVous;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Driver\Exception;
 use Doctrine\Persistence\ManagerRegistry;
@@ -48,11 +49,12 @@ class RendezVousRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByServiceAndDate($service, $date){
+    public function findByServiceAndDate($service, $date)
+    {
         return $this->createQueryBuilder('rendez_vous')
             ->andWhere('rendez_vous.date = :date')
             ->andWhere('rendez_vous.service = :service')
-            ->setParameter('date',$date)
+            ->setParameter('date', $date)
             ->setParameter('service', $service)
             ->getQuery()
             ->getResult();
@@ -104,9 +106,19 @@ WHERE rendez_vous.user_id ='$user_id'ORDER BY rendez_vous.id DESC";
 
     public function getRdvByRange($dateDebut, $dateFin)
     {
-        $rawSQL = "SELECT rendez_vous.date, rendez_vous.service, user.username, user.email, horaire.heure 
+        $rawSQL = '';
+        if ($dateDebut === $dateFin) {
+
+            $datetime = DateTime::createFromFormat('d/m/Y', $dateDebut);
+
+            $rawSQL = "SELECT rendez_vous.date, rendez_vous.service, user.username, user.email, horaire.heure 
+        FROM `rendez_vous` INNER JOIN user on rendez_vous.user_id = user.id INNER JOIN horaire on rendez_vous.horaire_id = horaire.id 
+        WHERE date = '" . $datetime->format('Y-m-d') . "'";
+        } else {
+            $rawSQL = "SELECT rendez_vous.date, rendez_vous.service, user.username, user.email, horaire.heure 
         FROM `rendez_vous` INNER JOIN user on rendez_vous.user_id = user.id INNER JOIN horaire on rendez_vous.horaire_id = horaire.id 
         WHERE date BETWEEN '" . $dateDebut . "' AND '" . $dateFin . "'";
+        }
         $stmt = false;
         try {
             $stmt = $this->getEntityManager()->getConnection()->prepare($rawSQL);
