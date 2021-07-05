@@ -72,24 +72,27 @@ function Geeks() {
 
                     checkbox.type = "radio";
                     checkbox.name = "skills";
-                    checkbox.className = "heureCheckBox m-2";
-                    checkbox.id = "heure";
+                    checkbox.className = "heureCheckBox btn-check";
+                    checkbox.id = "heure"+i;
                     checkbox.value = data[i]['heure'];
 
                     var label = document.createElement('label');
 
-                    label.htmlFor = "id";
+
+                    label.htmlFor = "heure"+i;
+                    label.className=" m-2 btn btn-secondary";
 
                     label.appendChild(document.createTextNode(data[i]['heure']));
 
                     myDiv.appendChild(checkbox);
                     myDiv.appendChild(label);
 
-                    $('.check input:checkbox').click(function () {
-                        $('.check input:checkbox').not(this).prop('checked', false);
-                    });
+                    // $('.check input:checkbox').click(function () {
+                    //     $('.check input:checkbox').not(this).prop('checked', false);
+                    // });
 
-                    $('input[type=radio][name=skills]').change(function () {
+                    $('input[type=radio][name=skills]').click(function () {
+                        $(this).prop('checked', true);
                         send(valuesss);
                     });
 
