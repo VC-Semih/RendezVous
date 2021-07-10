@@ -56,6 +56,9 @@
 
             <ul class="navbar-nav ms-md-auto gap-2">
                 {% if is_granted('ROLE_ADMIN') %}
+                    <a class="nav-link rounded" href="{{ path('locked_date_index') }}">
+                        Liste des dates verrouillées
+                    </a>
                     <a class="nav-link rounded" href="{{ path('rendez_vous_index') }}">
                         Liste de rendez-vous
                     </a>

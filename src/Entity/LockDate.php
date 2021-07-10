@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LockDateRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,7 +19,7 @@ class LockDate
     private $id;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", unique=true)
      */
     private $locked_date;
 
@@ -27,12 +28,12 @@ class LockDate
         return $this->id;
     }
 
-    public function getLockedDate(): ?\DateTimeInterface
+    public function getLockedDate(): ?DateTimeInterface
     {
         return $this->locked_date;
     }
 
-    public function setLockedDate(\DateTimeInterface $locked_date): self
+    public function setLockedDate(DateTimeInterface $locked_date): self
     {
         $this->locked_date = $locked_date;
 

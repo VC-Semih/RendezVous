@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locked date index{% endblock %}
+
+{% block body %}
+    {% include 'page/navbar.html.twig' %}
+
+    <div class="container-fluid">
+        <div class="row justify-content-center mt-5 mb-5">
+            {% for message in app.flashes('notice') %}
+                <div class="alert alert-success-soft alert-dismissible fade show" role="alert" id="alert">
+                    {{ message }}
+                </div>
+                <script>
+                    window.setTimeout(function () {
+                        $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                            $(this).remove();
+                        });
+                    }, 5000);
+                </script>
+            {% endfor %}
+            <div class="card shadow-lg border-0 rounded-lg mt-2">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-3">
+                            List des dates verrouillé
+                        </div>
+                        <div class="card-body">
+                            <div class="datatable">
+                                <table class="table table-bordered table-hover" id="dataTable" width="100%"
+                                       cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for lockedDate in lockedDates %}
+                                        <tr>
+                                            <td>{{ lockedDate.id }}</td>
+                                            <td>{{ lockedDate.lockedDate|date('d/m/Y') }}</td>
+                                            <td>
+                                                <div class="col-auto">
+                                                    <a href="{{ path('delete_locked_date', {'id': lockedDate.id}) }}"
+                                                       class="nav-link"><i class="far fa-trash-alt"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="4">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <a id="btnAddLockedDate" href="{{ path('locked_date_add') }}"
+                                   class="btn btn-primary btn-sm">Ajouter une date</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
