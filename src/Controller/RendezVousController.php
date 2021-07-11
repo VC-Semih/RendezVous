@@ -377,22 +377,6 @@ class RendezVousController extends AbstractController
         return $this->redirectToRoute("locked_date_index");
     }
 
-    /**
-     * @Route("/locked_dates/get", name="locked_date_getJSON", methods={"GET","POST"})
-     */
-    public function getDateLockJSON(LockDateRepository $lockDateRepository): Response
-    {
-        $dates = $lockDateRepository->findBy([], ["locked_date" => "DESC"]);
-        $data = array();
-        foreach ($dates as $date){
-            array_push($data, $date->getLockedDate()->format("Y-m-d"));
-        }
-        $response = new JsonResponse($data);
-
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-
-    }
 
     /**
      * @Route("/locked_dates/add", name="locked_date_add", methods={"GET","POST"})

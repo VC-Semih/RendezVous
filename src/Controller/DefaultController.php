@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Horaire;
 use App\Entity\RendezVous;
 use App\Repository\HoraireRepository;
+use App\Repository\LockDateRepository;
 use App\Repository\RendezVousRepository;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -170,6 +171,23 @@ class DefaultController extends AbstractController
         );
 
         return $this->redirectToRoute("mesrdv");
+    }
+
+    /**
+     * @Route("/locked_dates/get", name="locked_date_getJSON", methods={"GET","POST"})
+     */
+    public function getDateLockJSON(LockDateRepository $lockDateRepository): Response
+    {
+        $dates = $lockDateRepository->findBy([], ["locked_date" => "DESC"]);
+        $data = array();
+        foreach ($dates as $date){
+            array_push($data, $date->getLockedDate()->format("Y-m-d"));
+        }
+        $response = new JsonResponse($data);
+
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
     }
 
 
