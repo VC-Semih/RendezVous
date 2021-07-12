@@ -39,11 +39,24 @@ function Geeks() {
 
     $("#getRendez-vous").hide();
     $("#chosed-date").show();
+    var disableDates = [];
+    var url = $('#urlgetlockeddate').val();
+    $.ajax({
+        url:url,
+        type: 'GET',
+        cache: false,
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            disableDates = data;
+        }
+    })
     $('#datepicker').datepicker({
         format: "yyyy-mm-dd",
         language: "fr",
         todayHighlight: true,
         daysOfWeekDisabled: [0, $lundi, $mardi, $mercredi, $jeudi, 5, 6],
+        datesDisabled: disableDates,
         startDate: new Date()
 
     }).on('changeDate', getTodayDate);

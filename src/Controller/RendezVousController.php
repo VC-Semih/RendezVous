@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\LockDate;
 use App\Entity\RendezVous;
 use App\Entity\User;
+use App\Form\LockedDateFormType;
 use App\Form\RegistrationFormType;
 use App\Repository\HoraireRepository;
+use App\Repository\LockDateRepository;
 use App\Repository\RendezVousRepository;
 use App\Repository\UserRepository;
 use App\Security\Authenticator;
@@ -343,6 +346,73 @@ class RendezVousController extends AbstractController
 
         $response->headers->set('Content-Type', 'application/json');
         return $response;
+    }
+
+    /**
+     * @Route("/locked_dates/index", name="locked_date_index", methods={"GET","POST"})
+     */
+    public function dateLockIndex(LockDateRepository $lockDateRepository): Response
+    {
+        return $this->render('admin/lockedDateIndex.html.twig', [
+            'lockedDates' => $lockDateRepository->findBy([], ["locked_date" => "DESC"])
+        ]);
+    }
+
+    /**
+     * @Route("/locked_date/delete/{id}",name="delete_locked_date")
+     */
+    public function delete_lockedDate(Request $request, LockDateRepository $lockDateRepository): Response
+    {
+        $id = $request->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $lockedDateObject = $lockDateRepository->find($id);
+        $em->remove($lockedDateObject);
+        $em->flush();
+
+        $this->addFlash(
+            'notice',
+            'La date n°'.$id.' à été supprimée'
+        );
+
+        return $this->redirectToRoute("locked_date_index");
+    }
+
+
+    /**
+     * @Route("/locked_dates/add", name="locked_date_add", methods={"GET","POST"})
+     */
+    public function dateLockAdd(Request $request, LockDateRepository $lockDateRepository): Response
+    {
+        $lockDate = new lockDate();
+        $form = $this->createForm(LockedDateFormType::class, $lockDate);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $error = false;
+            try{
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($lockDate);
+                $entityManager->flush();
+
+                $this->addFlash(
+                    'notice',
+                    'La date '.$lockDate->getLockedDate()->format('d/m/Y').' a été ajoutée'
+                );
+
+            }catch (\Exception $e){
+                $error = true;
+                $this->addFlash(
+                    'notice',
+                    $e->getMessage()
+                );
+            }
+
+            return $this->redirectToRoute("locked_date_index");
+        }
+
+        return $this->render('admin/lockedDateAdd.html.twig', [
+            'lockedDateForm' => $form->createView(),
+        ]);
     }
 
 
