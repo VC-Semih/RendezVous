@@ -125,4 +125,19 @@ WHERE rendez_vous.user_id ='$user_id'ORDER BY rendez_vous.id DESC";
         return $stmt->fetchAll();
     }
 
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
+     */
+    public function getNumberOfRdvByUserInDay($user, $date){
+        return $this->createQueryBuilder('rendez_vous')
+            ->select('count(rendez_vous)')
+            ->where('rendez_vous.user = :user')
+            ->andWhere('rendez_vous.date = :date')
+            ->setParameter('user', $user)
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
 }

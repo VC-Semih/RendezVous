@@ -88,7 +88,7 @@ class DefaultController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function getinfo(Request  $request,  SerializerInterface $serializer, UserInterface $user,HoraireRepository $horaireRepository,\Swift_Mailer $mailer): Response
+    public function getinfo(Request  $request,  SerializerInterface $serializer, UserInterface $user,HoraireRepository $horaireRepository, RendezVousRepository $rendezVousRepository, \Swift_Mailer $mailer): Response
     {
 
         $service = $request->get('service');
@@ -97,8 +97,9 @@ class DefaultController extends AbstractController
         $data = ["service" => $service ];
         $heureObject = $horaireRepository->findOneBy(array('heure' => $heure)); //Gets the heureObject by value
 
+        $nb = $rendezVousRepository->getNumberOfRdvByUserInDay($this->getUser(), $date)[1];
 
-        if(!empty($service) or !empty($date) or !empty($heureObject))
+        if(!empty($service) && !empty($date) && !empty($heureObject) && $nb < 4 )
         {
             $rdv = new RendezVous();
             $rdv->setDate(\DateTime::createFromFormat('Y-m-d', $date));
@@ -112,9 +113,11 @@ class DefaultController extends AbstractController
             $entityManager->persist($rdv);
             $entityManager->flush();
 
+
+
             $this->addFlash(
                 'notice',
-                'Votre rendez-vous pour le service '.$service.' le '.$date.' '.$heure.' a été pris !'
+                'Votre rendez-vous pour le service '.$service.' le '.$date.' '.$heure.' a été pris ! '.$nb.'/3 rendez vous pour aujourd\'hui'
             );
 
             $message = (new \Swift_Message('Serivce Rendez-vous '))
@@ -134,6 +137,11 @@ class DefaultController extends AbstractController
 
           $mailer->send($message);
 
+        }elseif ($nb > 3){
+            $this->addFlash(
+                'notice',
+                'Vous avez déjà plus de 3 rendez vous pour le: '.$date.', votre rendez-vous à été refusé !'
+            );
         }
 
 
