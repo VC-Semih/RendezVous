@@ -104,25 +104,16 @@ WHERE rendez_vous.user_id ='$user_id'ORDER BY rendez_vous.id DESC";
         return $stmt->fetchAll();
     }
 
-    public function getRdvByRange($dateDebut, $dateFin)
+    public function getRdvByRange($date)
     {
-        $rawSQL = '';
-        if ($dateDebut === $dateFin) {
 
-            $datetime = DateTime::createFromFormat('d/m/Y', $dateDebut);
-
-            $rawSQL = "SELECT rendez_vous.date, rendez_vous.service, user.username, user.email, horaire.heure 
+        $rawSQL = "SELECT rendez_vous.date, rendez_vous.service, user.username, user.email, horaire.heure 
         FROM `rendez_vous` INNER JOIN user on rendez_vous.user_id = user.id INNER JOIN horaire on rendez_vous.horaire_id = horaire.id 
-        WHERE date = '" . $datetime->format('Y-m-d') . "'";
-        } else {
-            $rawSQL = "SELECT rendez_vous.date, rendez_vous.service, user.username, user.email, horaire.heure 
-        FROM `rendez_vous` INNER JOIN user on rendez_vous.user_id = user.id INNER JOIN horaire on rendez_vous.horaire_id = horaire.id 
-        WHERE date BETWEEN '" . $dateDebut . "' AND '" . $dateFin . "'";
-        }
+        WHERE date = '" . $date . "'";
         $stmt = false;
         try {
             $stmt = $this->getEntityManager()->getConnection()->prepare($rawSQL);
-        } catch (Exception $e) {
+        } catch (\Doctrine\DBAL\Exception $e) {
             return 'ERROR WHILE PREPARING REQUEST';
         }
         try {

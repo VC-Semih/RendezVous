@@ -29,12 +29,8 @@
                             <form id="formexport" action="{{ path('rdv_generate') }}" method="POST" target="_blank"  class="w-100">
                                 <div class="row" style="width: 100%">
                                     <div class="col-4">
-                                        <input class="form-control form-control-sm" id="startDate" name="date_debut"
-                                               placeholder="Date de début"/>
-                                    </div>
-                                    <div class="col-4">
-                                        <input class="form-control form-control-sm" id="endDate" name="date_fin"
-                                               placeholder="Date de fin"/>
+                                        <input class="form-control form-control-sm" id="startDate" name="date"
+                                               placeholder="Date"/>
                                     </div>
                                     <div class="col-2">
                                         <input id="btnpdf" class="btn btn-primary btn-sm" name="action" value="Exporter PDF"
@@ -46,13 +42,10 @@
                             <form id="formexportnow" action="{{ path('rdv_generate') }}" method="POST" target="_blank"  class="w-100">
                                 <div class="row" style="width: 100%">
                                     <div class="col-4">
-                                        <input hidden id="startDate" name="date_debut" value="{{ "now"|date("d/m/Y") }}"/>
-                                    </div>
-                                    <div class="col-4">
-                                        <input hidden id="endDate" name="date_fin" value="{{ "now"|date("d/m/Y") }}"/>
+                                        <input hidden id="startDate" name="date" value="{{ "now"|date_modify("+1 day")|date("Y/m/d") }}"/>
                                     </div>
                                     <div class="col-2">
-                                        <input id="btnpdfnow" class="btn btn-primary btn-sm" name="action" value="Exporter les rendez-vous d'aujourd'hui en PDF"
+                                        <input id="btnpdfnow" class="btn btn-primary btn-sm" name="action" value="Exporter les rendez-vous de demain en PDF"
                                                type="submit"/>
                                     </div>
                                 </div>
