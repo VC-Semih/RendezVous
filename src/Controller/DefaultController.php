@@ -117,7 +117,7 @@ class DefaultController extends AbstractController
 
             $this->addFlash(
                 'notice',
-                'Votre rendez-vous pour le service '.$service.' le '.$date.' '.$heure.' a été pris ! '.$nb.'/3 rendez vous pour aujourd\'hui'
+                'Votre rendez-vous pour le service '.$service.' le '.$date.' '.$heure.' a été pris ! '.($nb+1).'/3 rendez vous pour aujourd\'hui'
             );
 
             $message = (new \Swift_Message('Serivce Rendez-vous '))
