@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\RendezVous;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Driver\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -42,16 +44,28 @@ class RendezVousRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('r')
             ->andWhere('r.date = :val')
-               ->setParameter('val',$date)
+            ->setParameter('val', $date)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
+
+    public function findByServiceAndDate($service, $date)
+    {
+        return $this->createQueryBuilder('rendez_vous')
+            ->andWhere('rendez_vous.date = :date')
+            ->andWhere('rendez_vous.service = :service')
+            ->setParameter('date', $date)
+            ->setParameter('service', $service)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function mesrdv($user_id)
     {
 
-        $rawSQL ="SELECT * FROM rendez_vous INNER join horaire on rendez_vous.horaire_id = horaire.id 
-            WHERE rendez_vous.user_id ='$user_id'ORDER BY rendez_vous.id DESC";
+        $rawSQL = "SELECT rendez_vous.id as rdvid, rendez_vous.date, rendez_vous.service,horaire.* 
+FROM rendez_vous INNER join horaire on rendez_vous.horaire_id = horaire.id
+WHERE rendez_vous.user_id ='$user_id'ORDER BY rendez_vous.id DESC";
         $stmt = false;
         try {
             $stmt = $this->getEntityManager()->getConnection()->prepare($rawSQL);
@@ -60,7 +74,7 @@ class RendezVousRepository extends ServiceEntityRepository
         }
         try {
             $stmt->execute();
-        } catch (\Doctrine\DBAL\Driver\Exception $e) {
+        } catch (Exception $e) {
             return 'ERROR WHILE EXECUTING REQUEST';
         }
 
@@ -71,7 +85,7 @@ class RendezVousRepository extends ServiceEntityRepository
     public function toutRdv()
     {
 
-        $rawSQL ="SELECT rendez_vous.id as rdv_id, rendez_vous.service, rendez_vous.date,
+        $rawSQL = "SELECT rendez_vous.id as rdv_id, rendez_vous.service, rendez_vous.date,
        user.*,horaire.* FROM rendez_vous INNER join user on rendez_vous.user_id = user.id 
            INNER join horaire on rendez_vous.horaire_id = horaire.id 
     WHERE rendez_vous.date > now() - INTERVAL 30 day ORDER BY rendez_vous.id DESC";
@@ -83,7 +97,37 @@ class RendezVousRepository extends ServiceEntityRepository
         }
         try {
             $stmt->execute();
-        } catch (\Doctrine\DBAL\Driver\Exception $e) {
+        } catch (Exception $e) {
+            return 'ERROR WHILE EXECUTING REQUEST';
+        }
+
+        return $stmt->fetchAll();
+    }
+
+    public function getRdvByRange($dateDebut, $dateFin)
+    {
+        $rawSQL = '';
+        if ($dateDebut === $dateFin) {
+
+            $datetime = DateTime::createFromFormat('d/m/Y', $dateDebut);
+
+            $rawSQL = "SELECT rendez_vous.date, rendez_vous.service, user.username, user.email, horaire.heure 
+        FROM `rendez_vous` INNER JOIN user on rendez_vous.user_id = user.id INNER JOIN horaire on rendez_vous.horaire_id = horaire.id 
+        WHERE date = '" . $datetime->format('Y-m-d') . "'";
+        } else {
+            $rawSQL = "SELECT rendez_vous.date, rendez_vous.service, user.username, user.email, horaire.heure 
+        FROM `rendez_vous` INNER JOIN user on rendez_vous.user_id = user.id INNER JOIN horaire on rendez_vous.horaire_id = horaire.id 
+        WHERE date BETWEEN '" . $dateDebut . "' AND '" . $dateFin . "'";
+        }
+        $stmt = false;
+        try {
+            $stmt = $this->getEntityManager()->getConnection()->prepare($rawSQL);
+        } catch (Exception $e) {
+            return 'ERROR WHILE PREPARING REQUEST';
+        }
+        try {
+            $stmt->execute();
+        } catch (Exception $e) {
             return 'ERROR WHILE EXECUTING REQUEST';
         }
 

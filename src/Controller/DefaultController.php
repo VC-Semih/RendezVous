@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Horaire;
 use App\Entity\RendezVous;
 use App\Repository\HoraireRepository;
+use App\Repository\LockDateRepository;
 use App\Repository\RendezVousRepository;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -49,12 +50,13 @@ class DefaultController extends AbstractController
     {
 
         $date = $request->get('date');
+        $service = $request->get('service');
 
         $em = $this->getDoctrine()->getManager();
 
         $horaires = $em->getRepository(Horaire::class)->findAll();
 
-        $listeRdv= $em->getRepository(RendezVous::class)->findByDate($date);
+        $listeRdv= $em->getRepository(RendezVous::class)->findByServiceAndDate($service, $date);
 
 
         $idToRemove = [];
@@ -110,6 +112,11 @@ class DefaultController extends AbstractController
             $entityManager->persist($rdv);
             $entityManager->flush();
 
+            $this->addFlash(
+                'notice',
+                'Votre rendez-vous pour le service '.$service.' le '.$date.' '.$heure.' a été pris !'
+            );
+
             $message = (new \Swift_Message('Serivce Rendez-vous '))
                 ->setFrom('rendez-vous@amb-afg.fr')
                 ->setTo($this->getUser()->getEmail())
@@ -119,7 +126,7 @@ class DefaultController extends AbstractController
                         [
                             'service' => $service,
                             'date'=> $date,
-                            '$heure'=> $heure
+                            'heure'=> $heure
                         ]
                     ),
                     'text/html'
@@ -143,6 +150,44 @@ class DefaultController extends AbstractController
         return $this->render("page/mesRdv.html.twig",array(
             'rdvs' => $rendezVousRepository->mesrdv($user_id)
         ));
+    }
+    /**
+     * @Route("/annuler_rdv/{id}",name="delete_rdv_user")
+     */
+    public function delete_rdv_user(Request $request,RendezVousRepository $repository):Response
+    {
+        $id = $request->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $rdv = $em -> getRepository('App:RendezVous')->find($id);
+        $rdvService = $rdv->getService();
+        $rdvDate = $rdv->getDate()->format('d/m/Y');
+        $rdvHeure = $rdv->getHoraire();
+        $em -> remove($rdv);
+        $em -> flush();
+
+        $this->addFlash(
+            'notice',
+            'Votre rendez vous pour le service '.$rdvService.' le '.$rdvDate.' '.$rdvHeure.' a été supprimé'
+        );
+
+        return $this->redirectToRoute("mesrdv");
+    }
+
+    /**
+     * @Route("/locked_dates/get", name="locked_date_getJSON", methods={"GET","POST"})
+     */
+    public function getDateLockJSON(LockDateRepository $lockDateRepository): Response
+    {
+        $dates = $lockDateRepository->findBy([], ["locked_date" => "DESC"]);
+        $data = array();
+        foreach ($dates as $date){
+            array_push($data, $date->getLockedDate()->format("Y-m-d"));
+        }
+        $response = new JsonResponse($data);
+
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
     }
 
 

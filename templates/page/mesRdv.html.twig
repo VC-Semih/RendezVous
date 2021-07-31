@@ -1,18 +1,30 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     {% include 'page/navbar.html.twig' %}
-    <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-lg-5">
+                {% for message in app.flashes('notice') %}
+                    <div class="alert alert-success-soft alert-dismissible fade show" role="alert" id="alert">
+                        {{ message }}
+                    </div>
+                    <script>
+                        window.setTimeout(function() {
+                            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                                $(this).remove();
+                            });
+                        }, 3000);
+                    </script>
+                {% endfor %}
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                     <div class="card-body">
 
-                        <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered table-hover"  width="100%" cellspacing="0">
                             <thead>
                             <tr>
                                 <th scope="col">Service</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Heure</th>
+                                <th scope="col">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -21,6 +33,32 @@
                                     <td>{{ rdv.service }}</td>
                                     <td>{{ rdv.date|date("d/m/Y") }}</td>
                                     <td>{{ rdv.heure }}</td>
+                                    <td>
+                                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="far fa-trash-alt"></i></a>
+                                    </td>
+
+                                </tr>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Détails du rendez-vous</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                êtes vous sur de vouloir annluer ?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Non</button>
+                                                <a class="btn btn-sm btn-primary" href="{{ path('delete_rdv_user', {'id': rdv.rdvid}) }}">Oui</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center">Vous n'avez aucun rendez-vous</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -31,6 +69,5 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 {% endblock %}
