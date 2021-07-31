@@ -48,9 +48,8 @@ class RendezVousController extends AbstractController
      * @return Response
      */
     public function generatePdf(Request $request, RendezVousRepository $rendezVousRepository){
-        $dateDebut = $request->get('date_debut');
-        $dateFin = $request->get('date_fin');
-        $data = $rendezVousRepository->getRdvByRange($dateDebut, $dateFin);
+        $date = $request->get('date');
+        $data = $rendezVousRepository->getRdvByDate($date);
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
 
@@ -59,7 +58,8 @@ class RendezVousController extends AbstractController
 
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('rendez_vous/pdf.html.twig', [
-            'rendez_vouses' => $data
+            'rendez_vouses' => $data,
+            'selected_date' => $date
         ]);
 
         // Load HTML to Dompdf
