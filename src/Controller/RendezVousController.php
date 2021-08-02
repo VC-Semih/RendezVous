@@ -195,12 +195,11 @@ class RendezVousController extends AbstractController
         $heureObject = $horaireRepository->findOneBy(array('heure' => $heure));
 
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('App:User')->find($userid);
+        $user = $em->getRepository(User::class)->find($userid);
 
         $userinfo = $userRepository->userInfo($userid);
 
         $username = $userinfo[0]['username'];
-        $userEmail = $userinfo[0]['email'];
 
 
         if (!empty($service) || !empty($date) || !empty($heureObject)) {
@@ -210,37 +209,14 @@ class RendezVousController extends AbstractController
             $rdv->setService($service);
             $rdv->setHoraire($heureObject);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($rdv);
-            $entityManager->flush();
+
+            $em->persist($rdv);
+            $em->flush();
 
             $this->addFlash(
                 'notice',
                 'Le rendez-vous pour l\'utilisateur: ' . $username . ' le service: ' . $service . ' à ' . $heure . ' à été pris !'
             );
-
-            try {
-                $message = (new Swift_Message('Service de rendez-vous '))
-                    ->setFrom('rendez-vous@amb-afg.fr')
-                    ->setTo($userEmail)
-                    ->setBody(
-                        $this->renderView(
-                            'rendez_vous/mail.html.twig',
-                            [
-                                'username' => $username,
-                                'service' => $service,
-                                'date' => $date,
-                                'heure' => $heure
-                            ]
-                        ),
-                        'text/html'
-                    );
-
-                $mailer->send($message);
-            } catch (\Exception $exception) {
-
-            }
-
 
         }
 
@@ -423,6 +399,35 @@ class RendezVousController extends AbstractController
             'lockedDateForm' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/users","app_users")
+     */
+    public function getAllUsers(UserRepository $repository)
+    {
+        return $this->render('admin/users.html.twig',[
+            'users'=> $repository->findAll(),
+        ]);
+    }
+    /**
+     * @Route("/delete_user/{id}",name="delete_user")
+     */
+    public function delete_rdv_user(Request $request,UserRepository $repository):Response
+    {
+        $id = $request->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $rdv = $em -> getRepository('App:User')->find($id);
+        $em -> remove($rdv);
+        $em -> flush();
+
+        $this->addFlash(
+            'notice',
+            'Utilisateur a bien été supprimé'
+        );
+
+        return $this->redirectToRoute("app_users");
+    }
+
 
 
 }
