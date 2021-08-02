@@ -19,13 +19,11 @@ class ResetPasswordType extends AbstractType
 
 
         $builder
-
             ->add('oldPassword', PasswordType::class, array(
-
+                'label' => 'Ancien mot de passe',
                 'mapped' => false
 
             ))
-
             ->add('plainPassword', RepeatedType::class, array(
 
                 'type' => PasswordType::class,
@@ -45,7 +43,6 @@ class ResetPasswordType extends AbstractType
                 'required' => true,
 
             ))
-
             ->add('submit', SubmitType::class, array(
 
                 'attr' => array(
@@ -54,9 +51,7 @@ class ResetPasswordType extends AbstractType
 
                 )
 
-            ))
-
-        ;
+            ));
 
     }
 
