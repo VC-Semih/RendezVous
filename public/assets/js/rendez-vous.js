@@ -137,7 +137,7 @@ function rdv() {
         url: url,
         type: 'POST',
         cache: false,
-        dataType: 'json',
+        contentType: 'json',
         data: {
             service: valuesss,
             date: $('#datepicker').datepicker('getFormattedDate'),
@@ -145,6 +145,7 @@ function rdv() {
         },
         async: true,
         success: function (data) {
+            console.log(data)
             if (data != null && data != '') {
                 console.log(data)
                 location.href = homepage;

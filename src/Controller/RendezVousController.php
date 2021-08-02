@@ -72,7 +72,7 @@ class RendezVousController extends AbstractController
         $dompdf->render();
 
         // Output the generated PDF to Browser (inline view)
-        $dompdf->stream("dump.pdf", [
+        $dompdf->stream("RendezVous.pdf", [
             "Attachment" => false
         ]);
 
