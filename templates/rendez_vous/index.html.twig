@@ -22,14 +22,15 @@
             <div class="card shadow-lg border-0 rounded-lg mt-2">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-3">
-                            Liste des rendez-vous
+                        <div class="col-12">
+                            <div class="card-title"> Liste des rendez-vous</div>
+
                         </div>
-                        <div class="col-3">
-                            <form id="formexport" action="{{ path('rdv_generate') }}" method="POST" target="_blank"  class="w-100">
-                                <div class="row" style="width: 100%">
-                                    <div class="col-4">
-                                        <input class="form-control form-control-sm" id="startDate" name="date"
+                        <div class="col-6">
+                            <form id="formexport" action="{{ path('rdv_generate') }}" method="POST" target="_blank"  class="w-100 d-none d-md-block">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <input class="form-control form-control-sm" id="startDate" autocomplete="off" name="date"
                                                placeholder="Date"/>
                                     </div>
                                     <div class="col-2">
@@ -39,21 +40,21 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-2">
-                            <form id="formexportnow" action="{{ path('rdv_generate') }}" method="POST" target="_blank"  class="w-100">
-                                <div class="row" style="width: 100%">
-                                    <div class="col-4">
+                        <div class="col-6">
+                            <form id="formexportnow" action="{{ path('rdv_generate') }}" method="POST" target="_blank"  class="w-100 d-none d-md-block">
+                                <div class="row float-right">
+                                    <div class="col-auto">
                                         <input hidden id="startDate" name="date" value="{{ "now"|date_modify("+1 day")|date("Y/m/d") }}"/>
                                     </div>
                                     <div class="col-2">
-                                        <input id="btnpdfnow" class="btn btn-info btn-sm" name="action" value="Exporter les rendez-vous d'aujourd'hui en PDF"
+                                        <input id="btnpdfnow" class="btn btn-info btn-sm" name="action" value="Exporter les rendez-vous de demain"
                                                type="submit"/>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="card-body">
-                            <div class="datatable">
+                            <div class="datatable table-responsive">
                                 <table class="table table-bordered table-hover" id="dataTable" width="100%"
                                        cellspacing="0">
                                     <thead>
