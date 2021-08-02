@@ -1,37 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>{% block title %}L'Afghanistan en France{% endblock %}</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>{% block title %}L'Ambassade d'Afghanistan en France{% endblock %}</title>
 
-        {% block stylesheets %}
-            <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
-            <link rel="stylesheet" href="{{ asset('assets/bootstrap-5.0.0-beta3-dist/css/bootstrap.min.css') }}">
-            <link rel="stylesheet" href="{{ asset('assets/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.min.css') }}">
-            <link rel="stylesheet" href="{{ asset('assets/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.standalone.css') }}">
-            <link rel="stylesheet" href="{{ asset('assets/main.css') }}">
-            <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
+    {# FAVICON #}
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/favicon/favicon-16x16.png') }}">
 
 
-            <script src="{{ asset('assets/js/fontawesome.js') }}"></script>
+    {% block stylesheets %}
+        <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet"
+              crossorigin="anonymous"/>
+        <link rel="stylesheet" href="{{ asset('assets/bootstrap-5.0.0-beta3-dist/css/bootstrap.min.css') }}">
+        <link rel="stylesheet"
+              href="{{ asset('assets/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.min.css') }}">
+        <link rel="stylesheet"
+              href="{{ asset('assets/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.standalone.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/main.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
 
-        {% endblock %}
 
-        {% block javascripts %}
-            <script src="{{ asset('assets/bootstrap-5.0.0-beta3-dist/js/bootstrap.min.js') }}"></script>
-            <script src="{{ asset('assets/Jquery.js') }}"></script>
-            <script src="{{ asset('assets/js/scripts.js') }}"></script>
-            <script src="{{ asset('assets/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js') }}"></script>
-            <script src="{{ asset('assets/bootstrap-datepicker-1.9.0-dist/locales/bootstrap-datepicker.fr.min.js') }}"></script>
-            <script src="{{ asset('assets/js/rendez-vous.js')}}"></script>
-            <script src="{{ asset('assets/js/export.js')}}"></script>
-            <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-            <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-            <script src="{{ asset('assets/js/dataTable.js') }}" crossorigin="anonymous"></script>
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+        <script src="{{ asset('assets/js/fontawesome.js') }}"></script>
+
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('assets/bootstrap-5.0.0-beta3-dist/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/Jquery.js') }}"></script>
+        <script src="{{ asset('assets/js/scripts.js') }}"></script>
+        <script src="{{ asset('assets/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js') }}"></script>
+        <script src="{{ asset('assets/bootstrap-datepicker-1.9.0-dist/locales/bootstrap-datepicker.fr.min.js') }}"></script>
+        <script src="{{ asset('assets/js/rendez-vous.js') }}"></script>
+        <script src="{{ asset('assets/js/export.js') }}"></script>
+        <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"
+                crossorigin="anonymous"></script>
+        <script src="{{ asset('assets/js/dataTable.js') }}" crossorigin="anonymous"></script>
+    {% endblock %}
+</head>
+<body>
+{% block body %}{% endblock %}
+</body>
 </html>

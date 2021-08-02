@@ -69,7 +69,7 @@
 
                     <div class="col text-center mb-3 mt-3" id="verify">
                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Ajouter une Personne
+                            Sélectionnez un interlocuteur
                         </button>
                     </div>
                 </div>
@@ -88,11 +88,12 @@
                     <div class="form-group">
                     <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Recherchez un nom.." title="Type in a name">
                     </div>
-                    <table class="table table-bordered table-hover table-responsive" id="myTable" width="100%" cellspacing="0">
+                    <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="myTable" width="100%" cellspacing="0">
                         <thead>
                         <tr>
-                            <th scope="col">Email</th>
                             <th scope="col">Nom d'utilisateur</th>
+                            <th scope="col">Email</th>
                             <th scope="col">Action</th>
                         </tr>
                         </thead>
@@ -109,7 +110,7 @@
                             </tr>
                         {% endfor %}
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-pink" data-bs-dismiss="modal">Annuler</button>

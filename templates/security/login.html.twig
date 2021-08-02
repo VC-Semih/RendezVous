@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
 
@@ -17,17 +17,17 @@
 
                             {% if app.user %}
                                 <div class="mb-3">
-                                    You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                                    Vous êtes connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
                                 </div>
                             {% endif %}
                             <div class="form-group">
-                                <label class="text-left" for="inputEmail">Email</label>
+                                <label class="text-left" for="inputEmail">Mail</label>
                                 <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
                                        class="form-control fadeIn second" required autofocus>
                             </div>
                             <div class="form-group">
 
-                                <label class="text-left" for="inputPassword">Password</label>
+                                <label class="text-left" for="inputPassword">Mot de passe</label>
                                 <input type="password" name="password" id="inputPassword"
                                        class="form-control fadeIn third" required>
                             </div>
@@ -53,8 +53,8 @@
                         </form>
                     </div>
                     <div class="card-footer text-center">
-                        <div class="small"><a href="{{ path('app_register') }}">{% trans %}Besoin d'un compte? S'inscrire!{% endtrans %}</a></div>
-                        <div class="small"><a href="{{ path('app_forgot_password_request') }}">{% trans %}J'ai oublié mon mot de passe!{% endtrans %}</a></div>
+                        <div class="small"><a href="{{ path('app_register') }}">{% trans %}Besoin d'un compte ? S'inscrire !{% endtrans %}</a></div>
+                        <div class="small"><a href="{{ path('app_forgot_password_request') }}">{% trans %}J'ai oublié mon mot de passe !{% endtrans %}</a></div>
                     </div>
                 </div>
             </div>

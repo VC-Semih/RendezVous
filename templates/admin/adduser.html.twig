@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Inscription{% endblock %}
 
 {% block body %}
+    {% include 'page/navbar.html.twig' %}
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
@@ -12,7 +13,7 @@
                 <!-- Basic login form-->
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                     <div class="card-body">
-                        <h1>Register</h1>
+                        <h1>Inscription</h1>
 
                         {{ form_start(registrationForm) }}
 
@@ -27,7 +28,7 @@
                         </div>
 
 
-                        <button  type="submit" class="btn btn-sm btn-primary">Add user</button>
+                        <button  type="submit" class="btn btn-sm btn-primary">Ajouter un utilisateur</button>
                         {{ form_end(registrationForm) }}
                         <br>
                     </div>

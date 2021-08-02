@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Locked date index{% endblock %}
+{% block title %}Liste des dates verrouillées{% endblock %}
 
 {% block body %}
     {% include 'page/navbar.html.twig' %}
@@ -23,7 +23,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-3">
-                            List des dates verrouillé
+                            Liste des dates verrouillées
                         </div>
                         <div class="card-body">
                             <div class="datatable">
@@ -50,7 +50,7 @@
                                         </tr>
                                     {% else %}
                                         <tr>
-                                            <td colspan="4">no records found</td>
+                                            <td colspan="4">Aucun enregistrement trouvé</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

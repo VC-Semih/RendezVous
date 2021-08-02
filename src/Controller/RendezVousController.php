@@ -47,7 +47,8 @@ class RendezVousController extends AbstractController
      * @param RendezVousRepository $rendezVousRepository
      * @return Response
      */
-    public function generatePdf(Request $request, RendezVousRepository $rendezVousRepository){
+    public function generatePdf(Request $request, RendezVousRepository $rendezVousRepository)
+    {
         $date = $request->get('date');
         $data = $rendezVousRepository->getRdvByDate($date);
         $pdfOptions = new Options();
@@ -111,7 +112,7 @@ class RendezVousController extends AbstractController
 
             $this->addFlash(
                 'notice',
-                'L\'utilisateur '.$user->getUsername().' a été ajouté !'
+                'L\'utilisateur ' . $user->getUsername() . ' a été ajouté !'
             );
 
             return $this->redirectToRoute('adminAddRdv');
@@ -136,10 +137,10 @@ class RendezVousController extends AbstractController
 
                 $this->addFlash(
                     'notice',
-                    'Un email de rappel a été envoyé à '.$username.' à l\'adresse mail: '.$rdv->getUser()->getEmail()
+                    'Un rappel a été envoyé à ' . $username . ' à l\'adresse mail: ' . $rdv->getUser()->getEmail()
                 );
 
-                $message = (new Swift_Message('Rappel Rendez-vous '))
+                $message = (new Swift_Message('Rappel rendez-vous '))
                     ->setFrom('rendez-vous@amb-afg.fr')
                     ->setTo($rdv->getUser()->getEmail())
                     ->setBody(
@@ -177,9 +178,12 @@ class RendezVousController extends AbstractController
     /**
      * @Route("/rdvadmin" ,name="rdvadmin",methods={"GET", "POST"})
      * @param Request $request
+     * @param HoraireRepository $horaireRepository
+     * @param UserRepository $userRepository
+     * @param Swift_Mailer $mailer
      * @return Response
      */
-    public function adminrdv(Request $request, SerializerInterface $serializer, HoraireRepository $horaireRepository, UserRepository $userRepository, Swift_Mailer $mailer): Response
+    public function adminrdv(Request $request, HoraireRepository $horaireRepository, UserRepository $userRepository, Swift_Mailer $mailer): Response
     {
         $userid = $request->get('getUser');
         $service = $request->get('getService');
@@ -199,7 +203,7 @@ class RendezVousController extends AbstractController
         $userEmail = $userinfo[0]['email'];
 
 
-        if (!empty($service) or !empty($date) or !empty($heureObject)) {
+        if (!empty($service) || !empty($date) || !empty($heureObject)) {
             $rdv = new RendezVous();
             $rdv->setDate(DateTime::createFromFormat('Y-m-d', $date));
             $rdv->setUser($user);
@@ -215,23 +219,28 @@ class RendezVousController extends AbstractController
                 'Le rendez-vous pour l\'utilisateur: ' . $username . ' le service: ' . $service . ' à ' . $heure . ' à été pris !'
             );
 
-            $message = (new Swift_Message('Serivce Rendez-vous '))
-                ->setFrom('rendez-vous@amb-afg.fr')
-                ->setTo($userEmail)
-                ->setBody(
-                    $this->renderView(
-                        'rendez_vous/mail.html.twig',
-                        [
-                            'username' => $username,
-                            'service' => $service,
-                            'date' => $date,
-                            'heure' => $heure
-                        ]
-                    ),
-                    'text/html'
-                );
+            try {
+                $message = (new Swift_Message('Service de rendez-vous '))
+                    ->setFrom('rendez-vous@amb-afg.fr')
+                    ->setTo($userEmail)
+                    ->setBody(
+                        $this->renderView(
+                            'rendez_vous/mail.html.twig',
+                            [
+                                'username' => $username,
+                                'service' => $service,
+                                'date' => $date,
+                                'heure' => $heure
+                            ]
+                        ),
+                        'text/html'
+                    );
 
-            $mailer->send($message);
+                $mailer->send($message);
+            } catch (\Exception $exception) {
+
+            }
+
 
         }
 
@@ -254,7 +263,7 @@ class RendezVousController extends AbstractController
 
         $this->addFlash(
             'notice',
-            'Le rendez-vous n°'.$id.' à été supprimé'
+            'Le rendez-vous n°' . $id . ' à été supprimé'
         );
 
         return $this->redirectToRoute("rendez_vous_index");
@@ -324,7 +333,7 @@ class RendezVousController extends AbstractController
                 'Le rendez-vous pour l\'utilisateur: ' . $rdv->getUser()->getUsername() . ' le service: ' . $service . ' à ' . $heure . ' à été pris !'
             );
 
-            $message = (new Swift_Message('Serivce Rendez-vous '))
+            $message = (new Swift_Message('Serivce rendez-vous '))
                 ->setFrom('rendez-vous@amb-afg.fr')
                 ->setTo($rdv->getUser()->getEmail())
                 ->setBody(
@@ -371,7 +380,7 @@ class RendezVousController extends AbstractController
 
         $this->addFlash(
             'notice',
-            'La date n°'.$id.' à été supprimée'
+            'La date n°' . $id . ' à été supprimée'
         );
 
         return $this->redirectToRoute("locked_date_index");
@@ -389,17 +398,17 @@ class RendezVousController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $error = false;
-            try{
+            try {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($lockDate);
                 $entityManager->flush();
 
                 $this->addFlash(
                     'notice',
-                    'La date '.$lockDate->getLockedDate()->format('d/m/Y').' a été ajoutée'
+                    'La date ' . $lockDate->getLockedDate()->format('d/m/Y') . ' a été ajoutée'
                 );
 
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 $error = true;
                 $this->addFlash(
                     'notice',
@@ -414,8 +423,6 @@ class RendezVousController extends AbstractController
             'lockedDateForm' => $form->createView(),
         ]);
     }
-
-
 
 
 }
