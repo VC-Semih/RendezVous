@@ -44,8 +44,8 @@ body
     margin-left: -30px;
 }
 td.today {
-    background-color: #93d1e3;
-    color: white;
+    background-color: #93d1e3;!important;
+    color: white!important;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
