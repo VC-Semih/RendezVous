@@ -52,8 +52,19 @@ class DefaultController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        $horaires = $em->getRepository(Horaire::class)->findAll();
+        $horaires = [];
 
+        if($service === "Procuration") // If the service is Procuration
+        {
+            $today = date('Y/m/d'); //Get's today date
+            $nbProcuration = $em->getRepository(RendezVous::class)->getNbOfServiceInDay($service, $today)[1]; //Gets the number of times a procuration has been taken for today
+            if($nbProcuration < 6) //Procuration service can only take 6 rdv per day
+            {
+                $horaires = $em->getRepository(Horaire::class)->getFullHeures(); //Get's only the full hours (9:00, 10:00 etc)
+            }
+        }else{
+            $horaires = $em->getRepository(Horaire::class)->findAll();
+        }
         $listeRdv = $em->getRepository(RendezVous::class)->findByServiceAndDate($service, $date);
 
 
@@ -72,7 +83,7 @@ class DefaultController extends AbstractController
             }
         }
         $idToKeep = array_diff($idToKeep, $idToRemove);
-        $freeHoraire = $em->getRepository(Horaire::class)->findBy(array('id' => $idToKeep));
+        $freeHoraire = $em->getRepository(Horaire::class)->findBy(array('id' => $idToKeep),array('heure'=>'ASC'));
 
         $data = $serializer->serialize($freeHoraire, 'json');
 

@@ -213,6 +213,23 @@ class RendezVousController extends AbstractController
             $em->persist($rdv);
             $em->flush();
 
+            $message = (new \Swift_Message('Serivce rendez-vous '))
+                ->setFrom('rendez-vous@amb-afg.fr')
+                ->setTo($this->getUser()->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'page/mail.html.twig',
+                        [
+                            'service' => $service,
+                            'date' => $date,
+                            'heure' => $heure
+                        ]
+                    ),
+                    'text/html'
+                );
+
+            $mailer->send($message);
+
             $this->addFlash(
                 'notice',
                 'Le rendez-vous pour l\'utilisateur: ' . $username . ' le service: ' . $service . ' à ' . $heure . ' à été pris !'
