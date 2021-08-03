@@ -67,10 +67,8 @@ class HoraireRepository extends ServiceEntityRepository
     }
     public function getActiveHeure($idToKeep){
         return $this->createQueryBuilder('horaire')
-            ->where('horaire.heure LIKE :full')
-            ->andWhere('horaire.id in (:id)')
+            ->Where('horaire.id in (:id)')
             ->setParameter('id',$idToKeep)
-            ->setParameter(':full', "%:00")
             ->orderBy('horaire.heure','ASC')
             ->getQuery()
             ->getResult();

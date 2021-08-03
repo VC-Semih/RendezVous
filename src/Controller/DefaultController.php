@@ -87,6 +87,8 @@ class DefaultController extends AbstractController
 
 
 
+
+
         $data = $serializer->serialize($freeHoraire, 'json');
 
         $response = new Response($data);
