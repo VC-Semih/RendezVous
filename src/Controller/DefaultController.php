@@ -61,21 +61,44 @@ class DefaultController extends AbstractController
 
         $horaires = [];
 
-        if($service === "Procuration") // If the service is Procuration
-        {
+        $now = new \DateTime('now');
+        $today = $now->format('Y-m-d');
+        $todayHour = $now->format('H');
+        $todayMinute = $now->format('i');
+
+        $isToday = $date === $today;
+
+        // If the service is Procuration
+        if ($service === "Procuration") {
             $today = date('Y/m/d'); //Get's today date
             $nbProcuration = $em->getRepository(RendezVous::class)->getNbOfServiceInDay($service, $today)[1];//Gets the number of times a procuration has been taken for today
 
-            if($nbProcuration < 5) //Procuration service can only take 6 rdv per day
+            if ($nbProcuration < 5) //Procuration service can only take 6 rdv per day
             {
                 $horaires = $em->getRepository(Horaire::class)->getFullHeures(); //Get's only the full hours (9:00, 10:00 etc)
             }
-        }else{
+        } else {
             $horaires = $em->getRepository(Horaire::class)->findAll();
         }
         $listeRdv = $em->getRepository(RendezVous::class)->findByServiceAndDate($service, $date);
 
+        if ($isToday) {
+            $cpt =0;
+            foreach ($horaires as $horaire) {
+                $heure = explode(":", $horaire->getHeure());
 
+                if ((int)$heure[0] < (int)$todayHour) {
+                    unset($horaires[$cpt]);
+                } elseif ((int)($heure[0]) === (int)($todayHour)) {
+                    if ((int)($heure[1]) < (int)($todayMinute)) {
+                        unset($horaires[$cpt]);
+                    }
+
+                }
+                $cpt++;
+            }
+        }
+dump($horaires);
         $idToRemove = [];
         $idToKeep = [];
         foreach ($horaires as $horaire) {
@@ -92,9 +115,6 @@ class DefaultController extends AbstractController
         }
         $idToKeep = array_diff($idToKeep, $idToRemove);
         $freeHoraire = $em->getRepository(Horaire::class)->getActiveHeure($idToKeep);
-
-
-
 
 
         $data = $serializer->serialize($freeHoraire, 'json');
