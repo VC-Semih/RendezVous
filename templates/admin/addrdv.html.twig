@@ -10,8 +10,8 @@
                         {{ message }}
                     </div>
                     <script>
-                        window.setTimeout(function() {
-                            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                        window.setTimeout(function () {
+                            $(".alert").fadeTo(500, 0).slideUp(500, function () {
                                 $(this).remove();
                             });
                         }, 3000);
@@ -43,7 +43,6 @@
                         </form>
 
 
-
                         <div id="datepicker-container">
                             <div id="datepicker-center">
                                 <div id="datepicker"></div>
@@ -62,13 +61,14 @@
                         <h1 id="showDate" class="text-center"></h1>
                     </div>
 
-                        <div id="myDiv" class="text-center custom-control custom-checkbox">
+                    <div id="myDiv" class="text-center custom-control custom-checkbox">
 
 
-                        </div>
+                    </div>
 
                     <div class="col text-center mb-3 mt-3" id="verify">
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
                             Sélectionnez un interlocuteur
                         </button>
                     </div>
@@ -86,31 +86,35 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                    <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Recherchez un nom.." title="Type in a name">
+                        <input class="form-control" type="text" id="myInput" onkeyup="myFunction()"
+                               placeholder="Recherchez un nom.." title="Type in a name">
                     </div>
                     <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="myTable" width="100%" cellspacing="0">
-                        <thead>
-                        <tr>
-                            <th scope="col">Nom d'utilisateur</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for user in users %}
+                        <table class="table table-bordered table-hover" id="myTable" width="100%" cellspacing="0">
+                            <thead>
                             <tr>
-                                <td>{{ user.username }}</td>
-                                <td>{{ user.email }}</td>
-                                <td class="text-center"><input id="userchosedbtn" type="radio" class="form-check-input" name="userchosed" value="{{ user.id }}"></td>
+                                <th scope="col">Nom d'utilisateur</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Action</th>
                             </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="4">no records found</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table></div>
+                            </thead>
+                            <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td class="text-center"><input id="userchosedbtn" type="radio"
+                                                                   class="form-check-input" name="userchosed"
+                                                                   value="{{ user.id }}"></td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">no records found</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-pink" data-bs-dismiss="modal">Annuler</button>
