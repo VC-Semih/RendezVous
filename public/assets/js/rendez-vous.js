@@ -12,37 +12,43 @@ function Geeks() {
     var $mercredi;
     var $jeudi;
 
-    var valuesss = $("#myselect option:selected").text();
 
+    var valuesss = $("#myselect option:selected").val();
+    switch (valuesss) {
+        case '1':
+            $lundi = 2;
+            $mercredi = 4;
+            break;
+        case '3':
+            $mardi = 1;
+            $jeudi = 3;
+            break;
+        case '5':
+            $lundi = 2;
+            $mercredi = 4;
+            break;
+        case '4':
+            $lundi = 2;
+            $mercredi = 4;
+            break;
+        case '2':
+            $mardi = 1;
+            $jeudi = 3;
+            break;
 
-    if (valuesss === "Procuration") {
-        $lundi = 2;
-        $mercredi = 4;
+        default:
+           $mardi=1;
+           $lundi=2;
+           $mercredi=4;
+           $jeudi=3;
     }
-    if (valuesss === "Passeport") {
-        $mardi = 1;
-        $jeudi = 3;
-    }
-    if (valuesss === "Certificat divers") {
-        $lundi = 2;
-        $mercredi = 4;
-    }
-    if (valuesss === "Heritage") {
-        $lundi = 2;
-        $mercredi = 4;
-    }
-    if (valuesss === "Visa") {
-        $mardi = 1;
-        $jeudi = 3;
-    }
-
 
     $("#getRendez-vous").hide();
     $("#chosed-date").show();
     var disableDates = [];
     var url = $('#urlgetlockeddate').val();
     $.ajax({
-        url:url,
+        url: url,
         type: 'GET',
         cache: false,
         dataType: "json",
@@ -86,14 +92,14 @@ function Geeks() {
                     checkbox.type = "radio";
                     checkbox.name = "skills";
                     checkbox.className = "heureCheckBox btn-check";
-                    checkbox.id = "heure"+i;
+                    checkbox.id = "heure" + i;
                     checkbox.value = data[i]['heure'];
 
                     var label = document.createElement('label');
 
 
-                    label.htmlFor = "heure"+i;
-                    label.className=" m-2 btn btn-secondary";
+                    label.htmlFor = "heure" + i;
+                    label.className = " m-2 btn btn-secondary";
 
                     label.appendChild(document.createTextNode(data[i]['heure']));
 
