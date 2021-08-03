@@ -10,7 +10,11 @@ use App\Repository\HoraireRepository;
 use App\Repository\LockDateRepository;
 use App\Repository\RendezVousRepository;
 use DateTime;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Swift_Mailer;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,6 +33,7 @@ class DefaultController extends AbstractController
     }
 
     /**
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @Route("/adduserRdv" ,name="adduserRdv")
      * @return Response
      */
@@ -38,10 +43,13 @@ class DefaultController extends AbstractController
     }
 
     /**
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @Route("/heure" ,name="/heure")
      * @param Request $request
      * @param SerializerInterface $serializer
      * @return Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function getHoraire(Request $request, SerializerInterface $serializer)
     {
@@ -97,10 +105,18 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/rdv" ,name="/rdv")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @param Request $request
+     * @param SerializerInterface $serializer
+     * @param UserInterface $user
+     * @param HoraireRepository $horaireRepository
+     * @param RendezVousRepository $rendezVousRepository
+     * @param Swift_Mailer $mailer
      * @return Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    public function getinfo(Request $request, SerializerInterface $serializer, UserInterface $user, HoraireRepository $horaireRepository, RendezVousRepository $rendezVousRepository, \Swift_Mailer $mailer): Response
+    public function getinfo(Request $request, SerializerInterface $serializer, UserInterface $user, HoraireRepository $horaireRepository, RendezVousRepository $rendezVousRepository, Swift_Mailer $mailer): Response
     {
 
         $service = $request->get('service');
@@ -162,6 +178,11 @@ class DefaultController extends AbstractController
 
     }
 
+    /**
+     * @param RendezVousRepository $rendezVousRepository
+     * @return Response
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
     public function mesrdv(RendezVousRepository $rendezVousRepository)
     {
         $user_id = $this->getUser()->getId();
@@ -171,9 +192,10 @@ class DefaultController extends AbstractController
     }
 
     /**
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @Route("/annuler_rdv/{id}",name="delete_rdv_user")
      */
-    public function delete_rdv_user(Request $request, RendezVousRepository $repository): Response
+    public function delete_rdv_user(Request $request): Response
     {
         $id = $request->get('id');
         $em = $this->getDoctrine()->getManager();
@@ -193,6 +215,7 @@ class DefaultController extends AbstractController
     }
 
     /**
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @Route("/locked_dates/get", name="locked_date_getJSON", methods={"GET","POST"})
      */
     public function getDateLockJSON(LockDateRepository $lockDateRepository): Response

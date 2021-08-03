@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     {% include 'page/navbar.html.twig' %}
-        <div class="row justify-content-center mt-5">
-            <div class="col-lg-5">
+        <div class="row justify-content-center mt-3">
+            <div class="col-lg-8">
                 {% for message in app.flashes('notice') %}
                     <div class="alert alert-success-soft alert-dismissible fade show" role="alert" id="alert">
                         {{ message }}
@@ -21,13 +21,13 @@
                     </div>
                     <div class="card-body">
 
-                        <table class="table table-bordered table-hover"  width="100%" cellspacing="0">
+                        <table class="table table-bordered table-striped"  width="100%" cellspacing="0">
                             <thead>
                             <tr>
                                 <th scope="col">Service</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Heure</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Annuler</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -36,8 +36,8 @@
                                     <td>{{ rdv.service }}</td>
                                     <td>{{ rdv.date|date("d/m/Y") }}</td>
                                     <td>{{ rdv.heure }}</td>
-                                    <td>
-                                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="far fa-trash-alt"></i></a>
+                                    <td class="text-center">
+                                        <a style="color: #f54949" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="far fa-trash-alt"></i></a>
                                     </td>
 
                                 </tr>
@@ -45,11 +45,11 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Détails du rendez-vous</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Annulaton de rendez-vous</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Êtes vous sur de vouloir l'annuler ?
+                                                Êtes vous sur de vouloir annuler le rendez-vous ?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Non</button>
