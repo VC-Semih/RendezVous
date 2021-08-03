@@ -423,12 +423,12 @@ class RendezVousController extends AbstractController
     public function getAllUsers(UserRepository $repository)
     {
         return $this->render('admin/users.html.twig', [
-            'users' => $repository->findAll(),
+            'users' => $repository->findAll(array(),array('id'=>'desc')),
         ]);
     }
 
     /**
-     * @Route("/delete_user/{id}",name="delete_user")
+     * @Route("/delete_user/{id}",name="delete_user",methods={"GET", "POST"})
      */
     public function delete_rdv_user(Request $request): Response
     {
@@ -443,7 +443,7 @@ class RendezVousController extends AbstractController
             'Utilisateur a bien été supprimé'
         );
 
-        return $this->redirectToRoute("app_users");
+        return $this->redirectToRoute("app_rendezvous_getallusers");
     }
 
 

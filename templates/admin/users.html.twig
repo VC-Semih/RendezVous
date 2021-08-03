@@ -26,37 +26,43 @@
                             Liste des utilisateurs
                         </div>
                         <div class="card-body">
-                            <div class="datatable">
+                            <div class="datatable table-responsive">
                                 <table class="table table-bordered table-hover" id="dataTable" width="100%"
                                        cellspacing="0">
                                     <thead>
                                     <tr>
+                                        <th>Numéro</th>
                                         <th>Email</th>
                                         <th>Nom</th>
+                                        <th>Role</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    {% set cpt =0 %}
                                     {% for user in users %}
+                                        {% set cpt= cpt+1 %}
                                         <tr>
+                                            <td>{{ cpt }}</td>
                                             <td>{{ user.email }}</td>
                                             <td>{{ user.username }}</td>
+                                            <td>{{ user.roles|join(', ') }}</td>
                                             <td>
                                                 <div class="row">
                                                     <div class="col-auto">
                                                         <a href="#" class="nav-link" data-bs-toggle="modal"
-                                                           data-bs-target="#exampleModal"><i
+                                                           data-bs-target="#exampleModal{{ cpt }}"><i
                                                                     class="far fa-trash-alt"></i></a>
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
-                                        <div class="modal fade" id="exampleModal" tabindex="-1"
-                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="exampleModal{{ cpt }}" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel{{ cpt }}" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Informations du
+                                                        <h5 class="modal-title" id="exampleModalLabel{{ cpt }}">Informations du
                                                             utilisateur</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
@@ -69,7 +75,7 @@
                                                                 data-bs-dismiss="modal">Non
                                                         </button>
                                                         <a class="btn btn-sm btn-primary"
-                                                           href="{{ path('delete_user', {'id': user.id}) }}">Oui</a>
+                                                           href="{{ path('delete_user', { id: user.id}) }}">Oui</a>
                                                     </div>
                                                 </div>
                                             </div>

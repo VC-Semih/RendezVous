@@ -11,6 +11,9 @@
 
             <ul class="navbar-nav ms-md-auto gap-2">
                 {% if is_granted('ROLE_ADMIN') %}
+                    <a class="nav-link rounded" href="{{ path('app_rendezvous_getallusers') }}">
+                        Liste des utilisateurs
+                    </a>
                     <a class="nav-link rounded" href="{{ path('locked_date_index') }}">
                         Liste des dates bloquées
                     </a>
