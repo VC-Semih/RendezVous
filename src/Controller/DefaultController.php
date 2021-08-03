@@ -30,7 +30,6 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/adduserRdv" ,name="adduserRdv")
-     * @param Request $request
      * @return Response
      */
     public function addrdvuser()

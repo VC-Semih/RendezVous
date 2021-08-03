@@ -86,11 +86,9 @@ class RendezVousController extends AbstractController
      * @Route("/addUser", name="rendez_vous_useradd", methods={"GET", "POST"})
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param GuardAuthenticatorHandler $guardHandler
-     * @param Authenticator $authenticator
      * @return Response
      */
-    public function addUserForRdv(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, Authenticator $authenticator): Response
+    public function addUserForRdv(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -232,7 +230,7 @@ class RendezVousController extends AbstractController
 
             $this->addFlash(
                 'notice',
-                'Le rendez-vous pour l\'utilisateur: ' . $username . ' le service: ' . $service . ' à ' . $heure . ' à été pris !'
+                'Le rendez-vous pour l\'utilisateur ' . $username . ' au service ' . $service . ' à ' . $heure . ' à été pris !'
             );
 
         }
@@ -277,7 +275,7 @@ class RendezVousController extends AbstractController
     /**
      * @Route("/edit/{id}",name="edit_rdv",requirements={"id" = "\d+"})
      */
-    public function edit_rdv(int $id, Request $request, RendezVous $rendezVous, RendezVousRepository $rendezVousRepository): Response
+    public function edit_rdv(int $id, RendezVousRepository $rendezVousRepository): Response
     {
 
         $rdv = $rendezVousRepository->find($id);
@@ -290,6 +288,8 @@ class RendezVousController extends AbstractController
     /**
      * @Route("/modifrdvadmin" ,name="modifrdvadmin",methods={"GET", "POST"})
      * @param Request $request
+     * @param HoraireRepository $horaireRepository
+     * @param Swift_Mailer $mailer
      * @return Response
      */
     public function modification_rdv(Request $request, HoraireRepository $horaireRepository, Swift_Mailer $mailer)
@@ -323,10 +323,10 @@ class RendezVousController extends AbstractController
 
             $this->addFlash(
                 'notice',
-                'Le rendez-vous pour l\'utilisateur: ' . $rdv->getUser()->getUsername() . ' le service: ' . $service . ' à ' . $heure . ' à été pris !'
+                'Le rendez-vous pour l\'utilisateur ' .  $rdv->getUser()->getUsername()  . ' au service ' . $service . ' à ' . $heure . ' à été pris !'
             );
 
-            $message = (new Swift_Message('Serivce rendez-vous '))
+            $message = (new Swift_Message('Service rendez-vous '))
                 ->setFrom('rendez-vous@amb-afg.fr')
                 ->setTo($rdv->getUser()->getEmail())
                 ->setBody(
@@ -383,7 +383,7 @@ class RendezVousController extends AbstractController
     /**
      * @Route("/locked_dates/add", name="locked_date_add", methods={"GET","POST"})
      */
-    public function dateLockAdd(Request $request, LockDateRepository $lockDateRepository): Response
+    public function dateLockAdd(Request $request): Response
     {
         $lockDate = new lockDate();
         $form = $this->createForm(LockedDateFormType::class, $lockDate);
@@ -422,20 +422,21 @@ class RendezVousController extends AbstractController
      */
     public function getAllUsers(UserRepository $repository)
     {
-        return $this->render('admin/users.html.twig',[
-            'users'=> $repository->findAll(),
+        return $this->render('admin/users.html.twig', [
+            'users' => $repository->findAll(),
         ]);
     }
+
     /**
      * @Route("/delete_user/{id}",name="delete_user")
      */
-    public function delete_rdv_user(Request $request,UserRepository $repository):Response
+    public function delete_rdv_user(Request $request): Response
     {
         $id = $request->get('id');
         $em = $this->getDoctrine()->getManager();
-        $rdv = $em -> getRepository('App:User')->find($id);
-        $em -> remove($rdv);
-        $em -> flush();
+        $rdv = $em->getRepository('App:User')->find($id);
+        $em->remove($rdv);
+        $em->flush();
 
         $this->addFlash(
             'notice',
@@ -444,7 +445,6 @@ class RendezVousController extends AbstractController
 
         return $this->redirectToRoute("app_users");
     }
-
 
 
 }
