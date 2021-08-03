@@ -50,7 +50,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="user",orphanRemoval=true)
      */
     private $rendezvous;
 

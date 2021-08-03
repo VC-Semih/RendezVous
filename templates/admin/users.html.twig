@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RendezVous index{% endblock %}
+
+{% block body %}
+    {% include 'page/navbar.html.twig' %}
+
+    <div class="container">
+        <div class="row justify-content-center mt-5 mb-5">
+            {% for message in app.flashes('notice') %}
+                <div class="alert alert-success-soft alert-dismissible fade show" role="alert" id="alert">
+                    {{ message }}
+                </div>
+                <script>
+                    window.setTimeout(function () {
+                        $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                            $(this).remove();
+                        });
+                    }, 5000);
+                </script>
+            {% endfor %}
+            <div class="card shadow-lg border-0 rounded-lg mt-2">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-3">
+                            Liste des utilisateurs
+                        </div>
+                        <div class="card-body">
+                            <div class="datatable">
+                                <table class="table table-bordered table-hover" id="dataTable" width="100%"
+                                       cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>Email</th>
+                                        <th>Nom</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for user in users %}
+                                        <tr>
+                                            <td>{{ user.email }}</td>
+                                            <td>{{ user.username }}</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-auto">
+                                                        <a href="#" class="nav-link" data-bs-toggle="modal"
+                                                           data-bs-target="#exampleModal"><i
+                                                                    class="far fa-trash-alt"></i></a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <div class="modal fade" id="exampleModal" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Informations du
+                                                            utilisateur</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        êtes vous sur de vouloir supprimer ?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-sm btn-secondary"
+                                                                data-bs-dismiss="modal">Non
+                                                        </button>
+                                                        <a class="btn btn-sm btn-primary"
+                                                           href="{{ path('delete_user', {'id': user.id}) }}">Oui</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="4">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

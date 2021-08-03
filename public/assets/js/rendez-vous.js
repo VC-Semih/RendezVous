@@ -45,7 +45,7 @@ function Geeks() {
         url:url,
         type: 'GET',
         cache: false,
-        dataType: 'json',
+        dataType: "json",
         async: false,
         success: function (data) {
             disableDates = data;
@@ -137,7 +137,7 @@ function rdv() {
         url: url,
         type: 'POST',
         cache: false,
-        contentType: 'json',
+        dataType: "json",
         data: {
             service: valuesss,
             date: $('#datepicker').datepicker('getFormattedDate'),
@@ -167,7 +167,7 @@ function getuser() {
         url: urlrdv,
         type: 'POST',
         cache: false,
-        dataType: 'json',
+        dataType: "json",
         data: {
             getUser: user,
             getService: service,
@@ -197,7 +197,7 @@ function modifRdv() {
         url: urlrdv,
         type: 'POST',
         cache: false,
-        dataType: 'json',
+        dataType: "json",
         data: {
             getUser: user,
             getService: service,

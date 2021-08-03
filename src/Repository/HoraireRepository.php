@@ -55,6 +55,13 @@ class HoraireRepository extends ServiceEntityRepository
 
         return $stmt->fetchAll();
     }
+    public function getFullHeures(){
+        return $this->createQueryBuilder('horaire')
+            ->where('horaire.heure LIKE :full')
+            ->setParameter(':full', "%:00")
+            ->getQuery()
+            ->getResult();
+    }
 
 
     /*

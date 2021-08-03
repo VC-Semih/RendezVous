@@ -6,6 +6,8 @@ use App\Entity\RendezVous;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Driver\Exception;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -126,8 +128,8 @@ WHERE rendez_vous.user_id ='$user_id'ORDER BY rendez_vous.id DESC";
     }
 
     /**
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NonUniqueResultException
+     * @throws NoResultException
      */
     public function getNumberOfRdvByUserInDay($user, $date){
         return $this->createQueryBuilder('rendez_vous')
@@ -135,6 +137,21 @@ WHERE rendez_vous.user_id ='$user_id'ORDER BY rendez_vous.id DESC";
             ->where('rendez_vous.user = :user')
             ->andWhere('rendez_vous.date = :date')
             ->setParameter('user', $user)
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function getNbOfServiceInDay($service, $date){
+        return $this->createQueryBuilder('rdv')
+            ->select('count(rdv)')
+            ->where('rdv.service = :service')
+            ->andWhere('rdv.date = :date')
+            ->setParameter('service', $service)
             ->setParameter('date', $date)
             ->getQuery()
             ->getSingleResult();
