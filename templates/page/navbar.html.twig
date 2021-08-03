@@ -10,16 +10,16 @@
             <ul class="navbar-nav ms-md-auto gap-2">
                 {% if is_granted('ROLE_ADMIN') %}
                     <a class="nav-link rounded" href="{{ path('locked_date_index') }}">
-                        Liste des dates verrouillées
+                        Liste des dates bloquées
                     </a>
                     <a class="nav-link rounded" href="{{ path('rendez_vous_index') }}">
                         Liste des rendez-vous
                     </a>
                     <a class="nav-link rounded" href="{{ path('rendez_vous_useradd') }}">
-                        Ajouter un utilisateur
+                        Nouvel utilisateur
                     </a>
                     <a class="nav-link rounded" href="{{ path('adminAddRdv') }}">
-                        Ajouter un rendez-vous
+                        Nouveau rendez-vous
                     </a>
                 {% endif %}
                 {% if is_granted('ROLE_USER') -%}

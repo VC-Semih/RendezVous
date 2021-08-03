@@ -66,14 +66,10 @@ class HoraireRepository extends ServiceEntityRepository
             ->getResult();
     }
     public function getActiveHeure($idToKeep){
-        $max = new \DateTime('now');
-        $max = $max->format('H:i');
         return $this->createQueryBuilder('horaire')
             ->where('horaire.heure LIKE :full')
-            ->andWhere('horaire.heure > :heure')
             ->andWhere('horaire.id in (:id)')
             ->setParameter('id',$idToKeep)
-            ->setParameter(':heure', $max)
             ->setParameter(':full', "%:00")
             ->orderBy('horaire.heure','ASC')
             ->getQuery()
