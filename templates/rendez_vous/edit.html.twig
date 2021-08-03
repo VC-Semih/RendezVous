@@ -22,7 +22,7 @@
                             </div>
                             <div class="text-center mt-2">
                                 <button class="btn btn-primary mb-2" type="button" name="button" onclick="Geeks()">
-                                    Submit
+                                    Valider
                                 </button>
                             </div>
                         </form>
@@ -30,12 +30,13 @@
 
 
                         <div id="datepicker-container">
-                            <h6 id="chosed-date">
-                                Choisissez use nouvelle date
-                                <br><br>
-                                date et heure actuelle {{ rendez_vous.date|date("d/m/Y")}} | {{ rendez_vous.horaire}}
+                            <h5 id="chosed-date">
+                                Choisissez une nouvelle date
+                                <br>
+                                <br>
+                                <p class="text-muted">Actuellement : {{ rendez_vous.date|date("d/m/Y")}} à {{ rendez_vous.horaire}}</p>
 
-                            </h6>
+                            </h5>
                             <div id="datepicker-center">
                                 <div id="datepicker"></div>
                             </div>
