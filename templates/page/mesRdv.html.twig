@@ -12,7 +12,7 @@
                             $(".alert").fadeTo(500, 0).slideUp(500, function(){
                                 $(this).remove();
                             });
-                        }, 3000);
+                        }, 10000);
                     </script>
                 {% endfor %}
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
@@ -37,7 +37,7 @@
                                     <td>{{ rdv.date|date("d/m/Y") }}</td>
                                     <td>{{ rdv.heure }}</td>
                                     <td class="text-center">
-                                        <a style="color: #f54949" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="far fa-trash-alt"></i></a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="far fa-trash-alt"></i></a>
                                     </td>
 
                                 </tr>

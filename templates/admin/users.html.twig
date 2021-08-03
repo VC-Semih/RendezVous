@@ -16,7 +16,7 @@
                         $(".alert").fadeTo(500, 0).slideUp(500, function () {
                             $(this).remove();
                         });
-                    }, 5000);
+                    }, 10000);
                 </script>
             {% endfor %}
             <div class="card shadow-lg border-0 rounded-lg mt-2">
@@ -35,7 +35,7 @@
                                         <th>Email</th>
                                         <th>Nom</th>
                                         <th>Role</th>
-                                        <th>Action</th>
+                                        <th>Supprimer</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -47,14 +47,10 @@
                                             <td>{{ user.email }}</td>
                                             <td>{{ user.username }}</td>
                                             <td>{{ user.roles|join(', ') }}</td>
-                                            <td>
-                                                <div class="row">
-                                                    <div class="col-auto">
-                                                        <a href="#" class="nav-link" data-bs-toggle="modal"
+                                            <td class="text-center">
+                                                        <a href="#" data-bs-toggle="modal"
                                                            data-bs-target="#exampleModal{{ cpt }}"><i
                                                                     class="far fa-trash-alt"></i></a>
-                                                    </div>
-                                                </div>
                                             </td>
                                         </tr>
                                         <div class="modal fade" id="exampleModal{{ cpt }}" tabindex="-1"
@@ -82,7 +78,7 @@
                                         </div>
                                     {% else %}
                                         <tr>
-                                            <td colspan="4">no records found</td>
+                                            <td colspan="5">Aucun utilisateur</td>
                                         </tr>
                                     {% endfor %}
 

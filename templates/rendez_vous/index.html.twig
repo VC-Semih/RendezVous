@@ -16,7 +16,7 @@
                         $(".alert").fadeTo(500, 0).slideUp(500, function () {
                             $(this).remove();
                         });
-                    }, 5000);
+                    }, 10000);
                 </script>
             {% endfor %}
             <div class="card shadow-lg border-0 rounded-lg mt-2">
@@ -27,27 +27,33 @@
 
                         </div>
                         <div class="col-6">
-                            <form id="formexport" action="{{ path('rdv_generate') }}" method="POST" target="_blank"  class="w-100 d-none d-md-block">
+                            <form id="formexport" action="{{ path('rdv_generate') }}" method="POST" target="_blank"
+                                  class="w-100 d-none d-md-block">
                                 <div class="row">
                                     <div class="col-auto">
-                                        <input class="form-control form-control-sm" id="startDate" autocomplete="off" name="date"
+                                        <input class="form-control form-control-sm" id="startDate" autocomplete="off"
+                                               name="date"
                                                placeholder="Date"/>
                                     </div>
                                     <div class="col-2">
-                                        <input id="btnpdf" class="btn btn-info btn-sm" name="action" value="Exporter PDF"
+                                        <input id="btnpdf" class="btn btn-info btn-sm" name="action"
+                                               value="Exporter PDF"
                                                type="submit"/>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="col-6">
-                            <form id="formexportnow" action="{{ path('rdv_generate') }}" method="POST" target="_blank"  class="w-100 d-none d-md-block">
+                            <form id="formexportnow" action="{{ path('rdv_generate') }}" method="POST" target="_blank"
+                                  class="w-100 d-none d-md-block">
                                 <div class="row float-right">
                                     <div class="col-auto">
-                                        <input hidden id="startDate" name="date" value="{{ "now"|date_modify("+1 day")|date("Y/m/d") }}"/>
+                                        <input hidden id="startDate" name="date"
+                                               value="{{ "now"|date_modify("+1 day")|date("Y/m/d") }}"/>
                                     </div>
                                     <div class="col-2">
-                                        <input id="btnpdfnow" class="btn btn-info btn-sm" name="action" value="Exporter les rendez-vous de demain"
+                                        <input id="btnpdfnow" class="btn btn-info btn-sm" name="action"
+                                               value="Exporter les rendez-vous de demain"
                                                type="submit"/>
                                     </div>
                                 </div>
@@ -65,7 +71,7 @@
                                         <th>Date</th>
                                         <th>Heure</th>
                                         <th>Actions</th>
-                                        <th>Mail</th>
+                                        <th>Mail de rappel</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -76,29 +82,19 @@
                                             <td>{{ rendez_vous.service }}</td>
                                             <td>{{ rendez_vous.date|date("d/m/Y") }}</td>
                                             <td>{{ rendez_vous.heure }}</td>
-                                            <td>
-                                                <div class="row">
-                                                    <div class="col-auto">
-                                                        <a class="nav-link" data-bs-toggle="modal"
-                                                           data-bs-target="#rdv{{ rendez_vous.rdv_id }}"><i
-                                                                    class="fas fa-calendar-day"></i></a>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <a href="{{ path('edit_rdv', {'id': rendez_vous.rdv_id}) }}"
-                                                           class="nav-link"><i class="fas fa-edit"></i></a>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <a href="#" class="nav-link" data-bs-toggle="modal"
-                                                           data-bs-target="#exampleModal"><i
-                                                                    class="far fa-trash-alt"></i></a>
-                                                    </div>
+                                            <td class="text-center">
+                                                <a class="m-2" data-bs-toggle="modal" href="#"
+                                                   data-bs-target="#rdv{{ rendez_vous.rdv_id }}"><i
+                                                            class="fas fa-calendar-day"></i></a>
+                                                <a class="m-2" href="{{ path('edit_rdv', {'id': rendez_vous.rdv_id}) }}"><i
+                                                            class="fas fa-edit"></i></a>
+                                                <a class="m-2" href="#" data-bs-toggle="modal"
+                                                   data-bs-target="#exampleModal"><i
+                                                            class="far fa-trash-alt"></i></a>
 
-                                                </div>
                                             </td>
-                                            <td>
-                                                <a class="nav-link"
-                                                   href="{{ path('rdv_admin_mailer', {'id': rendez_vous.rdv_id}) }}"><i
-                                                            class="fas fa-paper-plane"></i></a>
+                                            <td class="text-center">
+                                                <a href="{{ path('rdv_admin_mailer', {'id': rendez_vous.rdv_id}) }}">Envoyer <i class="fas fa-envelope"></i></a>
                                             </td>
                                         </tr>
                                         <div class="modal fade" id="rdv{{ rendez_vous.rdv_id }}" tabindex="-1"
