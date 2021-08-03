@@ -6,53 +6,53 @@
             <div class="col-lg-5">
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                     <div class="card-body">
-                                        {% for message in app.flashes('success') %}
-                                            <div class="alert alert-success">
-                                                {{ message }}
-                                            </div>
-                                        {% endfor %}
-                                        {% for message in app.flashes('failed') %}
-                                            <div class="alert alert-danger">
-                                                {{ message }}
-                                            </div>
-                                        {% endfor %}
-                                        {{ form_start(form, { 'action': path('change_mdp'), 'attr': { 'class': 'user' } }) }}
-                                        <div class="form-group">
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                        {% for message in app.flashes('failed') %}
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                        {{ form_start(form, { 'action': path('change_mdp'), 'attr': { 'class': 'user' } }) }}
+                        <div class="form-group">
 
-                                            <span>{{ form_label(form.oldPassword) }}</span>
-                                            {{ form_widget(form.oldPassword, { 'attr': {'class': 'form-control form-control-user'} }) }}
-                                            {% for errorItem in form.oldPassword.vars.errors %}
-                                                <span class="alert-danger">{{ errorItem.message }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        <div class="form-group">
+                            <span>{{ form_label(form.oldPassword) }}</span>
+                            {{ form_widget(form.oldPassword, { 'attr': {'class': 'form-control form-control-user'} }) }}
+                            {% for errorItem in form.oldPassword.vars.errors %}
+                                <span class="alert-danger">{{ errorItem.message }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
 
-                                                <span>Nouveau mot de passe</span>
-                                                {{ form_widget(form.plainPassword.first, { 'attr': {'class': ' form-control form-control-user'} }) }}
-                                                {% for errorItem in form.plainPassword.first.vars.errors %}
-                                                    <span class=" alert-danger">{{ errorItem.message }}</span>
-                                                {% endfor %}
-                                        </div>
+                            <label>Nouveau mot de passe</label>
+                            {{ form_widget(form.plainPassword.first, { 'attr': {'class': ' form-control form-control-user'} }) }}
+                            {% for errorItem in form.plainPassword.first.vars.errors %}
+                                <span class=" alert-danger">{{ errorItem.message }}</span>
+                            {% endfor %}
+                        </div>
 
-                                            <div class="form-group">
-                                                <span>Confirmation du mot de passe</span>
-                                                {{ form_widget(form.plainPassword.second, { 'attr': {'class': ' form-control form-control-user'} }) }}
-                                                {% for errorItem in form.plainPassword.second.vars.errors %}
-                                                    <span class=" text-danger">{{ errorItem.message }}</span>
-                                                {% endfor %}
-                                            </div>
+                        <div class="form-group">
+                            <label>Confirmation du mot de passe</label>
+                            {{ form_widget(form.plainPassword.second, { 'attr': {'class': ' form-control form-control-user'} }) }}
+                            {% for errorItem in form.plainPassword.second.vars.errors %}
+                                <span class=" text-danger">{{ errorItem.message }}</span>
+                            {% endfor %}
+                        </div>
 
-                                            <div class="text-center">
-                                                {{ form_widget(form.submit, { 'attr': {'class': 'btn btn-sm btn-primary'} }) }}
-                                            </div>
+                        <div class="text-center">
+                            {{ form_widget(form.submit, { 'attr': {'class': 'btn btn-sm btn-primary'} }) }}
+                        </div>
 
-                                        </div>
-
-                                        {{ form_end(form) }}
                     </div>
+
+                    {{ form_end(form) }}
                 </div>
             </div>
         </div>
+    </div>
     </div>
     </div>
 {% endblock %}

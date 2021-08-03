@@ -43,3 +43,7 @@ body
 #datepicker-container{
     margin-left: -30px;
 }
+td.today {
+    background-color: #93d1e3;
+    color: white;
+}
