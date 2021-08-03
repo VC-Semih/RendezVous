@@ -47,3 +47,8 @@ td.today {
     background-color: #93d1e3;
     color: white;
 }
+
+.table-striped tbody tr:nth-of-type(odd) {
+
+    background-color: #ffffff70!important;
+}
