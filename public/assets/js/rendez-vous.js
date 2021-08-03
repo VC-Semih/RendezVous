@@ -37,10 +37,10 @@ function Geeks() {
             break;
 
         default:
-           $mardi=1;
-           $lundi=2;
-           $mercredi=4;
-           $jeudi=3;
+            $mardi = 1;
+            $lundi = 2;
+            $mercredi = 4;
+            $jeudi = 3;
     }
 
     $("#getRendez-vous").hide();
@@ -74,14 +74,35 @@ function Geeks() {
         $("#getRendez-vous").hide();
         $("#title-date").show();
 
-        var valuesss = $("#myselect option:selected").text();
+        var valuesss = $("#myselect option:selected").val();
+        switch (valuesss) {
+            case '1':
+                var service = "Procuration";
+                break;
+            case '3':
+                var service = "Passeport";
+                break;
+            case '5':
+                var service = "Certificat divers";
+                break;
+            case '4':
+                var service = "Heritage";
+                break;
+            case '2':
+                var service = "Visa";
+                break;
+
+            default:
+                var service = "Inconnu";
+        }
+
         var myDiv = document.getElementById("myDiv");
         $(myDiv).html("");
         $.ajax({
             url: '/heure',
             type: "GET",
             dataType: "json",
-            data: 'date=' + encodeURIComponent(value) + '&service=' + encodeURIComponent(valuesss),
+            data: 'date=' + encodeURIComponent(value) + '&service=' + encodeURIComponent(service),
             async: false,
             success: function (data) {
 
@@ -129,7 +150,27 @@ function Geeks() {
 function send(valuesss) {
     var heure = $('input:radio[name="skills"]:checked').val();
     $("#verify").show();
-    $("#service-rendezvous").text(valuesss);
+    switch (valuesss) {
+        case '1':
+            var service = "Procuration";
+            break;
+        case '3':
+            var service = "Passeport";
+            break;
+        case '5':
+            var service = "Certificat divers";
+            break;
+        case '4':
+            var service = "Heritage";
+            break;
+        case '2':
+            var service = "Visa";
+            break;
+
+        default:
+            var service = "Inconnu";
+    }
+    $("#service-rendezvous").text(service);
     $("#date-rendezvous").text($('#datepicker').datepicker('getFormattedDate'));
     $("#heure-rendezvous").text(heure);
 
@@ -138,14 +179,35 @@ function send(valuesss) {
 function rdv() {
     var homepage = $('#homepage').val();
     var url = $('#urlrdv').val();
-    var valuesss = $("#myselect option:selected").text();
+
+    var valuesss = $("#myselect option:selected").val();
+    switch (valuesss) {
+        case '1':
+            var service = "Procuration";
+            break;
+        case '3':
+            var service = "Passeport";
+            break;
+        case '5':
+            var service = "Certificat divers";
+            break;
+        case '4':
+            var service = "Heritage";
+            break;
+        case '2':
+            var service = "Visa";
+            break;
+
+        default:
+            var service = "Inconnu";
+    }
     $.ajax({
         url: url,
         type: 'POST',
         cache: false,
         dataType: "json",
         data: {
-            service: valuesss,
+            service: service,
             date: $('#datepicker').datepicker('getFormattedDate'),
             heure: $('input:radio[name="skills"]:checked').val(),
         },
@@ -165,9 +227,30 @@ function getuser() {
     var urlrdv = $('#urlrendezvous').val();
     var urlredirect = $('#urlredirect').val();
     var user = $('input:radio[name="userchosed"]:checked').val();
-    var service = $("#myselect option:selected").text();
     var date = $('#datepicker').datepicker('getFormattedDate');
     var heure = $('input:radio[name="skills"]:checked').val();
+
+    var valuesss = $("#myselect option:selected").val();
+    switch (valuesss) {
+        case '1':
+            var service = "Procuration";
+            break;
+        case '3':
+            var service = "Passeport";
+            break;
+        case '5':
+            var service = "Certificat divers";
+            break;
+        case '4':
+            var service = "Heritage";
+            break;
+        case '2':
+            var service = "Visa";
+            break;
+
+        default:
+            var service = "Inconnu";
+    }
 
     $.ajax({
         url: urlrdv,

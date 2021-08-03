@@ -163,6 +163,7 @@ class RendezVousController extends AbstractController
     /**
      * @Route("/addRdv" , name="adminAddRdv",methods={"GET", "POST"})
      * @param Request $request
+     * @param UserRepository $repository
      * @return Response
      */
     public function rdvadminPage(Request $request, UserRepository $repository)
