@@ -16,6 +16,7 @@ class LockedDateFormType extends AbstractType
     {
         $builder
             ->add('locked_date', DateType::class, [
+                'label'=>' ',
                 'years' => range(date('Y'), date('Y') + 1)
             ]);
     }
