@@ -12,40 +12,46 @@ function Geeks() {
     var $mercredi;
     var $jeudi;
 
-    var valuesss = $("#myselect option:selected").text();
 
+    var valuesss = $("#myselect option:selected").val();
+    switch (valuesss) {
+        case '1':
+            $lundi = 2;
+            $mercredi = 4;
+            break;
+        case '3':
+            $mardi = 1;
+            $jeudi = 3;
+            break;
+        case '5':
+            $lundi = 2;
+            $mercredi = 4;
+            break;
+        case '4':
+            $lundi = 2;
+            $mercredi = 4;
+            break;
+        case '2':
+            $mardi = 1;
+            $jeudi = 3;
+            break;
 
-    if (valuesss === "Procuration") {
-        $lundi = 2;
-        $mercredi = 4;
+        default:
+            $mardi = 1;
+            $lundi = 2;
+            $mercredi = 4;
+            $jeudi = 3;
     }
-    if (valuesss === "Passeport") {
-        $mardi = 1;
-        $jeudi = 3;
-    }
-    if (valuesss === "Certificat divers") {
-        $lundi = 2;
-        $mercredi = 4;
-    }
-    if (valuesss === "Heritage") {
-        $lundi = 2;
-        $mercredi = 4;
-    }
-    if (valuesss === "Visa") {
-        $mardi = 1;
-        $jeudi = 3;
-    }
-
 
     $("#getRendez-vous").hide();
     $("#chosed-date").show();
     var disableDates = [];
     var url = $('#urlgetlockeddate').val();
     $.ajax({
-        url:url,
+        url: url,
         type: 'GET',
         cache: false,
-        dataType: 'json',
+        dataType: "json",
         async: false,
         success: function (data) {
             disableDates = data;
@@ -68,14 +74,35 @@ function Geeks() {
         $("#getRendez-vous").hide();
         $("#title-date").show();
 
-        var valuesss = $("#myselect option:selected").text();
+        var valuesss = $("#myselect option:selected").val();
+        switch (valuesss) {
+            case '1':
+                var service = "Procuration";
+                break;
+            case '3':
+                var service = "Passeport";
+                break;
+            case '5':
+                var service = "Certificat divers";
+                break;
+            case '4':
+                var service = "Heritage";
+                break;
+            case '2':
+                var service = "Visa";
+                break;
+
+            default:
+                var service = "Inconnu";
+        }
+
         var myDiv = document.getElementById("myDiv");
         $(myDiv).html("");
         $.ajax({
             url: '/heure',
             type: "GET",
             dataType: "json",
-            data: 'date=' + encodeURIComponent(value) + '&service=' + encodeURIComponent(valuesss),
+            data: 'date=' + encodeURIComponent(value) + '&service=' + encodeURIComponent(service),
             async: false,
             success: function (data) {
 
@@ -86,14 +113,14 @@ function Geeks() {
                     checkbox.type = "radio";
                     checkbox.name = "skills";
                     checkbox.className = "heureCheckBox btn-check";
-                    checkbox.id = "heure"+i;
+                    checkbox.id = "heure" + i;
                     checkbox.value = data[i]['heure'];
 
                     var label = document.createElement('label');
 
 
-                    label.htmlFor = "heure"+i;
-                    label.className=" m-2 btn btn-secondary";
+                    label.htmlFor = "heure" + i;
+                    label.className = " m-2 btn btn-secondary";
 
                     label.appendChild(document.createTextNode(data[i]['heure']));
 
@@ -123,7 +150,27 @@ function Geeks() {
 function send(valuesss) {
     var heure = $('input:radio[name="skills"]:checked').val();
     $("#verify").show();
-    $("#service-rendezvous").text(valuesss);
+    switch (valuesss) {
+        case '1':
+            var service = "Procuration";
+            break;
+        case '3':
+            var service = "Passeport";
+            break;
+        case '5':
+            var service = "Certificat divers";
+            break;
+        case '4':
+            var service = "Heritage";
+            break;
+        case '2':
+            var service = "Visa";
+            break;
+
+        default:
+            var service = "Inconnu";
+    }
+    $("#service-rendezvous").text(service);
     $("#date-rendezvous").text($('#datepicker').datepicker('getFormattedDate'));
     $("#heure-rendezvous").text(heure);
 
@@ -132,19 +179,41 @@ function send(valuesss) {
 function rdv() {
     var homepage = $('#homepage').val();
     var url = $('#urlrdv').val();
-    var valuesss = $("#myselect option:selected").text();
+
+    var valuesss = $("#myselect option:selected").val();
+    switch (valuesss) {
+        case '1':
+            var service = "Procuration";
+            break;
+        case '3':
+            var service = "Passeport";
+            break;
+        case '5':
+            var service = "Certificat divers";
+            break;
+        case '4':
+            var service = "Heritage";
+            break;
+        case '2':
+            var service = "Visa";
+            break;
+
+        default:
+            var service = "Inconnu";
+    }
     $.ajax({
         url: url,
         type: 'POST',
         cache: false,
-        dataType: 'json',
+        dataType: "json",
         data: {
-            service: valuesss,
+            service: service,
             date: $('#datepicker').datepicker('getFormattedDate'),
             heure: $('input:radio[name="skills"]:checked').val(),
         },
         async: true,
         success: function (data) {
+            console.log(data)
             if (data != null && data != '') {
                 console.log(data)
                 location.href = homepage;
@@ -158,15 +227,36 @@ function getuser() {
     var urlrdv = $('#urlrendezvous').val();
     var urlredirect = $('#urlredirect').val();
     var user = $('input:radio[name="userchosed"]:checked').val();
-    var service = $("#myselect option:selected").text();
     var date = $('#datepicker').datepicker('getFormattedDate');
     var heure = $('input:radio[name="skills"]:checked').val();
+
+    var valuesss = $("#myselect option:selected").val();
+    switch (valuesss) {
+        case '1':
+            var service = "Procuration";
+            break;
+        case '3':
+            var service = "Passeport";
+            break;
+        case '5':
+            var service = "Certificat divers";
+            break;
+        case '4':
+            var service = "Heritage";
+            break;
+        case '2':
+            var service = "Visa";
+            break;
+
+        default:
+            var service = "Inconnu";
+    }
 
     $.ajax({
         url: urlrdv,
         type: 'POST',
         cache: false,
-        dataType: 'json',
+        dataType: "json",
         data: {
             getUser: user,
             getService: service,
@@ -196,7 +286,7 @@ function modifRdv() {
         url: urlrdv,
         type: 'POST',
         cache: false,
-        dataType: 'json',
+        dataType: "json",
         data: {
             getUser: user,
             getService: service,

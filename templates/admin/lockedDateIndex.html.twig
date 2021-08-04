@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Locked date index{% endblock %}
+{% block title %}Liste des dates verrouillées{% endblock %}
 
 {% block body %}
     {% include 'page/navbar.html.twig' %}
@@ -16,14 +16,14 @@
                         $(".alert").fadeTo(500, 0).slideUp(500, function () {
                             $(this).remove();
                         });
-                    }, 5000);
+                    }, 10000);
                 </script>
             {% endfor %}
             <div class="card shadow-lg border-0 rounded-lg mt-2">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-3">
-                            List des dates verrouillé
+                            Liste des dates bloquées
                         </div>
                         <div class="card-body">
                             <div class="datatable">
@@ -50,7 +50,7 @@
                                         </tr>
                                     {% else %}
                                         <tr>
-                                            <td colspan="4">no records found</td>
+                                            <td colspan="4">Aucun enregistrement trouvé</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

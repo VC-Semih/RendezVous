@@ -26,7 +26,6 @@
                         </form>
 
 
-
                         <div id="datepicker-container">
                             <h6 id="chosed-date">Choisissez la date</h6>
                             <div id="datepicker-center">
@@ -48,26 +47,32 @@
 
                     <div id="myDiv" class="text-center custom-control custom-checkbox"></div>
                     <div class="col text-center mb-3 mt-3" id="verify">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
                             Prendre le rendez-vous
                         </button>
                     </div>
 
                     <!-- Modal -->
 
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Information du Rendez-vous</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    Vous avez choisi un rendez vous pour la service de <span class="font-weight-bolder" id="service-rendezvous"></span>,
-                                    le <span class="font-weight-bolder" id="date-rendezvous"></span> à <span class="font-weight-bolder" id="heure-rendezvous"></span>h
+                                    Vous avez choisi un rendez vous pour la service de <span class="font-weight-bolder"
+                                                                                             id="service-rendezvous"></span>,
+                                    le <span class="font-weight-bolder" id="date-rendezvous"></span> à <span
+                                            class="font-weight-bolder" id="heure-rendezvous"></span>h
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler
+                                    </button>
                                     <button type="button" class="btn btn-primary" onclick="rdv()">Confirmer</button>
                                 </div>
                             </div>

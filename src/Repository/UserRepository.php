@@ -38,7 +38,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function userInfo($user_id)
     {
 
-        $rawSQL ="SELECT USER.email,user.username FROM user WHERE user.id = '$user_id'";
+        $rawSQL ="SELECT user.email,user.username FROM user WHERE user.id = '$user_id'";
         $stmt = false;
         try {
             $stmt = $this->getEntityManager()->getConnection()->prepare($rawSQL);

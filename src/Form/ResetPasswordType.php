@@ -19,44 +19,28 @@ class ResetPasswordType extends AbstractType
 
 
         $builder
-
             ->add('oldPassword', PasswordType::class, array(
-
+                'label' => 'Ancien mot de passe',
                 'mapped' => false
 
             ))
-
             ->add('plainPassword', RepeatedType::class, array(
 
                 'type' => PasswordType::class,
-
                 'invalid_message' => 'Les deux mots de passe doivent être identiques',
-
                 'options' => array(
-
                     'attr' => array(
-
                         'class' => 'password-field'
-
                     )
-
                 ),
-
                 'required' => true,
-
             ))
-
             ->add('submit', SubmitType::class, array(
-
+                'label' => 'Valider',
                 'attr' => array(
-
                     'class' => 'btn btn-primary btn-center col-3'
-
                 )
-
-            ))
-
-        ;
+            ));
 
     }
 

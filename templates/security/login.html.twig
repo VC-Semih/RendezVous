@@ -1,34 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
-
+    {% include 'page/navbar.html.twig' %}
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-5">
                 <!-- Basic login form-->
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
+                    <div class="card-header">
+                        <h3>Connectez-vous</h3>
+                    </div>
                     <div class="card-body">
                         <form method="post" class="form p-4">
                             {% if error %}
                                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                             {% endif %}
-
-                            {% if app.user %}
-                                <div class="mb-3">
-                                    You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-                                </div>
-                            {% endif %}
                             <div class="form-group">
-                                <label class="text-left" for="inputEmail">Email</label>
-                                <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+                                <label class="text-left" for="inputEmail">Adresse mail</label>
+                                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="nom-prenom@gmail.com"
                                        class="form-control fadeIn second" required autofocus>
                             </div>
                             <div class="form-group">
 
-                                <label class="text-left" for="inputPassword">Password</label>
-                                <input type="password" name="password" id="inputPassword"
+                                <label class="text-left" for="inputPassword">Mot de passe</label>
+                                <input type="password" name="password" id="inputPassword" placeholder="**********"
                                        class="form-control fadeIn third" required>
                             </div>
                             <input type="hidden" name="_csrf_token"
@@ -47,13 +44,18 @@
                             #}
                             <div class="text-center">
                                 <button class="btn btn-sm btn-primary mt-2" type="submit">
-                                    {% trans %}S'identifier{% endtrans %}
+                                    {% trans %}Se connecter{% endtrans %}
                                 </button>
                             </div>
                         </form>
                     </div>
                     <div class="card-footer text-center">
-                        <div class="small"><a href="{{ path('app_register') }}">{% trans %}Besoin d'un compte? S'inscrire!{% endtrans %}</a></div>
+                        <div class="small"><a
+                                    href="{{ path('app_register') }}">{% trans %}Besoin d'un compte ? S'inscrire !{% endtrans %}</a>
+                        </div>
+                        <div class="small"><a
+                                    href="{{ path('app_forgot_password_request') }}">{% trans %}J'ai oublié mon mot de passe !{% endtrans %}</a>
+                        </div>
                     </div>
                 </div>
             </div>

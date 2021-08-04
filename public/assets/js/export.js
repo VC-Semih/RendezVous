@@ -1,15 +1,12 @@
-$( document ).ready(function() {
+$(document).ready(function () {
 
-    $('#btnpdf').attr('disabled',true);
-    $('#btnexcel').attr('disabled',true);
-    $('#startDate').change(function(){
-        if($('#startDate').val().length !=0)
-        {
+    $('#btnpdf').attr('disabled', true);
+    $('#btnexcel').attr('disabled', true);
+    $('#startDate').change(function () {
+        if ($('#startDate').val().length != 0) {
             $('#btnpdf,#btnexcel').attr('disabled', false);
-        }
-        else
-        {
-            $('#btnpdf,#btnexcel').attr('disabled',true);
+        } else {
+            $('#btnpdf,#btnexcel').attr('disabled', true);
         }
 
     })
@@ -20,6 +17,7 @@ $( document ).ready(function() {
         format: "yyyy-mm-dd",
         uiLibrary: 'bootstrap4',
         iconsLibrary: 'fontawesome',
+        regional:'fr',
         minDate: today,
         maxDate: function () {
             return $('#endDate').val();
@@ -29,19 +27,11 @@ $( document ).ready(function() {
         format: "yyyy-mm-dd",
         uiLibrary: 'bootstrap4',
         iconsLibrary: 'fontawesome',
+        regional:'fr',
         minDate: function () {
             return $('#startDate').val();
         }
     });
-
-
-
-
-
-
-
-
-
 
 
 });

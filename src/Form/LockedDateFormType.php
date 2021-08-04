@@ -16,7 +16,14 @@ class LockedDateFormType extends AbstractType
     {
         $builder
             ->add('locked_date', DateType::class, [
-                'years' => range(date('Y'), date('Y') + 1)
+                'label'=>' ',
+                'required' => true,
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'datepicker datepicker-inline',
+                    'data-provide' => 'datetimepicker',
+                ],
+//                'years' => range(date('Y'), date('Y') + 1)
             ]);
     }
 

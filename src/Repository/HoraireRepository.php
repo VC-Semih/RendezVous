@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Horaire;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @method Horaire|null find($id, $lockMode = null, $lockVersion = null)
@@ -54,6 +55,23 @@ class HoraireRepository extends ServiceEntityRepository
         }
 
         return $stmt->fetchAll();
+    }
+    public function getFullHeures(){
+        return $this->createQueryBuilder('horaire')
+            ->where('horaire.heure LIKE :full')
+            ->andWhere('horaire.heure NOT Like :heure')
+            ->setParameter(':heure', '16:00')
+            ->setParameter(':full', "%:00")
+            ->getQuery()
+            ->getResult();
+    }
+    public function getActiveHeure($idToKeep){
+        return $this->createQueryBuilder('horaire')
+            ->Where('horaire.id in (:id)')
+            ->setParameter('id',$idToKeep)
+            ->orderBy('horaire.heure','ASC')
+            ->getQuery()
+            ->getResult();
     }
 
 

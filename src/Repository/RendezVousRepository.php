@@ -6,6 +6,8 @@ use App\Entity\RendezVous;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Driver\Exception;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -104,12 +106,12 @@ WHERE rendez_vous.user_id ='$user_id'ORDER BY rendez_vous.id DESC";
         return $stmt->fetchAll();
     }
 
-    public function getRdvByRange($date)
+    public function getRdvByDate($date)
     {
 
         $rawSQL = "SELECT rendez_vous.date, rendez_vous.service, user.username, user.email, horaire.heure 
         FROM `rendez_vous` INNER JOIN user on rendez_vous.user_id = user.id INNER JOIN horaire on rendez_vous.horaire_id = horaire.id 
-        WHERE date = '" . $date . "'";
+        WHERE date = '" . $date . "' ORDER BY `horaire`.`id` ASC";
         $stmt = false;
         try {
             $stmt = $this->getEntityManager()->getConnection()->prepare($rawSQL);
@@ -123,6 +125,36 @@ WHERE rendez_vous.user_id ='$user_id'ORDER BY rendez_vous.id DESC";
         }
 
         return $stmt->fetchAll();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function getNumberOfRdvByUserInDay($user, $date){
+        return $this->createQueryBuilder('rendez_vous')
+            ->select('count(rendez_vous)')
+            ->where('rendez_vous.user = :user')
+            ->andWhere('rendez_vous.date = :date')
+            ->setParameter('user', $user)
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function getNbOfServiceInDay($service, $date){
+        return $this->createQueryBuilder('rdv')
+            ->select('count(rdv)')
+            ->where('rdv.service = :service')
+            ->andWhere('rdv.date = :date')
+            ->setParameter('service', $service)
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getSingleResult();
     }
 
 }

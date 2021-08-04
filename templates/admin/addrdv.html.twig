@@ -10,11 +10,11 @@
                         {{ message }}
                     </div>
                     <script>
-                        window.setTimeout(function() {
-                            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                        window.setTimeout(function () {
+                            $(".alert").fadeTo(500, 0).slideUp(500, function () {
                                 $(this).remove();
                             });
-                        }, 3000);
+                        }, 10000);
                     </script>
                 {% endfor %}
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
@@ -36,12 +36,11 @@
                                 </select>
                             </div>
                             <div class="text-center mt-2">
-                                <button class="btn btn-primary mb-2" type="button" name="button" onclick="Geeks()">
+                                <button class="btn btn-success mb-2" type="button" name="button" onclick="Geeks()">
                                     Valider
                                 </button>
                             </div>
                         </form>
-
 
 
                         <div id="datepicker-container">
@@ -62,14 +61,15 @@
                         <h1 id="showDate" class="text-center"></h1>
                     </div>
 
-                        <div id="myDiv" class="text-center custom-control custom-checkbox">
+                    <div id="myDiv" class="text-center custom-control custom-checkbox">
 
 
-                        </div>
+                    </div>
 
                     <div class="col text-center mb-3 mt-3" id="verify">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Ajouter une Personne
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                            Sélectionnez un interlocuteur
                         </button>
                     </div>
                 </div>
@@ -86,34 +86,39 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                    <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+                        <input class="form-control" type="text" id="myInput" onkeyup="myFunction()"
+                               placeholder="Recherchez un nom.." title="Type in a name">
                     </div>
-                    <table class="table table-bordered table-hover table-responsive" id="myTable" width="100%" cellspacing="0">
-                        <thead>
-                        <tr>
-                            <th scope="col">Email</th>
-                            <th scope="col">Nom d'utilisateur</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for user in users %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="myTable" width="100%" cellspacing="0">
+                            <thead>
                             <tr>
-                                <td>{{ user.username }}</td>
-                                <td>{{ user.email }}</td>
-                                <td class="text-center"><input id="userchosedbtn" type="radio" class="form-check-input" name="userchosed" value="{{ user.id }}"></td>
+                                <th scope="col">Nom d'utilisateur</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Action</th>
                             </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="4">no records found</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td class="text-center"><input id="userchosedbtn" type="radio"
+                                                                   class="form-check-input" name="userchosed"
+                                                                   value="{{ user.id }}"></td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">no records found</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-pink" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" onclick="getuser()" id="addUserrdv">Confirmer</button>
+                    <button type="button" class="btn btn-info" onclick="getuser()" id="addUserrdv">Confirmer</button>
                 </div>
             </div>
         </div>

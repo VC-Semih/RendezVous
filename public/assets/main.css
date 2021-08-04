@@ -1,6 +1,6 @@
 body
 {
-    background-color: #0d5d4f;
+    background-color: #2193b0;
 }
 #datepicker-container{
     text-align:center;
@@ -22,12 +22,12 @@ body
 .datepicker table tr td.today, .datepicker table tr td.today:hover, .datepicker table tr td.today.disabled, .datepicker table tr td.today.disabled:hover
 {
     color: white;
-    background-color: #2e33389e;
+    background-color: #22a1c7;
     background-image: none;
 }
 
 .datepicker table tr td.active:hover, .datepicker table tr td.today.active.day:hover, .datepicker table tr td.active:hover:hover, .datepicker table tr td.active.disabled:hover, .datepicker table tr td.active.disabled:hover:hover, .datepicker table tr td.active:hover:active, .datepicker table tr td.active.disabled:active, .datepicker table tr td.active.disabled:hover:active, .datepicker table tr td.active.active, .datepicker table tr td.active:hover.active, .datepicker table tr td.active.disabled.active, .datepicker table tr td.active.disabled:hover.active, .datepicker table tr td.active.disabled, .datepicker table tr td.active:hover.disabled, .datepicker table tr td.active.disabled.disabled, .datepicker table tr td.active.disabled:hover.disabled, .datepicker table tr td.active[disabled], .datepicker table tr td.active:hover[disabled], .datepicker table tr td.active.disabled[disabled], .datepicker table tr td.active.disabled:hover[disabled] {
-    background-color: #22c787;
+    background-color: #22a1c7;
     background-image: none;
     color: white;
 }
@@ -37,9 +37,29 @@ body
 }
 
 .datepicker table tr td.today:hover, .datepicker table tr td.today:hover:hover, .datepicker table tr td.today.disabled:hover, .datepicker table tr td.today.disabled:hover:hover, .datepicker table tr td.today.disabled, .datepicker table tr td.today:hover.disabled, .datepicker table tr td.today.disabled.disabled, .datepicker table tr td.today.disabled:hover.disabled, .datepicker table tr td.today[disabled], .datepicker table tr td.today:hover[disabled], .datepicker table tr td.today.disabled[disabled], .datepicker table tr td.today.disabled:hover[disabled] {
-    background-color: #2e3338ba;
+    background-color: #22a1c7;
     color: white;
 }
 #datepicker-container{
     margin-left: -30px;
+}
+.today.day {
+    background-color: #93d1e3!important;
+    color: white!important;
+}
+.today.day.active {
+    background-color: #22a1c7!important;
+    color: white!important;
+}
+.table-striped tbody tr:nth-of-type(odd) {
+
+    background-color: #ffffff70!important;
+}
+
+table.table-condensed {
+    background-color: #f8f9fa;
+}
+
+.far.fa-trash-alt{
+    color: #f54949
 }
